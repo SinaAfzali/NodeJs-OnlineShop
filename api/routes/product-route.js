@@ -1,9 +1,11 @@
 var express = require('express');
 var router = express.Router();
+router.use(express.json());
+var productController = require('../controller/product-controller');
+// const PostRequest = require('../middleware/PostRequest');
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send([{name:"sina", age:25},]);
-});
+
+// router.use(PostRequest);
+router.post('/add', productController.productController);
 
 module.exports = router;

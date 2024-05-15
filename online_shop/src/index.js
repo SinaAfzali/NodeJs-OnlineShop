@@ -3,14 +3,22 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import AddProduct from './addProduct';
+import { post } from './addProductURL';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <AddProduct />
   </React.StrictMode>
 );
+
+// setTimeout(() => {
+//   const registerForm = document.getElementById('register_form');
+// registerForm.addEventListener("submit", post, false);
+// }, 2000);
+
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
