@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './addProduct.css'; // Import CSS file for styling
+import './css/addProduct.css'; // Import CSS file for styling
 const {addProduct} = require('./addProductURL');
 
 function AddProduct({ onAddProduct, onBack }) {
