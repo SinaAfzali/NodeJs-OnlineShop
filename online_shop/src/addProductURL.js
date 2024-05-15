@@ -16,9 +16,10 @@ class Product {
 const addProduct = (formData) => {
   const { name, price, description, productNumber, image, filter, discount, features } = formData;
 
-  const productFeatures = [];
+  var productFeatures = "";
   for (let i = 0; i < features.length; i++) {
-    productFeatures.push([features[i].name, features[i].value]);
+    productFeatures += features[i].name + "||" + features[i].value 
+    if(i !== features.length-1)productFeatures+='||';
   }
 
   const product = new Product(name, price, description, productNumber, image, filter, discount, productFeatures);

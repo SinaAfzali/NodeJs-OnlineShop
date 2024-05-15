@@ -3,13 +3,13 @@ const {MongoClient} = require('mongodb');
 const { normalize } = require('path');
 require("dotenv").config();
 
+const uri = "mongodb://localhost:27017";
+const client = new MongoClient(uri);
+const my_db = "SHOP";
 
-class Database{
    
-    static async createCollection(collection_name){
+async function createCollection(collection_name){
     if(process.env.STATUS === "development"){
-        let uri = process.env.DB_URL;
-        let client = new MongoClient(uri);
         try {
             await client.connect();
             var database = client.db(process.env.DB_NAME);
@@ -27,14 +27,12 @@ class Database{
         }
     }
     else return "no access to this opration!";
-    }
+}
 
 
 
-    static async dropCollection(collection_name){
+async function dropCollection(collection_name){
     if(process.env.STATUS === "development"){
-        let uri = process.env.DB_URL;
-        let client = new MongoClient(uri);
         try {
             await client.connect();
             var database = client.db(process.env.DB_NAME);
@@ -52,16 +50,14 @@ class Database{
         }
     }
     else return "no access to this opration!";
-    }
+}
 
 
 
-    static async insertDocument(collection_name, document){
-        let uri = process.env.DB_URL;
-        let client = new MongoClient(uri);
+async function insertDocument(collection_name, document){
         try {
             await client.connect();
-            var database = client.db(process.env.DB_NAME);
+            var database = client.db(my_db);
             var findCollection = (await database.listCollections({name: collection_name}).toArray()).length;
             if(findCollection === 1){
             let collection = database.collection(collection_name);
@@ -74,12 +70,10 @@ class Database{
         } finally {
             await client.close();
         }
-    }
+}
 
 
-    static async deleteDocument(collection_name, document, one_or_many){
-        let uri = process.env.DB_URL;
-        let client = new MongoClient(uri);
+async function deleteDocument(collection_name, document, one_or_many){
         try {
             await client.connect();
             var database = client.db(process.env.DB_NAME);
@@ -100,13 +94,11 @@ class Database{
         } finally {
             await client.close();
         }
-    }
+}
 
 
 
-    static async updateDocument(collection_name, document, updated_document, set_or_unset){
-        let uri = process.env.DB_URL;
-        let client = new MongoClient(uri);
+async function updateDocument(collection_name, document, updated_document, set_or_unset){
         try {
             await client.connect();
             var database = client.db(process.env.DB_NAME);
@@ -127,6 +119,5 @@ class Database{
             await client.close();
         }
     }
-}
 
-module.exports = Database;
+module.exports = {createCollection, dropCollection, insertDocument, deleteDocument, updateDocument};
