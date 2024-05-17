@@ -1,80 +1,98 @@
+.main-page {
+  position: relative;
+  min-height: 100vh; /* Ensure the page takes full height */
+}
+
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 40px;
-    background-color: #222;
-    color: white;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  }
-  
-  .logo {
-    background-color: #222;
-    padding: 5px; 
-    border: none; 
-    cursor: pointer; 
-  }
-  
-  .logo:hover {
-    cursor: pointer; /* Change cursor style to pointer when hovering */
-  }
-  
-  .logo img {
-    width: 60px; /* Adjust the width as per your preference */
-    height: auto; /* Maintain aspect ratio */
-  }
-  
-  
-  
-  
-  .search-box {
-    display: flex;
-    align-items: center;
-    border-radius: 20px;
-    overflow: hidden;
-    background-color: rgba(255, 255, 255, 0.1);
-  }
-  
-  .search-box input {
-    padding: 10px;
-    border: none;
-    background-color: transparent;
-    color: white;
-    width: 200px;
-    transition: width 0.3s ease-in-out;
-  }
-  
-  .search-box input:focus {
-    width: 300px;
-  }
-  
-  .search-icon {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    transition: background-color 0.3s ease-in-out;
-  }
-  
-  .search-icon:hover {
-    background-color: #45a049;
-  }
-  
-  .login-options button {
-    padding: 10px 20px;
-    background-color: transparent;
-    border: 2px solid white;
-    color: white;
-    font-weight: bold;
-    text-transform: uppercase;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
-  }
-  
-  .login-options button:hover {
-    background-color: white;
-    color: #222;
-  }
-  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background-color: #222;
+  color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.logo {
+  background-color: #222;
+  padding: 5px; 
+  border: none; 
+  cursor: pointer; 
+}
+
+.logo:hover {
+  cursor: pointer; /* Change cursor style to pointer when hovering */
+}
+
+.logo img {
+  width: 60px; /* Adjust the width as per your preference */
+  height: auto; /* Maintain aspect ratio */
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.search-box input {
+  padding: 10px;
+  border: none;
+  background-color: transparent;
+  color: white;
+  width: 200px;
+  transition: width 0.3s ease-in-out;
+}
+
+.search-box input:focus {
+  width: 300px;
+}
+
+.search-icon {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.search-icon:hover {
+  background-color: #45a049;
+}
+
+.login-options button {
+  padding: 10px 20px;
+  background-color: transparent;
+  border: 2px solid white;
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.login-options button:hover {
+  background-color: white;
+  color: #222;
+}
+
+.bottom-left-button {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  padding: 10px 20px;
+  background-color: #3c59cd;
+  color: rgb(255, 255, 255);
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.bottom-left-button:hover {
+  background-color: #000000;
+}
