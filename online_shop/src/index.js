@@ -6,6 +6,8 @@ import MainPage from './mainPage'
 import reportWebVitals from './reportWebVitals';
 import AddProduct from './addProduct';
 import LoginAndRegister from './LoginAndRegister';
+import Cart from './Cart'; // Import the Cart component
+import Creator from './Creator'; // Import the Creator component
 
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -17,7 +19,9 @@ root.render(
     <Router>
       <Routes>
         <Route path="/" element={<MainPage />} />
-        <Route path="/LoginAndRegister" element={<LoginAndRegister />} />
+        <Route path="/loginAndRegister" element={<LoginAndRegister />} />
+        <Route path="/cart" element={<Cart />} /> {/* Add the Cart route */}
+        <Route path="/creator" element={<Creator />} /> {/* Add the Creator route */}
       </Routes>
     </Router>
   </React.StrictMode>
