@@ -12,7 +12,7 @@ async function createCollection(collection_name){
     if(process.env.STATUS === "development"){
         try {
             await client.connect();
-            var database = client.db(process.env.DB_NAME);
+            var database = client.db(my_db);
             var findCollection = (await database.listCollections({name: collection_name}).toArray()).length;
             if(findCollection === 0){
                 let result = await database.createCollection(collection_name);
@@ -35,7 +35,7 @@ async function dropCollection(collection_name){
     if(process.env.STATUS === "development"){
         try {
             await client.connect();
-            var database = client.db(process.env.DB_NAME);
+            var database = client.db(my_db);
             var findCollection = (await database.listCollections({name: collection_name}).toArray()).length;
             if(findCollection === 1){
                 let result = await database.dropCollection(collection_name);
@@ -76,7 +76,7 @@ async function insertDocument(collection_name, document){
 async function deleteDocument(collection_name, document, one_or_many){
         try {
             await client.connect();
-            var database = client.db(process.env.DB_NAME);
+            var database = client.db(my_db);
             var findCollection = (await database.listCollections({name: collection_name}).toArray()).length;
             if(findCollection === 1){
             let collection = database.collection(collection_name);
@@ -101,7 +101,7 @@ async function deleteDocument(collection_name, document, one_or_many){
 async function updateDocument(collection_name, document, updated_document, set_or_unset){
         try {
             await client.connect();
-            var database = client.db(process.env.DB_NAME);
+            var database = client.db(my_db);
             var findCollection = (await database.listCollections({name: collection_name}).toArray()).length;
             if(findCollection === 1){
             let collection = database.collection(collection_name);
@@ -118,6 +118,27 @@ async function updateDocument(collection_name, document, updated_document, set_o
         } finally {
             await client.close();
         }
-    }
+    };
 
-module.exports = {createCollection, dropCollection, insertDocument, deleteDocument, updateDocument};
+async function getDocument(collection_name, document){
+        try {
+            await client.connect();
+            var database = client.db(my_db);
+            var findCollection = (await database.listCollections({name: collection_name}).toArray()).length;
+            if(findCollection === 1){
+                let collection = database.collection(collection_name);
+                let findUser = await collection.findOne(document);
+                if(findUser !== null)return findUser;
+                else return -1;
+          }else return "collection does not exist!";
+     
+        } catch (e) {
+            console.error(e);
+        } finally {
+            await client.close();
+        }
+    };
+
+
+module.exports = {createCollection, dropCollection, insertDocument, deleteDocument, updateDocument
+, getDocument};

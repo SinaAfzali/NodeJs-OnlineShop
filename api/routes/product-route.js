@@ -7,5 +7,8 @@ var productController = require('../controller/product-controller');
 
 // router.use(PostRequest);
 router.post('/add', productController.productController);
+router.get('/add', (req,res)=>{
+   
+});
 
 module.exports = router;

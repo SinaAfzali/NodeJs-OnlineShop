@@ -1,3 +1,5 @@
+const request = require('./HTTP_REQUEST');
+
 const apiUrl = 'http://localhost:9000/api/product/add';
 
 class Product {
@@ -24,18 +26,8 @@ const addProduct = (formData) => {
 
   const product = new Product(name, price, description, productNumber, image, filter, discount, productFeatures);
 
-  const requestOptions = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(product)
-  };
-
-  fetch(apiUrl, requestOptions)
-    .then(response => response.json())
-    .then(data => console.log(data))
-    .catch(error => console.error('خطا در ارسال درخواست:', error));
+  request.Post(apiUrl, product);
+  
 };
 
 module.exports.addProduct = addProduct;

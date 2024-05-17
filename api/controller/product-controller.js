@@ -20,7 +20,6 @@ async function productController(req,res){
     var product = new Product(req.body.name,req.body.price,req.body.description, req.body.productNumber, 
         req.body.image,req.body.filter,req.body.discount,req.body.features);
     result = await productModel.insertProduct(product);
-    console.log(result);
     res.send(JSON.stringify("ok"));
 }
 

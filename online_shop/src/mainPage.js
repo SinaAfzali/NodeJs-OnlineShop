@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import './css/mainPage.css'; 
 import logoImage from './images/shopping-cart.png';
+import ReactDOM from 'react-dom/client';
+import AddProduct from './addProduct';
+import LoginAndRegister from './LoginAndRegister';
+
+
 
 const MainPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -11,7 +16,16 @@ const MainPage = () => {
   };
 
   const handleLogin = () => {
+    // var xhr = new XMLHttpRequest();
+    // xhr.open('GET', 'http://localhost:9000/api/product/add', true);
+    // xhr.send();
      setIsLoggedIn(!isLoggedIn);
+     const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(
+      <React.StrictMode>
+         <LoginAndRegister />
+      </React.StrictMode>
+);
   };
 
   const handleLogoClick = () => {
