@@ -5,12 +5,21 @@ import App from './App';
 import MainPage from './mainPage'
 import reportWebVitals from './reportWebVitals';
 import AddProduct from './addProduct';
+import LoginAndRegister from './LoginAndRegister';
+
+
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <MainPage />
+    <Router>
+      <Routes>
+        <Route path="/" element={<MainPage />} />
+        <Route path="/LoginAndRegister" element={<LoginAndRegister />} />
+      </Routes>
+    </Router>
   </React.StrictMode>
 );
 

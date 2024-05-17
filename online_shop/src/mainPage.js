@@ -2,14 +2,18 @@ import React, { useState } from 'react';
 import './css/mainPage.css'; 
 import logoImage from './images/shopping-cart.png';
 import ReactDOM from 'react-dom/client';
-import AddProduct from './addProduct';
 import LoginAndRegister from './LoginAndRegister';
+
+
+import { useNavigate } from 'react-router-dom';
 
 
 
 const MainPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Assuming the user is not logged in initially
+  const navigate = useNavigate(); // React Router hook for navigation
+
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -20,12 +24,7 @@ const MainPage = () => {
     // xhr.open('GET', 'http://localhost:9000/api/product/add', true);
     // xhr.send();
      setIsLoggedIn(!isLoggedIn);
-     const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(
-      <React.StrictMode>
-         <LoginAndRegister />
-      </React.StrictMode>
-);
+    navigate('/loginAndRegister'); // Navigate to the login page
   };
 
   const handleLogoClick = () => {
@@ -61,12 +60,6 @@ const MainPage = () => {
   );
 };
 
-const App = () => {
-  return (
-    <div className="App">
-      
-    </div>
-  );
-};
+
 
 export default MainPage;
