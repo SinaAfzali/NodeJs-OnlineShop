@@ -1,7 +1,7 @@
 const request = require('./HTTP_REQUEST');
 
 const userNameValidator = async (userInput, usernameValidator) => {
-  let apiUrl_validUserName = 'http://localhost:9000/api/user/username/validator';
+  let apiUrl_validUserName = 'http://localhost:9000/api/user/register/username/validator';
   let pattern = /^[a-zA-Z0-9]+$/;
   if (userInput.value && !pattern.test(String(userInput.value))) {
     usernameValidator.style.color = 'red';
@@ -33,7 +33,7 @@ const validatePasswords = (passwordInput, confirmPasswordInput, passwordValidato
     passwordValidatorLabel.innerHTML = '';
   }
 
-  if (passwordInput.value !== confirmPasswordInput.value) {
+  if (confirmPasswordInput.value !== '' && passwordInput.value !== confirmPasswordInput.value) {
     passwordMatchValidatorLabel.style.color = 'red';
     passwordMatchValidatorLabel.innerHTML = 'رمز عبور و تایید رمز عبور مطابقت ندارند';
     isValid = false;

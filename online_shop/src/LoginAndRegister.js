@@ -41,7 +41,6 @@ const LoginAndRegister = () => {
       <div className="registration form">
         <header>صفحه ثبت نام</header>
         <form action="#">
-          <input type="text" placeholder="ایمیل خود را وارد کنید"/>
           <input onInput={inputChange} id="userNameRegister" type="text" placeholder="نام کابری مدنظر خود را وارد کنید"/>
           <label id="userNameValidatorLabel"></label>
           <input onInput={passwordChange} id="passwordRegister" type="password" placeholder="رمز عبور خود را وارد کنید"/>
