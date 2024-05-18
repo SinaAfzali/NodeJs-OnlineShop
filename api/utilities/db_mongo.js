@@ -7,54 +7,52 @@ const uri = "mongodb://localhost:27017";
 const client = new MongoClient(uri);
 const my_db = "SHOP";
 
-   
-async function createCollection(collection_name){
-    if(process.env.STATUS === "development"){
-        try {
-            await client.connect();
-            var database = client.db(my_db);
-            var findCollection = (await database.listCollections({name: collection_name}).toArray()).length;
-            if(findCollection === 0){
-                let result = await database.createCollection(collection_name);
-                return result;
+class Database{
+    static async createCollection(collection_name){
+        if(process.env.STATUS === "development"){
+            try {
+                await client.connect();
+                var database = client.db(my_db);
+                var findCollection = (await database.listCollections({name: collection_name}).toArray()).length;
+                if(findCollection === 0){
+                    let result = await database.createCollection(collection_name);
+                    return result;
+                }
+                return "collection already exist!";
+         
+            } catch (e) {
+                console.error(e);
+            } finally {
+                await client.close();
             }
-            return "collection already exist!";
-     
-        } catch (e) {
-            console.error(e);
-        } finally {
-            await client.close();
         }
-    }
-    else return "no access to this opration!";
-}
+        else return "no access to this opration!";
+    };
 
 
-
-async function dropCollection(collection_name){
-    if(process.env.STATUS === "development"){
-        try {
-            await client.connect();
-            var database = client.db(my_db);
-            var findCollection = (await database.listCollections({name: collection_name}).toArray()).length;
-            if(findCollection === 1){
-                let result = await database.dropCollection(collection_name);
-                return result;
+    static async dropCollection(collection_name){
+        if(process.env.STATUS === "development"){
+            try {
+                await client.connect();
+                var database = client.db(my_db);
+                var findCollection = (await database.listCollections({name: collection_name}).toArray()).length;
+                if(findCollection === 1){
+                    let result = await database.dropCollection(collection_name);
+                    return result;
+                }
+                return "collection already exist!";
+         
+            } catch (e) {
+                console.error(e);
+            } finally {
+                await client.close();
             }
-            return "collection already exist!";
-     
-        } catch (e) {
-            console.error(e);
-        } finally {
-            await client.close();
         }
-    }
-    else return "no access to this opration!";
-}
+        else return "no access to this opration!";
+    };
+    
 
-
-
-async function insertDocument(collection_name, document){
+    static async insertDocument(collection_name, document){
         try {
             await client.connect();
             var database = client.db(my_db);
@@ -70,10 +68,10 @@ async function insertDocument(collection_name, document){
         } finally {
             await client.close();
         }
-}
+    };
 
 
-async function deleteDocument(collection_name, document, one_or_many){
+static async deleteDocument(collection_name, document, one_or_many){
         try {
             await client.connect();
             var database = client.db(my_db);
@@ -94,11 +92,11 @@ async function deleteDocument(collection_name, document, one_or_many){
         } finally {
             await client.close();
         }
-}
+    };
 
 
 
-async function updateDocument(collection_name, document, updated_document, set_or_unset){
+    static async updateDocument(collection_name, document, updated_document, set_or_unset){
         try {
             await client.connect();
             var database = client.db(my_db);
@@ -120,7 +118,8 @@ async function updateDocument(collection_name, document, updated_document, set_o
         }
     };
 
-async function getDocument(collection_name, document){
+
+    static async getDocument(collection_name, document){
         try {
             await client.connect();
             var database = client.db(my_db);
@@ -138,7 +137,22 @@ async function getDocument(collection_name, document){
             await client.close();
         }
     };
+    
+}
+   
 
 
-module.exports = {createCollection, dropCollection, insertDocument, deleteDocument, updateDocument
-, getDocument};
+
+
+
+
+
+
+
+
+
+
+
+
+
+module.exports = Database;

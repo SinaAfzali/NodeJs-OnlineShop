@@ -1,4 +1,4 @@
-const mongo = require('../utilities/db_mongo');
+const Database = require('../utilities/db_mongo');
 
 class ProductsModel{
     static getProducts(){
@@ -14,7 +14,7 @@ class ProductsModel{
     }
 
     static async insertProduct(product){
-        let result = await mongo.insertDocument("products", product);
+        let result = await Database.insertDocument("products", product);
         return result;
     }
 

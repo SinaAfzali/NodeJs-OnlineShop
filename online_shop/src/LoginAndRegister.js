@@ -55,7 +55,7 @@ const LoginAndRegister = () => {
   return (
     <div className="container">
       <input type="checkbox" id="check"/>
-      <div className="login & Signup form">
+      <div className="login & Signup form" >
         <header>صفحه ورود</header>
         <form action="#">
           <input type="text" placeholder="نام کابری خود را وارد کنید"/>
