@@ -3,8 +3,8 @@ var router = express.Router();
 const {userValidator, emailsender} = require('../controller/user-controller')
 
 /* GET users listing. */
-router.post('/username/validator',userValidator);
-router.post('/email/sendCode', emailsender);
-router.post('/email/validator', emailsender);
+router.post('/register/username/validator',userValidator);
+router.post('/register/email/sendCode', emailsender);
+router.post('/register/email/validator', emailsender);
 
 module.exports = router;

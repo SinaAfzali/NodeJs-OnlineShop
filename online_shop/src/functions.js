@@ -2,7 +2,7 @@ const request = require('./HTTP_REQUEST');
 
 const userNameValidator = async (userinput, usenamevalidator)=>
 {
-  let apiUrl_validUserName = 'http://localhost:9000/api/user/username/validator';
+  let apiUrl_validUserName = 'http://localhost:9000/api/user/register/username/validator';
   let pattern = /^[a-zA-Z0-9]+$/;
     if(userinput.value && !pattern.test(String(userinput.value))){
         usenamevalidator.style.color = 'red';
