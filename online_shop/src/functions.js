@@ -15,7 +15,6 @@ const userNameValidator = async (userinput, usenamevalidator)=>
        else {
         // send usename to server
         let result = await request.Post(apiUrl_validUserName, {userName:String(userinput.value)}); 
-  
         if(result === "ok"){
         usenamevalidator.innerHTML = 'نام کاربری در دسترس است';
         usenamevalidator.style.color = 'green';
@@ -25,21 +24,14 @@ const userNameValidator = async (userinput, usenamevalidator)=>
         }
       }
     };
-
-
     const passwordValidator = (passwordInput, passwordValidatorLabel) => {
-      let pattern = /^[a-zA-Z0-9-_]+$/;
-      if (passwordInput.value && !pattern.test(passwordInput.value)) {
+      let pattern = /^[a-zA-Z0-9_-]{4,}$/;
+      if (passwordInput.value && !pattern.test(String(passwordInput.value))) {
         passwordValidatorLabel.style.color = 'red';
-        passwordValidatorLabel.innerHTML = 'رمز عبور فقط میتواند شامل حروف، اعداد، - و _ باشد';
-      } else if (passwordInput.value.length < 4) {
-        passwordValidatorLabel.style.color = 'red';
-        passwordValidatorLabel.innerHTML = 'رمز عبور باید حداقل 4 کاراکتر داشته باشد';
+        passwordValidatorLabel.innerHTML = 'رمز عبور باید حداقل 4 کاراکتر داشته باشد و شامل حروف بزرگ، حروف کوچک، اعداد، - و _ باشد';
       } else {
-        passwordValidatorLabel.style.color = 'green';
-        passwordValidatorLabel.innerHTML = 'رمز عبور معتبر است';
+        passwordValidatorLabel.innerHTML = '';
       }
     };
-    
     module.exports = { userNameValidator, passwordValidator };
 
