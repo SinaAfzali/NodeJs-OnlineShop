@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './css/LoginAndRegister.css'; 
-import { userNameValidator, passwordValidator } from './functions'; 
+import { userNameValidator, passwordValidator, passwordMatchValidator } from './functions'; 
 
 const LoginAndRegister = () => {
   const inputChange = () => {
@@ -13,6 +13,13 @@ const LoginAndRegister = () => {
     let passwordInput = document.getElementById('passwordRegister');
     let passwordValidatorLabel = document.getElementById('passwordValidatorLabel');
     passwordValidator(passwordInput, passwordValidatorLabel);
+  };
+
+  const confirmPasswordChange = () => {
+    let passwordInput = document.getElementById('passwordRegister');
+    let confirmPasswordInput = document.getElementById('confirmPasswordRegister');
+    let passwordMatchValidatorLabel = document.getElementById('passwordMatchValidatorLabel');
+    passwordMatchValidator(passwordInput, confirmPasswordInput, passwordMatchValidatorLabel);
   };
 
   return (
@@ -40,7 +47,8 @@ const LoginAndRegister = () => {
           <label id="userNameValidatorLabel"></label>
           <input onInput={passwordChange} id="passwordRegister" type="password" placeholder="رمز عبور خود را وارد کنید"/>
           <label id="passwordValidatorLabel"></label>
-          <input type="password" placeholder="رمز عبور خود را تایید کنید"/>
+          <input onInput={confirmPasswordChange} id="confirmPasswordRegister" type="password" placeholder="رمز عبور خود را تایید کنید"/>
+          <label id="passwordMatchValidatorLabel"></label>
           <input type="button" className="button" value="ثبت نام"/>
         </form>
         <div className="signup">
