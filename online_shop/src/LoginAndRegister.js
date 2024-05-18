@@ -5,7 +5,7 @@ const request = require('./HTTP_REQUEST');
 
 
 const url_register = 'http://localhost:9000/api/user/register/form';
-const url_login = 'http://localhost:9000/api/user/login';
+const url_login = 'http://localhost:9000/api/user/login/form';
 
 
 const LoginAndRegister = () => {
@@ -40,6 +40,7 @@ const LoginAndRegister = () => {
     let usernameInput = document.getElementById('userNameLogin');
     let passwordInput = document.getElementById('passwordLogin');
     let loginErrorLabel = document.getElementById('loginErrorLabel');
+    loginErrorLabel.innerHTML = '';
 
     let userData = {
       userName: String(usernameInput.value),
@@ -49,6 +50,7 @@ const LoginAndRegister = () => {
     let result = await request.Post(url_login, userData);
     if (result !== null) {
       // Successful login logic, e.g., redirect to the dashboard
+      console.log("login successfully");
     } else {
       loginErrorLabel.style.color = 'red';
       loginErrorLabel.innerHTML = 'نام کاربری یا رمز عبور اشتباه است';
@@ -77,12 +79,13 @@ const LoginAndRegister = () => {
     <div className="container">
       <input type="checkbox" id="check"/>
       <div className="login & Signup form" >
+      <label id='loginErrorLabel'></label>
         <header>صفحه ورود</header>
         <form action="#">
-          <input type="text" placeholder="نام کابری خود را وارد کنید"/>
-          <input type="password" placeholder="رمز عبور خود را وارد کنید"/>
+          <input id='userNameLogin' type="text" placeholder="نام کابری خود را وارد کنید"/>
+          <input id='passwordLogin' type="password" placeholder="رمز عبور خود را وارد کنید"/>
           <a href='#'>رمز عبور خود را فراموش کرده اید؟</a>
-          <input type="button" className="button" value="ورود"/>
+          <input  type="button" className="button" value="ورود" onClick={handleLogin}/>
         </form>
         <div className="signup">
           <span className="signup">حساب کاربری ندارید ؟

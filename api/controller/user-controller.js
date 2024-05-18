@@ -1,6 +1,7 @@
 const UserModel = require('../models/user-model');
 const bcrypt = require("bcrypt");
 const { use } = require('../routes/user-route');
+const { json } = require('express');
 
 class User{
     constructor(userName, password){
@@ -36,7 +37,7 @@ class UserController{
             const validPassword = await bcrypt.compare(String(req.body.password), user.password);
             if(validPassword)return res.send(JSON.stringify(user));
             res.send(JSON.stringify(null));
-        }
+        }else return res.send(JSON.stringify(null));
     }
 
 
