@@ -24,7 +24,22 @@ const userNameValidator = async (userinput, usenamevalidator)=>
         usenamevalidator.style.color = 'red';
         }
       }
-    }
+    };
 
 
-module.exports = {userNameValidator};
+    const passwordValidator = (passwordInput, passwordValidatorLabel) => {
+      let pattern = /^[a-zA-Z0-9-_]+$/;
+      if (passwordInput.value && !pattern.test(passwordInput.value)) {
+        passwordValidatorLabel.style.color = 'red';
+        passwordValidatorLabel.innerHTML = 'رمز عبور فقط میتواند شامل حروف، اعداد، - و _ باشد';
+      } else if (passwordInput.value.length < 4) {
+        passwordValidatorLabel.style.color = 'red';
+        passwordValidatorLabel.innerHTML = 'رمز عبور باید حداقل 4 کاراکتر داشته باشد';
+      } else {
+        passwordValidatorLabel.style.color = 'green';
+        passwordValidatorLabel.innerHTML = 'رمز عبور معتبر است';
+      }
+    };
+    
+    module.exports = { userNameValidator, passwordValidator };
+

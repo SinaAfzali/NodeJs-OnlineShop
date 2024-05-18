@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './css/LoginAndRegister.css'; 
-import {userNameValidator }from './functions'; 
+import {userNameValidator, passwordValidator }from './functions'; 
 
 
 
@@ -29,6 +29,10 @@ const LoginAndRegister = () => {
     let usenameInp = document.getElementById('userNameRegister');
     let usernamevalidLabel = document.getElementById('userNameValidatorLabel');
     userNameValidator(usenameInp,usernamevalidLabel);
+
+    let passwordInput = document.getElementById('passwordRegister');
+    let passwordValidatorLabel = document.getElementById('passwordValidatorLabel');
+    passwordValidator(passwordInput, passwordValidatorLabel);
 
   };
 
