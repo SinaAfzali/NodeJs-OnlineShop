@@ -3,12 +3,17 @@ const request = require('./HTTP_REQUEST');
 const userNameValidator = async (userInput, usernameValidator) => {
   let apiUrl_validUserName = 'http://localhost:9000/api/user/register/username/validator';
   let pattern = /^[a-zA-Z0-9]+$/;
+  let isValid = true;
+
   if (userInput.value && !pattern.test(String(userInput.value))) {
     usernameValidator.style.color = 'red';
     usernameValidator.innerHTML = 'نام کابری فقط میتواند شامل اعداد و حروف انگلیسی باشد';
+    isValid = false;
+
   } else if (String(userInput.value).length < 5) {
     usernameValidator.style.color = 'red';
     usernameValidator.innerHTML = 'نام کابری باید حداقل 5 کاراکتر داشته باشد';
+    isValid = false;
   } else {
     let result = await request.Post(apiUrl_validUserName, { userName: String(userInput.value) });
     if (result === "ok") {
@@ -17,8 +22,10 @@ const userNameValidator = async (userInput, usernameValidator) => {
     } else {
       usernameValidator.innerHTML = 'این نام کاربری قبلا استفاده شده است';
       usernameValidator.style.color = 'red';
+      isValid = false;
     }
   }
+  return isValid;
 };
 
 const validatePasswords = (passwordInput, confirmPasswordInput, passwordValidatorLabel, passwordMatchValidatorLabel) => {
@@ -33,7 +40,7 @@ const validatePasswords = (passwordInput, confirmPasswordInput, passwordValidato
     passwordValidatorLabel.innerHTML = '';
   }
 
-  if (confirmPasswordInput.value !== '' && passwordInput.value !== confirmPasswordInput.value) {
+  if (passwordInput.value !== confirmPasswordInput.value) {
     passwordMatchValidatorLabel.style.color = 'red';
     passwordMatchValidatorLabel.innerHTML = 'رمز عبور و تایید رمز عبور مطابقت ندارند';
     isValid = false;
