@@ -21,23 +21,27 @@ const userNameValidator = async (userInput, usernameValidator) => {
   }
 };
 
-const passwordValidator = (passwordInput, passwordValidatorLabel) => {
+const validatePasswords = (passwordInput, confirmPasswordInput, passwordValidatorLabel, passwordMatchValidatorLabel) => {
   let pattern = /^[a-zA-Z0-9_-]{4,}$/;
-  if (passwordInput.value && !pattern.test(String(passwordInput.value))) {
+  let isValid = true;
+
+  if (!pattern.test(String(passwordInput.value))) {
     passwordValidatorLabel.style.color = 'red';
     passwordValidatorLabel.innerHTML = 'رمز عبور باید حداقل 4 کاراکتر داشته باشد و شامل حروف بزرگ، حروف کوچک، اعداد، - و _ باشد';
+    isValid = false;
   } else {
     passwordValidatorLabel.innerHTML = '';
   }
-};
 
-const passwordMatchValidator = (passwordInput, confirmPasswordInput, passwordMatchValidatorLabel) => {
   if (passwordInput.value !== confirmPasswordInput.value) {
     passwordMatchValidatorLabel.style.color = 'red';
     passwordMatchValidatorLabel.innerHTML = 'رمز عبور و تایید رمز عبور مطابقت ندارند';
+    isValid = false;
   } else {
     passwordMatchValidatorLabel.innerHTML = '';
   }
+
+  return isValid;
 };
 
-module.exports = { userNameValidator, passwordValidator, passwordMatchValidator };
+module.exports = { userNameValidator, validatePasswords };

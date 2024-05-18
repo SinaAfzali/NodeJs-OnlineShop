@@ -1,6 +1,6 @@
 import React from 'react';
 import './css/LoginAndRegister.css'; 
-import { userNameValidator, passwordValidator, passwordMatchValidator } from './functions'; 
+import { userNameValidator, validatePasswords } from './functions'; 
 
 const LoginAndRegister = () => {
   const inputChange = () => {
@@ -11,15 +11,14 @@ const LoginAndRegister = () => {
 
   const passwordChange = () => {
     let passwordInput = document.getElementById('passwordRegister');
+    let confirmPasswordInput = document.getElementById('confirmPasswordRegister');
     let passwordValidatorLabel = document.getElementById('passwordValidatorLabel');
-    passwordValidator(passwordInput, passwordValidatorLabel);
+    let passwordMatchValidatorLabel = document.getElementById('passwordMatchValidatorLabel');
+    validatePasswords(passwordInput, confirmPasswordInput, passwordValidatorLabel, passwordMatchValidatorLabel);
   };
 
   const confirmPasswordChange = () => {
-    let passwordInput = document.getElementById('passwordRegister');
-    let confirmPasswordInput = document.getElementById('confirmPasswordRegister');
-    let passwordMatchValidatorLabel = document.getElementById('passwordMatchValidatorLabel');
-    passwordMatchValidator(passwordInput, confirmPasswordInput, passwordMatchValidatorLabel);
+    passwordChange();
   };
 
   return (
