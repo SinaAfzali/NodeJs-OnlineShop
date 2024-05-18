@@ -5,6 +5,7 @@ const request = require('./HTTP_REQUEST');
 
 
 const url_register = 'http://localhost:9000/api/user/register/form';
+const url_login = 'http://localhost:9000/api/user/login';
 
 
 const LoginAndRegister = () => {
@@ -32,6 +33,25 @@ const LoginAndRegister = () => {
         
       }
 
+    }
+  }
+
+  const handleLogin = async () => {
+    let usernameInput = document.getElementById('userNameLogin');
+    let passwordInput = document.getElementById('passwordLogin');
+    let loginErrorLabel = document.getElementById('loginErrorLabel');
+
+    let userData = {
+      userName: String(usernameInput.value),
+      password: String(passwordInput.value)
+    };
+
+    let result = await request.Post(url_login, userData);
+    if (result !== null) {
+      // Successful login logic, e.g., redirect to the dashboard
+    } else {
+      loginErrorLabel.style.color = 'red';
+      loginErrorLabel.innerHTML = 'نام کاربری یا رمز عبور اشتباه است';
     }
   }
 
