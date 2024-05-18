@@ -29,6 +29,7 @@ const LoginAndRegister = () => {
       let result = request.Post(url_register, userData);
       if(result === "ok"){
         // go to Login page
+        
       }
 
     }

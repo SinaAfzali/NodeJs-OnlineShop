@@ -1,5 +1,6 @@
 const UserModel = require('../models/user-model');
-
+const bcrypt = require("bcrypt");
+const { use } = require('../routes/user-route');
 
 class User{
     constructor(userName, password){
@@ -29,7 +30,13 @@ class UserController{
         }
     };
     static async loginUser(req, res){
-        res.send("ok");
+        let result = await UserModel.existUser(String(req.body.userName));
+        if(result){
+            const user = await UserModel.getUser(String(req.body.userName));
+            const validPassword = await bcrypt.compare(String(req.body.password), user.password);
+            if(validPassword)return res.send(JSON.stringify(user));
+            res.send(JSON.stringify(null));
+        }
     }
 
 

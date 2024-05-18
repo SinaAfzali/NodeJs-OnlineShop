@@ -17,7 +17,16 @@ class UserModel{
             let result = await Database.insertDocument('users', user);
             return result;
         }
-    }
+    };
+
+    static async getUser(userName){
+        let result = await Database.getDocument('users', {userName: userName});
+        if(result === -1){
+            return null;
+        }else {
+            return result;
+        }
+    };
 }
 
 
