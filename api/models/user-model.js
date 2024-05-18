@@ -6,10 +6,11 @@ const existUser = async function(userName){
     if(result !== -1){
         return true;
       }else return false;
-}
+};
 
 const createUser = async function(user){
-    if(existUser(user.userName)){
+    let result = await existUser(user.userName);
+    if(result){
         return null;
     }else {
         let result = await insertDocument('users', user);
@@ -18,4 +19,4 @@ const createUser = async function(user){
 }
 
 
-module.exports = {existUser,};
+module.exports = {existUser, createUser};

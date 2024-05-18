@@ -1,8 +1,10 @@
 import React from 'react';
 import './css/LoginAndRegister.css'; 
 import { userNameValidator, validatePasswords } from './functions'; 
+const request = require('./HTTP_REQUEST');
 
 
+const url_register = 'http://localhost:9000/api/user/register/form';
 
 
 const LoginAndRegister = () => {
@@ -20,29 +22,17 @@ const LoginAndRegister = () => {
 
     if (isUsernameValid && arePasswordsValid) {
       let userData = {
-        userName: usernameInput.value,
-        password: passwordInput.value
+        userName: String(usernameInput.value),
+        password: String(passwordInput.value)
       };
 
-      // Send the data to the server
-      fetch('http://localhost:9000/api/user/register/form', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(userData)
-      })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Success:', data);
-        // Handle success case
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-        // Handle error case
-      });
+      let result = request.Post(url_register, userData);
+      if(result === "ok"){
+        // go to Login page
+      }
+
     }
-  };
+  }
 
   const inputChange = () => {
     let usernameInput = document.getElementById('userNameRegister');
@@ -82,7 +72,6 @@ const LoginAndRegister = () => {
       <div className="registration form">
         <header>صفحه ثبت نام</header>
         <form action="#">
-          <input type="text" placeholder="ایمیل خود را وارد کنید"/>
           <input onInput={inputChange} id="userNameRegister" type="text" placeholder="نام کابری مدنظر خود را وارد کنید"/>
           <label id="userNameValidatorLabel"></label>
           <input onInput={passwordChange} id="passwordRegister" type="password" placeholder="رمز عبور خود را وارد کنید"/>

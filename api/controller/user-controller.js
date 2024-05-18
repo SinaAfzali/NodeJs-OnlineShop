@@ -1,21 +1,36 @@
-const { getDocument } = require('../utilities/db_mongo');
-const {existUser} = require('../models/user-model');
+const {existUser, createUser} = require('../models/user-model');
+
+
+class User{
+    constructor(userName, password){
+        this.userName = userName;
+        this.password = password;
+    }
+}
 
 
 const userValidator = async function(req, res) {
-    if(existUser(String(req.body.userName))){
+    let result = await existUser(String(req.body.userName));
+    if(result){
       res.send(JSON.stringify("user already exist"));
     }else res.send(JSON.stringify("ok"));
   
 }
 
 const registerUser = async function(req,res){
-    if(existUser(String(req.body.userName))){
-        res.send(JSON.stringify("user already exist"));
+    let result = await existUser(String(req.body.userName));
+    if(result){
+        return res.send(JSON.stringify("user already exist"));
       }else {
-        
-        res.send(JSON.stringify("ok"));
+        let user = await createUser(new User(String(req.body.userName), String(req.body.password)));
+        console.log('user', user);
+        if(user !== null)return res.send(JSON.stringify("ok"));
+        else return res.send(JSON.stringify("not ok"));
     }
 
 }
-module.exports = {userValidator, registerUser};
+
+const loginUser = async function(req, res){
+    res.send("ok");
+}
+module.exports = {userValidator, registerUser, loginUser};
