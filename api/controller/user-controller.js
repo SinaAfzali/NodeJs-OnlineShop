@@ -10,4 +10,8 @@ const userValidator = async function(req, res) {
     // console.log(req.body.userName);
 }
 
-module.exports = {userValidator};
+const emailsender = async function(req, res){
+  
+}
+
+module.exports = {userValidator, emailsender};
