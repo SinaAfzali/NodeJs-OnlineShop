@@ -57,11 +57,13 @@ class Database{
             await client.connect();
             var database = client.db(my_db);
             var findCollection = (await database.listCollections({name: collection_name}).toArray()).length;
-            if(findCollection === 1){
+            if(findCollection === 0){
+                database.createCollection(collection_name);
+            }else {
             let collection = database.collection(collection_name);
             let result = await collection.insertOne(document);
             return result;
-            }else return "collection does not exist!";
+            }
      
         } catch (e) {
             console.error(e);
