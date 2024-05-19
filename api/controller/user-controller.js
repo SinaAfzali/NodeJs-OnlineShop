@@ -7,6 +7,7 @@ class User{
     constructor(userName, password){
         this.userName = userName;
         this.password = password;
+        this.role = 'customer';
     }
 }
 
@@ -39,8 +40,6 @@ class UserController{
             res.send(JSON.stringify(null));
         }else return res.send(JSON.stringify(null));
     }
-
-
 }
 
 module.exports = UserController;
