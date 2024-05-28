@@ -1,6 +1,7 @@
 const Database = require('../utilities/db_mongo');
 
 
+
 class UserModel{
     static async existUser(userName){
         let result = await Database.getDocument('users', {userName : userName});

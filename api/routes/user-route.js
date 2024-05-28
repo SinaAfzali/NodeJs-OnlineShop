@@ -9,4 +9,6 @@ router.post('/register/form', UserController.registerUser);
 
 router.post('/login/form', UserController.loginUser);
 
+router.post('/login/token', UserController.sendToken);
+
 module.exports = router;

@@ -3,6 +3,12 @@ const bcrypt = require("bcrypt");
 const { use } = require('../routes/user-route');
 const { json } = require('express');
 
+const jwt = require("jsonwebtoken");
+
+const SEKRET_KEY = 'onlineshop';
+
+
+
 class User{
     constructor(userName, password){
         this.userName = userName;
@@ -27,8 +33,10 @@ class UserController{
           }else {
             const hashPassword = await bcrypt.hash(String(req.body.password), 10);
             let user = await UserModel.createUser(new User(String(req.body.userName),hashPassword));
-            if(user !== null)return res.send(JSON.stringify("ok"));
-            else return res.send(JSON.stringify("not ok"));
+            if(user !== null){
+                return res.send(JSON.stringify("ok"));
+            }
+            else return res.send(JSON.stringify(null));
         }
     };
     static async loginUser(req, res){
@@ -39,6 +47,11 @@ class UserController{
             if(validPassword)return res.send(JSON.stringify(user));
             res.send(JSON.stringify(null));
         }else return res.send(JSON.stringify(null));
+    }
+
+    static async sendToken(req,res){
+        const token = jwt.sign({userName : String(req.body.userName)} , SEKRET_KEY);
+        res.send(JSON.stringify(String(token)));
     }
 }
 

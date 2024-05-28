@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './css/LoginAndRegister.css'; 
 import { userNameValidator, validatePasswords } from './functions'; 
+import Cookies from 'js-cookie';
 const request = require('./HTTP_REQUEST');
 
 const url_register = 'http://localhost:9000/api/user/register/form';
 const url_login = 'http://localhost:9000/api/user/login/form';
+const url_getToken = 'http://localhost:9000/api/user/login/token';
+
 
 const LoginAndRegister = () => {
   const [notification, setNotification] = useState('');
@@ -50,7 +53,19 @@ const LoginAndRegister = () => {
     let result = await request.Post(url_login, userData);
     if (result !== null) {
       // Successful login logic, e.g., redirect to the dashboard
-      console.log("login successfully");
+      // const token = await request.Post(url_getToken, {userName: userData.userName});
+      // Cookies.set('Authorization', token, { expires: 7 });
+
+    //   const cookieValue = Cookies.get('Authorization');
+    //   console.log(cookieValue);
+    //   jwt.verify(cookieValue, SEKRET_KEY, (err, decoded) => {
+    //     if (err) {
+    //         console.error('خطا در تایید توکن:', err);
+    //     } else {
+    //         console.log(decoded); // اطلاعات اصلی (payload) توکن JWT
+    //     }
+    // });
+
     } else {
       loginErrorLabel.style.color = 'red';
       loginErrorLabel.innerHTML = 'نام کاربری یا رمز عبور اشتباه است';
