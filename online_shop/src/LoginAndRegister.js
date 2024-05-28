@@ -27,7 +27,8 @@ const LoginAndRegister = () => {
     if (isUsernameValid && arePasswordsValid) {
       let userData = {
         userName: String(usernameInput.value),
-        password: String(passwordInput.value)
+        password: String(passwordInput.value),
+        role: "customer"
       };
 
       let result = await request.Post(url_register, userData);
@@ -47,7 +48,8 @@ const LoginAndRegister = () => {
 
     let userData = {
       userName: String(usernameInput.value),
-      password: String(passwordInput.value)
+      password: String(passwordInput.value),
+      role: "customer"
     };
 
     let result = await request.Post(url_login, userData);

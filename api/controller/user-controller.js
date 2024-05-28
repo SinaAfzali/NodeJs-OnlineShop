@@ -9,30 +9,21 @@ const SEKRET_KEY = 'onlineshop';
 
 
 
-class User{
-    constructor(userName, password){
-        this.userName = userName;
-        this.password = password;
-        this.role = 'customer';
-    }
-}
-
-
 class UserController{
     static async userValidator(req, res) {
-        let result = await UserModel.existUser(String(req.body.userName));
+        let result = await UserModel.existUser({userName: String(req.body.userName), role: String(req.body.role)});
         if(result){
           res.send(JSON.stringify("user already exist"));
         }else res.send(JSON.stringify("ok"));
     };
 
     static async registerUser(req,res){
-        let result = await UserModel.existUser(String(req.body.userName));
+        let result = await UserModel.existUser({userName: String(req.body.userName), role: String(req.body.role)});
         if(result){
             return res.send(JSON.stringify("user already exist"));
           }else {
             const hashPassword = await bcrypt.hash(String(req.body.password), 10);
-            let user = await UserModel.createUser(new User(String(req.body.userName),hashPassword));
+            let user = await UserModel.createUser({userName : String(req.body.userName),password : hashPassword, role: String(req.body.role)});
             if(user !== null){
                 return res.send(JSON.stringify("ok"));
             }
@@ -40,9 +31,9 @@ class UserController{
         }
     };
     static async loginUser(req, res){
-        let result = await UserModel.existUser(String(req.body.userName));
+        let result = await UserModel.existUser({userName: String(req.body.userName), role: String(req.body.role)});
         if(result){
-            const user = await UserModel.getUser(String(req.body.userName));
+            const user = await UserModel.getUser({userName: String(req.body.userName), role: String(req.body.role)});
             const validPassword = await bcrypt.compare(String(req.body.password), user.password);
             if(validPassword)return res.send(JSON.stringify(user));
             res.send(JSON.stringify(null));
