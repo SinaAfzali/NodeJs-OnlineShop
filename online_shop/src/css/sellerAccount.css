@@ -1,0 +1,77 @@
+/* src/css/sellerAccount.css */
+.seller-account {
+    display: flex;
+    background-color: #fff;
+    height: 100vh; /* Ensure it covers the full height of the viewport */
+  }
+  
+  .taskbar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 200px;
+    background-color: #fff;
+    border-left: 1px solid #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 0;
+  }
+  
+  .taskbar-item {
+    margin: 15px 0; /* Add margin to increase the distance between items */
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .taskbar-item:hover {
+    background-color: #4CAF50; /* Change background color on hover */
+    color: #fff; /* Change text color on hover */
+    transform: scale(1.1) rotate(3deg); /* Slightly increase the size and rotate */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Add a shadow effect */
+  }
+  
+  .main-content {
+    margin-right: 200px; /* Leave space for the taskbar */
+    flex: 1; /* Take up the remaining space */
+    padding: 20px;
+  }
+  
+  .header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .header h1 {
+    font-size: 36px;
+    color: #333;
+  }
+  
+  .profile-section,
+  .settings-section {
+    margin-bottom: 40px;
+  }
+  
+  .profile-section h2,
+  .settings-section h2 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .profile-photo {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .profile-photo img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  

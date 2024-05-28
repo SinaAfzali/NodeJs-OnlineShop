@@ -1,0 +1,111 @@
+.cart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f8f9fa; /* Light grey background */
+  }
+  
+  .cart-panel {
+    background-color: #ffffff; /* White background */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    padding: 20px; /* Padding */
+    max-width: 600px; /* Max width */
+    width: 100%; /* Full width */
+  }
+  
+  .cart-items {
+    list-style: none; /* Remove bullet points */
+    padding: 0; /* Remove padding */
+    margin: 0; /* Remove margin */
+  }
+  
+  .cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0; /* Spacing */
+    border-bottom: 1px solid #ddd; /* Light grey border */
+  }
+  
+  .cart-item:last-child {
+    border-bottom: none; /* Remove border for the last item */
+  }
+  
+  .item-info {
+    display: flex;
+    align-items: center;
+  }
+  
+  .item-name {
+    font-weight: bold; /* Bold text */
+    color: #333; /* Dark grey color */
+    margin-left: 10px; /* Margin between image and text */
+  }
+  
+  .item-price {
+    color: #555; /* Medium grey color */
+    margin-left: 20px; /* Margin between name and price */
+  }
+  
+  .product-image {
+    width: 50px; /* Fixed width */
+    height: 50px; /* Fixed height */
+    border-radius: 5px; /* Slightly rounded corners */
+  }
+  
+  .quantity-controls {
+    display: flex;
+    align-items: center;
+  }
+  
+  .quantity-btn {
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white; /* White text */
+    border: none; /* Remove border */
+    padding: 5px 10px; /* Padding */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+  }
+  
+  .quantity-btn:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+  
+  .item-quantity {
+    font-weight: bold; /* Bold text */
+    margin: 0 10px; /* Margin between buttons */
+    color: #333; /* Dark grey color */
+  }
+  
+  .remove-btn {
+    background-color: #dc3545; /* Bootstrap danger color */
+    color: white; /* White text */
+    border: none; /* Remove border */
+    padding: 5px 10px; /* Padding */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+  }
+  
+  .remove-btn:hover {
+    background-color: #c82333; /* Darker red on hover */
+  }
+  
+  .total-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px; /* Spacing from the items */
+  }
+  
+  .total-label {
+    font-weight: bold; /* Bold text */
+    color: #333; /* Dark grey color */
+  }
+  
+  .total-price {
+    font-weight: bold; /* Bold text */
+    color: #007bff; /* Bootstrap primary color */
+  }
+  
