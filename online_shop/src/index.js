@@ -1,14 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './css/index.css';
-import App from './App';
-import MainPage from './mainPage'
+import MainPage from './shop/mainPage'
 import reportWebVitals from './reportWebVitals';
-import AddProduct from './addProduct';
-import LoginAndRegister from './LoginAndRegister';
-import Cart from './Cart'; // Import the Cart component
-import Creator from './Creator'; // Import the Creator component
-import ProfileView from './sellerAccount';
+import AddProduct from './product/addProduct';
+import LoginAndRegister from './user/LoginAndRegister';
+import Cart from './shop/Cart'; // Import the Cart component
+import Creator from './shop/Creator'; // Import the Creator component
+import ProfileView from './user/sellerAccount';
 
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';

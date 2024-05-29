@@ -5,9 +5,9 @@ const UserController = require('../controller/user-controller')
 
 router.post('/register/username/validator',UserController.userValidator);
 
-router.post('/register/form', UserController.registerUser);
+router.post('/register', UserController.registerUser);
 
-router.post('/login/form', UserController.loginUser);
+router.post('/login', UserController.loginUser);
 
 router.post('/login/token', UserController.sendToken);
 

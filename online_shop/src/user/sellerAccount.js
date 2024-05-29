@@ -1,6 +1,6 @@
 // src/SellerAccount.js
 import React from 'react';
-import './css/sellerAccount.css';
+import '../css/sellerAccount.css';
 
 const tasks = [
   { name: 'Dashboard' },

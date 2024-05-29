@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import './css/addProduct.css'; // Import CSS file for styling
-const {addProduct} = require('./addProductURL');
+import '../css/addProduct.css'; // Import CSS file for styling
+const {Product, } = require('../utilities/classes');
+const Url = require('../utilities/urls');
+const request = require('../utilities/HTTP_REQUEST');
 
 function AddProduct({ onAddProduct, onBack }) {
 
@@ -42,8 +44,17 @@ function AddProduct({ onAddProduct, onBack }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // onAddProduct(formData);
-    addProduct(formData);
+    const { name, price, description, productNumber, image, filter, discount, features } = formData;
+
+    var productFeatures = "";
+    for (let i = 0; i < features.length; i++) {
+      productFeatures += features[i].name + "||" + features[i].value 
+      if(i !== features.length-1)productFeatures+='||';
+    }
+  
+    const product = new Product(name, price, description, productNumber, image, filter, discount, productFeatures);
+  
+    request.Post(Url.addProduct_url, product);
   };
 
   return (

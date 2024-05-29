@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import './css/LoginAndRegister.css'; 
-import { userNameValidator, validatePasswords } from './functions'; 
+import '../css/LoginAndRegister.css'; 
+import { userNameValidator, validatePasswords } from '../utilities/functions'; 
 import Cookies from 'js-cookie';
-const request = require('./HTTP_REQUEST');
-
-const url_register = 'http://localhost:9000/api/user/register/form';
-const url_login = 'http://localhost:9000/api/user/login/form';
-const url_getToken = 'http://localhost:9000/api/user/login/token';
+const request = require('../utilities/HTTP_REQUEST');
+const Url = require('../utilities/urls');
 
 
 const LoginAndRegister = () => {
-  const [notification, setNotification] = useState('');
+  const [notification,] = useState('');
   const [showNotification, setShowNotification] = useState(false);
 
   const handleRegister = async () => {
@@ -33,7 +30,7 @@ const LoginAndRegister = () => {
         role: "customer"
       };
 
-      let result = await request.Post(url_register, userData);
+      let result = await request.Post(Url.register_url, userData);
       if(result === "ok"){
         alert("ثبت نام با موفقیت انجام شد. اکنون می توانید وارد شوید");
         setShowNotification(true);
@@ -54,13 +51,13 @@ const LoginAndRegister = () => {
       role: "customer"
     };
 
-    let result = await request.Post(url_login, userData);
+    let result = await request.Post(Url.login_url, userData);
     if (result !== null) {
      // Successful login logic, e.g., redirect to the dashboard
       
       const cookieValue = Cookies.get('Authorization');
       if(!cookieValue){
-        const token = await request.Post(url_getToken, {userName: userData.userName});
+        const token = await request.Post(Url.tokenLogin_url, {userName: userData.userName});
         Cookies.set('Authorization', token, { expires: 7 });
       }
 

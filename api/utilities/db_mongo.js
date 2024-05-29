@@ -138,6 +138,26 @@ static async deleteDocument(collection_name, document, one_or_many){
         }
     };
     
+
+    static async getDocuments(collection_name){
+        try {
+            await client.connect();
+            var database = client.db(my_db);
+            var findCollection = (await database.listCollections({name: collection_name}).toArray()).length;
+            if(findCollection === 1){
+                let collection = database.collection(collection_name);
+                let documents = await collection.getDocuments();
+                if(documents !== null)return documents;
+                else return -1;
+          }else return "collection does not exist!";
+     
+        } catch (e) {
+            console.error(e);
+        } finally {
+            await client.close();
+        }
+    };
+
 }
    
 

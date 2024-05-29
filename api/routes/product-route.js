@@ -1,14 +1,12 @@
 var express = require('express');
 var router = express.Router();
 router.use(express.json());
-var {addProduct} = require('../controller/product-controller');
-// const PostRequest = require('../middleware/PostRequest');
+var {addProduct, getProducts} = require('../controller/product-controller');
+
 
 
 // router.use(PostRequest);
 router.post('/add', addProduct);
-router.get('/add', (req,res)=>{
-   
-});
+router.get('/getProducts', getProducts);
 
 module.exports = router;
