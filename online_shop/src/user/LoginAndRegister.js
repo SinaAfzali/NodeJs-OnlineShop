@@ -42,8 +42,6 @@ const LoginAndRegister = () => {
   const handleLogin = async () => {
     let usernameInput = document.getElementById('userNameLogin');
     let passwordInput = document.getElementById('passwordLogin');
-    let loginErrorLabel = document.getElementById('loginErrorLabel');
-    loginErrorLabel.innerHTML = '';
 
     let userData = {
       userName: String(usernameInput.value),
@@ -55,17 +53,16 @@ const LoginAndRegister = () => {
     if (result !== null) {
      // Successful login logic, e.g., redirect to the dashboard
       
-      const cookieValue = Cookies.get('Authorization');
+      const cookieValue = Cookies.get('Login');
       if(!cookieValue){
-        const token = await request.Post(Url.tokenLogin_url, {userName: userData.userName});
-        Cookies.set('Authorization', token, { expires: 7 });
+        const token = await request.Post(Url.tokenLogin_url, {userName: userData.userName, role: userData.role});
+        Cookies.set('Login', token, { expires: 7 });
       }
 
     
 
     } else {
-      loginErrorLabel.style.color = 'red';
-      loginErrorLabel.innerHTML = 'نام کاربری یا رمز عبور اشتباه است';
+      alert('نام کاربری یا رمز عبور اشتباه است');
     }
   };
 
@@ -103,7 +100,6 @@ const LoginAndRegister = () => {
       {showNotification && <div className="notification">{notification}</div>}
       <input type="checkbox" id="check" />
       <div className="login & Signup form">
-        <label id='loginErrorLabel'></label>
         <header>صفحه ورود</header>
         <form action="#">
           <input id='userNameLogin' type="text" placeholder="نام کابری خود را وارد کنید" />

@@ -41,8 +41,23 @@ class UserController{
     }
 
     static async sendToken(req,res){
-        const token = jwt.sign({userName : String(req.body.userName)} , SEKRET_KEY);
+        const token = jwt.sign({userName : String(req.body.userName), role: String(req.body.role)} , SEKRET_KEY);
         res.send(JSON.stringify(String(token)));
+    }
+
+    static async tokenValidator(req, res){
+        let token = String(req.body.token);
+        jwt.verify(token, SEKRET_KEY, async (err, decoded) => { 
+            if (err) { 
+               return res.send(JSON.stringify(null))
+            } else { 
+                console.log(decoded);
+                let user = await UserModel.getUser({userName: decoded.userName,role: decoded.role });
+                if(user !== -1){
+                    return res.send({userName: user.userName, role: user.role});
+                }else res.send(JSON.stringify(null));
+            } 
+        }); 
     }
 }
 

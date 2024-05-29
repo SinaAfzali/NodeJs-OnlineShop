@@ -46,7 +46,7 @@ const Cart = () => {
               {cartItems.map(item => (
                 <li key={item.id} className="cart-item">
                   <div className="item-info">
-                    <img src={require(`./images/${item.image}`).default} alt={item.name} className="product-image" />
+                    <img src={require(`../images/${item.image}`).default} alt={item.name} className="product-image" />
                     <div>
                       <span className="item-name">{item.name}</span>
                       <span className="item-price">${item.price}</span>

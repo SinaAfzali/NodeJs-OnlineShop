@@ -1,25 +1,49 @@
 import React, { useState } from 'react';
-import './css/mainPage.css'; 
+import '../css/mainPage.css'; 
 import logoImage from '../images/shopping-cart.png';
 import taskIcon1 from '../images/shopping-cart.png'; // Example icon for Task 1
 import taskIcon2 from '../images/shopping-cart.png'; // Example icon for Task 2
 // import taskIcon3 from '../images/food.png'; // Example icon for Task 3
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
+const request = require('../utilities/HTTP_REQUEST');
+const Url = require('../utilities/urls');
+const Router_path = require('../utilities/routes');
 
+
+
+
+
+
+
+let token = Cookies.get('Login');
+let result = await request.Post(Url.tokenValidator, {token: token});
+let x = false;
 
 
 const MainPage = () => {
+  if(result && !x){
+    x = true;
+  }
+  setTimeout(() => {
+    document.getElementById('roleuser').style = 'font-size:12px;color:red';
+  }, 200);
   const [searchQuery, setSearchQuery] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Assuming the user is not logged in initially
+  const [isLoggedIn, setIsLoggedIn] = useState(x); // Assuming the user is not logged in initially
   const navigate = useNavigate(); // React Router hook for navigation
+  
+  
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
 
   const handleLogin = () => {
-    setIsLoggedIn(!isLoggedIn);
-    navigate('/loginAndRegister'); // Navigate to the login page
+    if(!isLoggedIn){
+    navigate(Router_path.loginAndRegister);
+    }else{
+      navigate(Router_path.sellerAcount);
+    }
   };
 
   const handleLogoClick = () => {
@@ -53,7 +77,10 @@ const MainPage = () => {
         </div>
         <div className="login-options">
           {isLoggedIn ? (
-            <button onClick={handleLogin}>Logout</button>
+            <button id='loginuser' onClick={handleLogin}>
+              <pre>{result.userName}</pre>
+              <p id='roleuser'>{result.role}</p>
+            </button>
           ) : (
             <button onClick={handleLogin}>ورود به حساب / عضویت</button>
           )}

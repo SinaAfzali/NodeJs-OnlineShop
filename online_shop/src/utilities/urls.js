@@ -9,6 +9,8 @@ class Url{
 
     static tokenLogin_url = this.root + "api/user/login/token";
 
+    static tokenValidator = this.root + "api/user/login/token/validator";
+
 }
 
 

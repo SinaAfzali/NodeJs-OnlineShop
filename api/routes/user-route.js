@@ -11,4 +11,6 @@ router.post('/login', UserController.loginUser);
 
 router.post('/login/token', UserController.sendToken);
 
+router.post('/login/token/validator', UserController.tokenValidator);
+
 module.exports = router;
