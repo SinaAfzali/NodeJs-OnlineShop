@@ -9,6 +9,7 @@ const Url = require('../utilities/urls');
 const LoginAndRegister = () => {
   const [notification,] = useState('');
   const [showNotification, setShowNotification] = useState(false);
+  const [userType, setUserType] = useState('customer'); // Default to customer
 
   const handleRegister = async () => {
     let usernameInput = document.getElementById('userNameRegister');
@@ -18,16 +19,15 @@ const LoginAndRegister = () => {
     let passwordValidatorLabel = document.getElementById('passwordValidatorLabel');
     let passwordMatchValidatorLabel = document.getElementById('passwordMatchValidatorLabel');
 
-    let role = "customer";
 
-    let isUsernameValid = await userNameValidator(usernameInput, usernameValidatorLabel, role);
+    let isUsernameValid = await userNameValidator(usernameInput, usernameValidatorLabel);
     let arePasswordsValid = validatePasswords(passwordInput, confirmPasswordInput, passwordValidatorLabel, passwordMatchValidatorLabel);
 
     if (isUsernameValid && arePasswordsValid) {
       let userData = {
         userName: String(usernameInput.value),
         password: String(passwordInput.value),
-        role: "customer"
+        userType: userType // Add user type to the data
       };
 
       let result = await request.Post(Url.register_url, userData);
@@ -42,11 +42,12 @@ const LoginAndRegister = () => {
   const handleLogin = async () => {
     let usernameInput = document.getElementById('userNameLogin');
     let passwordInput = document.getElementById('passwordLogin');
+    let loginErrorLabel = document.getElementById('loginErrorLabel');
+    loginErrorLabel.innerHTML = '';
 
     let userData = {
       userName: String(usernameInput.value),
       password: String(passwordInput.value),
-      role: "customer"
     };
 
     let result = await request.Post(Url.login_url, userData);
@@ -55,7 +56,7 @@ const LoginAndRegister = () => {
       
       const cookieValue = Cookies.get('Login');
       if(!cookieValue){
-        const token = await request.Post(Url.tokenLogin_url, {userName: userData.userName, role: userData.role});
+        const token = await request.Post(Url.tokenLogin_url, {userName: userData.userName});
         Cookies.set('Login', token, { expires: 7 });
       }
 
@@ -69,8 +70,7 @@ const LoginAndRegister = () => {
   const inputChange = () => {
     let usernameInput = document.getElementById('userNameRegister');
     let usernameValidatorLabel = document.getElementById('userNameValidatorLabel');
-    let role = "customer";
-    userNameValidator(usernameInput, usernameValidatorLabel, role);
+    userNameValidator(usernameInput, usernameValidatorLabel);
   };
 
   const passwordChange = () => {
@@ -100,6 +100,7 @@ const LoginAndRegister = () => {
       {showNotification && <div className="notification">{notification}</div>}
       <input type="checkbox" id="check" />
       <div className="login & Signup form">
+        <label id='loginErrorLabel'></label>
         <header>صفحه ورود</header>
         <form action="#">
           <input id='userNameLogin' type="text" placeholder="نام کابری خود را وارد کنید" />
@@ -122,6 +123,10 @@ const LoginAndRegister = () => {
           <label id="passwordValidatorLabel"></label>
           <input onInput={confirmPasswordChange} id="confirmPasswordRegister" type="password" placeholder="رمز عبور خود را تایید کنید" />
           <label id="passwordMatchValidatorLabel"></label>
+          <select id="userTypeRegister" value={userType} onChange={(e) => setUserType(e.target.value)}>
+            <option value="customer">مشتری</option>
+            <option value="seller">فروشنده</option>
+          </select>
           <input type="button" className="button" value="ثبت نام" onClick={handleRegister} />
         </form>
         <div className="signup">

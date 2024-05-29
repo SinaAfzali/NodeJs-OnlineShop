@@ -8,7 +8,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px 40px;
-  background-color: #222;
+  background-color: rgb(34, 34, 34);
   color: white;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
@@ -22,6 +22,10 @@
 
 .logo:hover {
   cursor: pointer; /* Change cursor style to pointer when hovering */
+  background-color: #4CAF50; /* Change background color on hover */
+    color: #000000; /* Change text color on hover */
+    transform: scale(1.1) rotate(3deg); /* Slightly increase the size and rotate */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Add a shadow effect */
 }
 
 .logo img {
@@ -76,9 +80,55 @@
 }
 
 .login-options button:hover {
-  background-color: white;
-  color: #222;
+  background-color: #ffffff; /* Change background color on hover */
+    color: #000000; /* Change text color on hover */
+    transform: scale(1.1) rotate(3deg); /* Slightly increase the size and rotate */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Add a shadow effect */
 }
+
+.top-taskbar {
+  position: fixed; /* Keep it fixed to the top */
+  top: 15.6%;
+  width: calc(100% + 20px); /* Increase the width to account for the left shift */
+  height: 40px; /* Adjust as needed */
+  background: linear-gradient(135deg, rgb(34, 34, 34), rgb(34, 34, 34)); /* Gradient background */
+  padding: 0 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: row; /* Horizontal alignment */
+  align-items: start; /* Vertical centering */
+  justify-content: end; /* Align buttons to the left */
+  overflow-x: auto; /* Allow horizontal scrolling if needed */
+}
+
+.top-taskbar button {
+  display: flex;
+  align-items: center;
+  padding: 1px 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+  margin-right: 30px; /* Added to create spacing between buttons */
+ 
+}
+
+.top-taskbar button:hover {
+  background-color: #ffffff;
+  color: #000000;
+  transform: scale(1.1) rotate(3deg);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.top-taskbar button img {
+  margin-right: 10px;
+  width: 30px;
+  height: auto;
+}
+
+
 
 .bottom-left-button {
   position: absolute;
@@ -113,12 +163,11 @@
 .right-taskbar {
   position: fixed; /* Keep it fixed to the right */
   top: 0;
-  right: 0;
+  right: 40px;
   margin-top: 114px;
   width: 200px; /* Slightly wider for better spacing */
   height: calc(100% - 114px); /* Adjust to avoid overlap with header */
-  background: linear-gradient(135deg, #4c6ef5, #3b5bdb); /* Gradient background */
-  border-left: 2px solid #ccc;
+  background: linear-gradient(135deg, rgb(34, 34, 34), rgb(34, 34, 34)); /* Gradient background */
   padding: 20px;
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
   display: flex;
@@ -142,12 +191,43 @@
 }
 
 .right-taskbar button:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-  transform: scale(1.05); /* Slightly enlarge on hover */
+  background-color: #ffffff; /* Change background color on hover */
+    color: #000000; /* Change text color on hover */
+    transform: scale(1.1) rotate(3deg); /* Slightly increase the size and rotate */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Add a shadow effect */
 }
 
 .right-taskbar button img {
-  margin-right: 10px; /* Spacing between icon and text */
-  width: 30px; /* Adjust icon size */
-  height: auto; /* Maintain aspect ratio */
+  margin-right: 10px;
+  width: 30px; 
+  height: auto; 
 }
+
+
+.toggle-right-taskbar {
+  position: absolute;
+  top: 155px; 
+  width: 40px;  /* Set the width to create a square */
+  height: 40px; /* Set the height to create a square */
+  background-color: #ffffff;
+  color: #fff;
+  border: none;
+  border-radius: 50px; /* Adjust the border-radius to your preference */
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  display: flex;
+  justify-content: center; /* Center the content horizontally */
+  align-items: center; /* Center the content vertically */
+}
+
+.toggle-right-taskbar:hover {
+  background-color: #28c0c5;
+}
+
+.toggle-right-taskbar img {
+  width: 30px; /* Adjust the size of the image */
+  height: auto; /* Maintain the aspect ratio */
+}
+
+
+
