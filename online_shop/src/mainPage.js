@@ -3,8 +3,10 @@ import './css/mainPage.css';
 import logoImage from './images/shopping-cart.png';
 import taskIcon1 from './images/shopping-cart.png'; // Example icon for Task 1
 import taskIcon2 from './images/shopping-cart.png'; // Example icon for Task 2
-import taskIcon3 from './images/food.png'; // Example icon for Task 3
+// import taskIcon3 from './images/food.png'; // Example icon for Task 3
 import { useNavigate } from 'react-router-dom';
+
+
 
 const MainPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -29,7 +31,7 @@ const MainPage = () => {
   };
 
   const handleNewButtonClick = () => {
-    navigate('/sellerAccount'); // Navigate to the new page
+    navigate('/addProduct'); // Navigate to the new page
   };
 
   return (
@@ -90,7 +92,7 @@ const MainPage = () => {
           <img src={taskIcon2} alt="Task 2" /> لوازم التحریر
         </button>
         <button onClick={() => alert('Task 3')}>
-          <img src={taskIcon3} alt="Task 3" /> مواد غذایی
+          <img src={taskIcon1} alt="Task 3" /> مواد غذایی
         </button>
       </div>
     </div>

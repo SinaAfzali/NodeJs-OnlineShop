@@ -21,7 +21,9 @@ const LoginAndRegister = () => {
     let passwordValidatorLabel = document.getElementById('passwordValidatorLabel');
     let passwordMatchValidatorLabel = document.getElementById('passwordMatchValidatorLabel');
 
-    let isUsernameValid = await userNameValidator(usernameInput, usernameValidatorLabel);
+    let role = "customer";
+
+    let isUsernameValid = await userNameValidator(usernameInput, usernameValidatorLabel, role);
     let arePasswordsValid = validatePasswords(passwordInput, confirmPasswordInput, passwordValidatorLabel, passwordMatchValidatorLabel);
 
     if (isUsernameValid && arePasswordsValid) {
@@ -33,7 +35,7 @@ const LoginAndRegister = () => {
 
       let result = await request.Post(url_register, userData);
       if(result === "ok"){
-        setNotification('ثبت نام با موفقیت انجام شد! اکنون می توانید وارد شوید.');
+        alert("ثبت نام با موفقیت انجام شد. اکنون می توانید وارد شوید");
         setShowNotification(true);
         document.getElementById('check').checked = false;
       }
@@ -54,19 +56,15 @@ const LoginAndRegister = () => {
 
     let result = await request.Post(url_login, userData);
     if (result !== null) {
-      // Successful login logic, e.g., redirect to the dashboard
-      // const token = await request.Post(url_getToken, {userName: userData.userName});
-      // Cookies.set('Authorization', token, { expires: 7 });
+     // Successful login logic, e.g., redirect to the dashboard
+      
+      const cookieValue = Cookies.get('Authorization');
+      if(!cookieValue){
+        const token = await request.Post(url_getToken, {userName: userData.userName});
+        Cookies.set('Authorization', token, { expires: 7 });
+      }
 
-    //   const cookieValue = Cookies.get('Authorization');
-    //   console.log(cookieValue);
-    //   jwt.verify(cookieValue, SEKRET_KEY, (err, decoded) => {
-    //     if (err) {
-    //         console.error('خطا در تایید توکن:', err);
-    //     } else {
-    //         console.log(decoded); // اطلاعات اصلی (payload) توکن JWT
-    //     }
-    // });
+    
 
     } else {
       loginErrorLabel.style.color = 'red';
@@ -77,7 +75,8 @@ const LoginAndRegister = () => {
   const inputChange = () => {
     let usernameInput = document.getElementById('userNameRegister');
     let usernameValidatorLabel = document.getElementById('userNameValidatorLabel');
-    userNameValidator(usernameInput, usernameValidatorLabel);
+    let role = "customer";
+    userNameValidator(usernameInput, usernameValidatorLabel, role);
   };
 
   const passwordChange = () => {

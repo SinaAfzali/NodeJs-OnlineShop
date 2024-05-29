@@ -1,6 +1,6 @@
 const request = require('./HTTP_REQUEST');
 
-const userNameValidator = async (userInput, usernameValidator) => {
+const userNameValidator = async (userInput ,  usernameValidator, role) => {
   let apiUrl_validUserName = 'http://localhost:9000/api/user/register/username/validator';
   let pattern = /^[a-zA-Z0-9]+$/;
   let isValid = true;
@@ -15,7 +15,7 @@ const userNameValidator = async (userInput, usernameValidator) => {
     usernameValidator.innerHTML = 'نام کابری باید حداقل 5 کاراکتر داشته باشد';
     isValid = false;
   } else {
-    let result = await request.Post(apiUrl_validUserName, { userName: String(userInput.value) });
+    let result = await request.Post(apiUrl_validUserName, { userName: String(userInput.value), role: String(role) });
     if (result === "ok") {
       usernameValidator.innerHTML = 'نام کاربری در دسترس است';
       usernameValidator.style.color = 'green';

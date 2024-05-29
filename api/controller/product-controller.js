@@ -1,26 +1,42 @@
 const { json } = require('express');
-const productModel = require('../models/product-model');
+const {ProductsModel} = require('../models/product-model');
 
 
 
 class Product {
-    constructor(name, price, description, productNumber, image, filter, discount, features) {
+    constructor(name, price, description, productNumber, image, filter, discount, features, status, seller_id, total_scores, number_scores) {
       this.name = name;
       this.price = price;
       this.description = description;
       this.productNumber = productNumber;
       this.image = image;
       this.filter = filter;
-      this.discount = discount;
       this.features = features;
+      this.status = status;
+      this.seller_id = seller_id;
+      this.total_scores = total_scores;
+      this.number_scores = number_scores;
+      if(discount)this.addDiscount(discount);
     }
+
+    addDiscount(discount){
+      this.discount = discount;
+    }
+
+
+    static status_available = "موجود";
+
+    static status_unavailable = "ناموجود";
+
+    static status_dontdisplay = "عدم نمایش";
   }
 
-async function productController(req,res){
-    var product = new Product(req.body.name,req.body.price,req.body.description, req.body.productNumber, 
-        req.body.image,req.body.filter,req.body.discount,req.body.features);
-    result = await productModel.insertProduct(product);
+async function addProduct(req,res){
+    let obj = req.body;
+    var product = new Product(obj.name,obj.price,obj.description,obj.productNumber, 
+      obj.image,obj.filter,obj.discount,obj.features, Product.status_available, obj.seller_id, 0, 0);
+    result = await ProductsModel.insertProduct(product);
     res.send(JSON.stringify("ok"));
 }
 
-module.exports.productController = productController;
+module.exports = {addProduct, };

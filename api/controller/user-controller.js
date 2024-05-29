@@ -46,4 +46,16 @@ class UserController{
     }
 }
 
+
+
+
+
+// jwt.verify(cookieValue, SEKRET_KEY, (err, decoded) => {
+//     if (err) {
+//         console.error('خطا در تایید توکن:', err);
+//     } else {
+//         console.log(decoded); // اطلاعات اصلی (payload) توکن JWT
+//     }
+// });
+
 module.exports = UserController;

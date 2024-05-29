@@ -24,6 +24,7 @@ root.render(
         <Route path="/cart" element={<Cart />} /> {/* Add the Cart route */}
         <Route path="/creator" element={<Creator />} /> {/* Add the Creator route */}
         <Route path="/sellerAccount" element = {<ProfileView/>} />
+        <Route path="/addProduct" element = {<AddProduct/>} />
       </Routes>
     </Router>
   </React.StrictMode>
