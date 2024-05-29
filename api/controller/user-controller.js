@@ -51,7 +51,6 @@ class UserController{
             if (err) { 
                return res.send(JSON.stringify(null))
             } else { 
-                console.log(decoded);
                 let user = await UserModel.getUser({userName: decoded.userName,role: decoded.role });
                 if(user !== -1){
                     return res.send({userName: user.userName, role: user.role});

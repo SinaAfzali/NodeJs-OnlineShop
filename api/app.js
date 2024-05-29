@@ -30,6 +30,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static('../online_shop/public'));
 
+
 app.use('/api/product/', productRouter);
 app.use('/api/user/', usersRouter);
 
