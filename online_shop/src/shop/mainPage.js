@@ -92,13 +92,13 @@ const MainPage = () => {
       
       <div className="top-taskbar">
         <button onClick={() => alert('Top Task 1')}>
-          <img src={taskIcon1} alt="Top Task 1" /> Top Task 1
+           ارزان ترین
         </button>
         <button onClick={() => alert('Top Task 2')}>
-          <img src={taskIcon2} alt="Top Task 2" /> Top Task 2
+           گران ترین
         </button>
         <button onClick={() => alert('Top Task 3')}>
-          <img src={taskIcon3} alt="Top Task 3" /> Top Task 3
+           جدید ترین
         </button>
       </div>
 
@@ -112,34 +112,32 @@ const MainPage = () => {
         <img src={toggleIcon} alt="Toggle" />
       </button>
 
-      {isRightTaskbarVisible && (
-        <div className="right-taskbar">
-          <button onClick={() => alert('Task 1')}>
-            <img src={taskIcon1} alt="Task 1" /> مد و پوشاک
-          </button>
-          <button onClick={() => alert('Task 1')}>
-            <img src={taskIcon1} alt="Task 1" /> آرایشی بهداشتی
-          </button>
-          <button onClick={() => alert('Task 1')}>
-            <img src={taskIcon1} alt="Task 1" /> ابزار آلات
-          </button>
-          <button onClick={() => alert('Task 1')}>
-            <img src={taskIcon1} alt="Task 1" /> لوازم خانگی
-          </button>
-          <button onClick={() => alert('Task 2')}>
-            <img src={taskIcon2} alt="Task 2" /> لوازم التحریر
-          </button>
-          <button onClick={() => alert('Task 3')}>
-            <img src={taskIcon3} alt="Task 3" /> مواد غذایی
-          </button>
-          <button onClick={() => alert('Task 3')}>
-            <img src={taskIcon3} alt="Task 3" /> کالای دیجیتال
-          </button>
-          <button onClick={() => alert('Task 3')}>
-            <img src={taskIcon3} alt="Task 3" /> ورزش و سفر
-          </button>
-        </div>
-      )}
+      <div className={`right-taskbar ${isRightTaskbarVisible ? 'visible' : ''}`}>
+        <button onClick={() => alert('Task 1')}>
+          <img src={taskIcon1} alt="Task 1" /> مد و پوشاک
+        </button>
+        <button onClick={() => alert('Task 1')}>
+          <img src={taskIcon1} alt="Task 1" /> آرایشی بهداشتی
+        </button>
+        <button onClick={() => alert('Task 1')}>
+          <img src={taskIcon1} alt="Task 1" /> ابزار آلات
+        </button>
+        <button onClick={() => alert('Task 1')}>
+          <img src={taskIcon1} alt="Task 1" /> لوازم خانگی
+        </button>
+        <button onClick={() => alert('Task 2')}>
+          <img src={taskIcon2} alt="Task 2" /> لوازم التحریر
+        </button>
+        <button onClick={() => alert('Task 3')}>
+          <img src={taskIcon3} alt="Task 3" /> مواد غذایی
+        </button>
+        <button onClick={() => alert('Task 3')}>
+          <img src={taskIcon3} alt="Task 3" /> کالای دیجیتال
+        </button>
+        <button onClick={() => alert('Task 3')}>
+          <img src={taskIcon3} alt="Task 3" /> ورزش و سفر
+        </button>
+      </div>
     </div>
   );
 };

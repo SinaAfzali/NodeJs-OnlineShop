@@ -128,8 +128,6 @@
   height: auto;
 }
 
-
-
 .bottom-left-button {
   position: absolute;
   bottom: 20px;
@@ -163,9 +161,9 @@
 .right-taskbar {
   position: fixed; /* Keep it fixed to the right */
   top: 0;
-  right: 40px;
+  right: -250px; /* Initially hidden */
   margin-top: 114px;
-  width: 200px; /* Slightly wider for better spacing */
+  width: 250px; /* Adjusted width */
   height: calc(100% - 114px); /* Adjust to avoid overlap with header */
   background: linear-gradient(135deg, rgb(34, 34, 34), rgb(34, 34, 34)); /* Gradient background */
   padding: 20px;
@@ -174,6 +172,11 @@
   flex-direction: column;
   align-items: center;
   overflow-y: auto;
+  transition: right 0.3s ease-in-out; /* Add transition for smooth slide effect */
+}
+
+.right-taskbar.visible {
+  right: 40px; /* Slide in when visible */
 }
 
 .right-taskbar button {
@@ -203,16 +206,15 @@
   height: auto; 
 }
 
-
 .toggle-right-taskbar {
   position: absolute;
   top: 155px; 
   width: 40px;  /* Set the width to create a square */
   height: 40px; /* Set the height to create a square */
-  background-color: #ffffff;
+  right: -2px;
+  background-color: #ff9100;
   color: #fff;
   border: none;
-  border-radius: 50px; /* Adjust the border-radius to your preference */
   cursor: pointer;
   transition: background-color 0.3s ease-in-out;
   display: flex;
@@ -228,6 +230,3 @@
   width: 30px; /* Adjust the size of the image */
   height: auto; /* Maintain the aspect ratio */
 }
-
-
-
