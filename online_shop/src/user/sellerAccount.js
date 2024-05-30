@@ -1,6 +1,20 @@
 // src/SellerAccount.js
-import React from 'react';
 import '../css/sellerAccount.css';
+import '../css/addProduct.css'; // Import CSS file for styling
+import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
+import Router_path from '../utilities/routes';
+const request = require('../utilities/HTTP_REQUEST');
+const Url = require('../utilities/urls');
+
+
+
+let token =  Cookies.get('Login');
+let result = await request.Post(Url.tokenValidator, {token: token});
+let userNameSeller = '';
+if(result)userNameSeller = result.userName;
+
+
 
 const tasks = [
   { name: 'پروفایل' },
@@ -14,7 +28,7 @@ const Taskbar = ({ tasks }) => {
   return (
     <div className="taskbar">
       {tasks.map((task, index) => (
-        <div key={index} className="taskbar-item">
+        <div id={"task-item"+String(index)} key={index} className="taskbar-item">
           {task.name}
         </div>
       ))}
@@ -22,31 +36,65 @@ const Taskbar = ({ tasks }) => {
   );
 };
 
+
+
+
+
+
+
+
+
+
+
+
+
 const SellerAccount = () => {
+   const navigate = useNavigate();
+   setTimeout(() => {
+    document.getElementById('task-item0').addEventListener('click', ()=>{
+     navigate(Router_path.addProduct);
+    });
+    document.getElementById('task-item1').addEventListener('click', ()=>{
+      navigate(Router_path.addProduct);
+     });
+     document.getElementById('task-item2').addEventListener('click', ()=>{
+      navigate(Router_path.addProduct);
+     });
+     document.getElementById('task-item3').addEventListener('click', ()=>{
+      navigate(Router_path.addProduct);
+     });
+     document.getElementById('task-item4').addEventListener('click', ()=>{
+      Cookies.remove('Login');
+      navigate(Router_path.root);
+     });
+
+    document.getElementById('header-user').innerHTML = userNameSeller + '(فروشنده)';
+  }, 500);
 
   return (
     <div className="seller-account">
       <Taskbar tasks={tasks} />
       <div className="main-content">
         <div className="header">
-          <h1>Seller Account</h1>
+          <h1 id="header-user"></h1>
         </div>
-        <div className="content">
-          <div className="profile-section">
-            <h2>Profile Information</h2>
-            <div className="profile-photo">
-              <img src="/online_shop/public/logo192.png" alt="Profile" />
-            </div>
-            {/* Include additional profile information here */}
-          </div>
-          <div className="settings-section">
-            <h2>Account Settings</h2>
-            {/* Include account settings here */}
-          </div>
+        <div id='content-div' className="content">
+
+
+
+
+
+
         </div>
       </div>
     </div>
   );
 };
+
+
+
+
+
+
 
 export default SellerAccount;

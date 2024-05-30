@@ -22,9 +22,10 @@ class Database{
          
             } catch (e) {
                 console.error(e);
-            } finally {
-                await client.close();
-            }
+            } 
+            // finally {
+            //     await client.close();
+            // }
         }
         else return "no access to this opration!";
     };
@@ -44,9 +45,10 @@ class Database{
          
             } catch (e) {
                 console.error(e);
-            } finally {
-                await client.close();
-            }
+            } 
+            // finally {
+            //     await client.close();
+            // }
         }
         else return "no access to this opration!";
     };
@@ -65,9 +67,10 @@ class Database{
      
         } catch (e) {
             console.error(e);
-        } finally {
-            await client.close();
-        }
+        } 
+        // finally {
+        //     await client.close();
+        // }
     };
 
 
@@ -89,9 +92,10 @@ static async deleteDocument(collection_name, document, one_or_many){
      
         } catch (e) {
             console.error(e);
-        } finally {
-            await client.close();
-        }
+        } 
+        // finally {
+        //     await client.close();
+        // }
     };
 
 
@@ -113,9 +117,10 @@ static async deleteDocument(collection_name, document, one_or_many){
      
         } catch (e) {
             console.error(e);
-        } finally {
-            await client.close();
-        }
+        } 
+        // finally {
+        //     await client.close();
+        // }
     };
 
 
@@ -133,9 +138,10 @@ static async deleteDocument(collection_name, document, one_or_many){
      
         } catch (e) {
             console.error(e);
-        } finally {
-            await client.close();
-        }
+        } 
+        // finally {
+        //     await client.close();
+        // }
     };
     
 
@@ -153,9 +159,10 @@ static async deleteDocument(collection_name, document, one_or_many){
      
         } catch (e) {
             console.error(e);
-        } finally {
-            await client.close();
-        }
+        } 
+        // finally {
+        //     await client.close();
+        // }
     };
 
 }

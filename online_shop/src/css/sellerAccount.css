@@ -1,8 +1,14 @@
 /* src/css/sellerAccount.css */
+@font-face {
+  font-family: 'Yekan';
+  src: url('../../public/Yekan.woff' ) format('woff');
+}
 .seller-account {
     display: flex;
-    background-color: #fff;
+    background-color: aqua;
+    background-attachment: fixed;
     height: 100vh; /* Ensure it covers the full height of the viewport */
+    
     font-family: 'Yekan', serif;
     font-weight: bolder;
   }
@@ -51,7 +57,8 @@
   
   .header h1 {
     font-size: 36px;
-    color: #333;
+    color: white;
+    text-transform: uppercase;
   }
   
   .profile-section,

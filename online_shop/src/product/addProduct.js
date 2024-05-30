@@ -1,10 +1,72 @@
+import Cookies from 'js-cookie';
 import React, { useState } from 'react';
+import '../css/sellerAccount.css';
 import '../css/addProduct.css'; // Import CSS file for styling
-const {Product, } = require('../utilities/classes');
-const Url = require('../utilities/urls');
+import { useNavigate } from 'react-router-dom';
+import Router_path from '../utilities/routes';
 const request = require('../utilities/HTTP_REQUEST');
+const Url = require('../utilities/urls');
+const {Product, } = require('../utilities/classes');
 
-function AddProduct({ onAddProduct, onBack }) {
+
+
+// get userName and role from cookie
+let token = Cookies.get('Login');
+let result = await request.Post(Url.tokenValidator, {token: token});
+let userNameSeller = '';
+if(result)userNameSeller = result.userName;
+
+
+
+
+const tasks = [
+  { name: 'پروفایل' },
+  { name: 'افزودن محصول' },
+  { name: 'نمایش محصولات من' },
+  { name: 'سوابق فروش' },
+  { name: 'خروج' },
+];
+
+const Taskbar = ({ tasks }) => {
+  return (
+    <div className="taskbar">
+      {tasks.map((task, index) => (
+        <div id={"task-item"+String(index)} key={index} className="taskbar-item">
+          {task.name}
+        </div>
+      ))}
+    </div>
+  );
+};
+
+
+
+
+function AddProduct() {
+
+
+  const navigate = useNavigate();
+   setTimeout(() => {
+    document.getElementById('task-item0').addEventListener('click', ()=>{
+     navigate(Router_path.addProduct);
+    });
+    document.getElementById('task-item1').addEventListener('click', ()=>{
+      navigate(Router_path.addProduct);
+     });
+     document.getElementById('task-item2').addEventListener('click', ()=>{
+      navigate(Router_path.addProduct);
+     });
+     document.getElementById('task-item3').addEventListener('click', ()=>{
+      navigate(Router_path.addProduct);
+     });
+     document.getElementById('task-item4').addEventListener('click', ()=>{
+      Cookies.remove('Login');
+      navigate(Router_path.root);
+     });
+
+    document.getElementById('header-user').innerHTML = userNameSeller + '(فروشنده)';
+  }, 500);
+
 
   const [formData, setFormData] = useState({
     name: '',
@@ -16,7 +78,7 @@ function AddProduct({ onAddProduct, onBack }) {
     discount: '', // New field for discount
     features: [] // New state for features
   });
-
+  
   const handleChange = (e, index) => {
     const { name, value } = e.target;
     if (typeof index !== 'undefined') { // Check if index is defined
@@ -33,19 +95,19 @@ function AddProduct({ onAddProduct, onBack }) {
       });
     }
   };
-
-
+  
+  
   const handleAddFeature = () => {
     setFormData({
       ...formData,
       features: [...formData.features, { name: '', value: '' }]
     });
   };
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     const { name, price, description, productNumber, image, filter, discount, features } = formData;
-
+  
     var productFeatures = "";
     for (let i = 0; i < features.length; i++) {
       productFeatures += features[i].name + "||" + features[i].value 
@@ -57,8 +119,28 @@ function AddProduct({ onAddProduct, onBack }) {
     request.Post(Url.addProduct_url, product);
   };
 
+
+
+
+
+
   return (
-    <div className="add-product-container">
+    <div className="seller-account">
+      <Taskbar tasks={tasks} />
+      <div className="main-content">
+        <div className="header">
+          <h1 id="header-user"></h1>
+        </div>
+        <div id='content-div' className="content">
+
+
+
+
+
+
+
+
+        <div className="add-product-container">
       <div className="background"></div>
       <div className="info-message">
         <p>فروشنده عزیز لطفا از نماد مناسب برای فاصله استفاده کنید</p>
@@ -127,12 +209,25 @@ function AddProduct({ onAddProduct, onBack }) {
         {/* Button to add a new feature */}
         <button type="button" onClick={handleAddFeature}>افزودن ویژگی جدید</button>
         <div className="button-group">
-          <button type="button" onClick={onBack} className="red-button">Back</button>
+          <button type="button" className="red-button">Back</button>
           <button type="submit">Confirm</button>
         </div>
       </form>
     </div>
+
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+    </div>
   );
 }
+
 
 export default AddProduct;
