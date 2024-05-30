@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import '../css/LoginAndRegister.css'; 
-import { userNameValidator, validatePasswords } from '../utilities/functions'; 
 import Cookies from 'js-cookie';
 const request = require('../utilities/HTTP_REQUEST');
 const Url = require('../utilities/urls');
+const { userNameValidator, validatePasswords }  =  require('../utilities/functions'); 
+
 
 
 const LoginAndRegister = () => {
@@ -27,7 +28,7 @@ const LoginAndRegister = () => {
       let userData = {
         userName: String(usernameInput.value),
         password: String(passwordInput.value),
-        userType: userType // Add user type to the data
+        role: "customer" // Add user type to the data
       };
 
       let result = await request.Post(Url.register_url, userData);
@@ -48,6 +49,7 @@ const LoginAndRegister = () => {
     let userData = {
       userName: String(usernameInput.value),
       password: String(passwordInput.value),
+      role: "customer",
     };
 
     let result = await request.Post(Url.login_url, userData);
@@ -56,10 +58,9 @@ const LoginAndRegister = () => {
       
       const cookieValue = Cookies.get('Login');
       if(!cookieValue){
-        const token = await request.Post(Url.tokenLogin_url, {userName: userData.userName});
+        const token = await request.Post(Url.tokenLogin_url, {userName: userData.userName, role: userData.role});
         Cookies.set('Login', token, { expires: 7 });
       }
-
     
 
     } else {

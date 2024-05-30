@@ -1,5 +1,6 @@
 const request = require('./HTTP_REQUEST');
 
+
 const userNameValidator = async (userInput ,  usernameValidator, role) => {
   let apiUrl_validUserName = 'http://localhost:9000/api/user/register/username/validator';
   let pattern = /^[a-zA-Z0-9]+$/;
@@ -51,4 +52,11 @@ const validatePasswords = (passwordInput, confirmPasswordInput, passwordValidato
   return isValid;
 };
 
-module.exports = { userNameValidator, validatePasswords };
+
+
+
+
+module.exports = { 
+  userNameValidator, 
+  validatePasswords,
+};

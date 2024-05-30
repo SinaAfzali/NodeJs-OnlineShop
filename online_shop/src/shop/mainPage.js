@@ -11,7 +11,16 @@ const request = require('../utilities/HTTP_REQUEST');
 const Url = require('../utilities/urls');
 const Router_path = require('../utilities/routes');
 
+
+
+
+let token;
+let result;
+
+
 const MainPage = () => {
+  
+
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
@@ -19,16 +28,15 @@ const MainPage = () => {
 
   useEffect(() => {
     const validateToken = async () => {
-      let token = Cookies.get('Login');
-      let result = await request.Post(Url.tokenValidator, { token: token });
+      token = Cookies.get('Login');
+      result = await request.Post(Url.tokenValidator, { token: token });
       if (result) {
         setIsLoggedIn(true);
-      }
+      }else setIsLoggedIn(false);
     };
 
-    validateToken();
-
-    setTimeout(() => {
+    setTimeout(async () => {
+      await validateToken();
       const roleUserElement = document.getElementById('roleuser');
       if (roleUserElement) {
         roleUserElement.style = 'font-size:12px;color:red';
@@ -83,7 +91,10 @@ const MainPage = () => {
         </div>
         <div className="login-options">
           {isLoggedIn ? (
-            <button onClick={handleLogin}>Logout</button>
+            <button id='loginuser' onClick={handleLogin}>
+            <pre>{result.userName}</pre>
+            <p id='roleuser'>{result.role}</p>
+          </button>
           ) : (
             <button onClick={handleLogin}>ورود به حساب / عضویت</button>
           )}
