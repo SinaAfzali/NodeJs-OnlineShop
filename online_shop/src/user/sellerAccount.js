@@ -39,15 +39,6 @@ const Taskbar = ({ tasks }) => {
 
 
 
-
-
-
-
-
-
-
-
-
 const SellerAccount = () => {
    const navigate = useNavigate();
    setTimeout(() => {
@@ -76,7 +67,6 @@ const SellerAccount = () => {
       <Taskbar tasks={tasks} />
       <div className="main-content">
         <div className="header">
-          <h1 id="header-user"></h1>
         </div>
         <div id='content-div' className="content">
 

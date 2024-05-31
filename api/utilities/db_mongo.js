@@ -171,15 +171,4 @@ static async deleteDocument(collection_name, document, one_or_many){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 module.exports = Database;
