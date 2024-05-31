@@ -237,6 +237,8 @@
   background-color: #f9f9f9;
   border-radius: 10px;
   margin: 20px;
+  height: 60vh; /* Adjust the height as needed */
+  overflow-y: auto; /* Enable vertical scrolling */
 }
 
 .product-panel h2 {
@@ -287,3 +289,4 @@
   font-size: 0.9em;
   color: #777;
 }
+

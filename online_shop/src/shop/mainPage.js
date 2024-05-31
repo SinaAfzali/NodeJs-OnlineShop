@@ -101,7 +101,6 @@ const MainPage = () => {
       description: 'دوربین عکاسی حرفه‌ای با کیفیت تصویر بالا.'
     }
   ];
-  
 
   return (
     <div className="main-page">
