@@ -3,16 +3,13 @@ import '../css/sellerAccount.css';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import Router_path from '../utilities/routes';
+import React, { useEffect , } from 'react';
 const request = require('../utilities/HTTP_REQUEST');
 const Url = require('../utilities/urls');
 
 
 
-let token =  Cookies.get('Login');
-let result = await request.Post(Url.tokenValidator, {token: token});
-let userNameSeller = '';
-if(result)userNameSeller = result.userName;
-
+let token, result;
 
 
 const tasks = [
@@ -39,6 +36,28 @@ const Taskbar = ({ tasks }) => {
 
 
 const SellerAccount = () => {
+
+  useEffect(() => {
+    const validateToken = async () => {
+      token = Cookies.get('Login');
+      result = await request.Post(Url.tokenValidator, { token: token });
+    };
+    setTimeout(async () => {
+      await validateToken();
+      document.getElementById('header-user').innerHTML = ' (فروشنده) ' + result.userName;
+    }, 200);
+  }, []);
+
+
+
+
+
+
+
+
+
+
+
    const navigate = useNavigate();
    setTimeout(() => {
     document.getElementById('task-item0').addEventListener('click', ()=>{
@@ -58,7 +77,7 @@ const SellerAccount = () => {
       navigate(Router_path.root);
      });
 
-    document.getElementById('header-user').innerHTML = userNameSeller + '(فروشنده)';
+    document.getElementById('header-user').innerHTML =  '(فروشنده)' + result.userName;
   }, 500);
 
   return (

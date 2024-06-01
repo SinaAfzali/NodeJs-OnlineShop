@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../css/sellerAccount.css';
 import { useNavigate } from 'react-router-dom';
 import Router_path from '../utilities/routes';
@@ -10,11 +10,7 @@ const {Product, } = require('../utilities/classes');
 
 
 // get userName and role from cookie
-let token = Cookies.get('Login');
-let result = await request.Post(Url.tokenValidator, {token: token});
-let userNameSeller = '';
-if(result)userNameSeller = result.userName;
-
+let token, result;
 
 
 
@@ -44,6 +40,21 @@ const Taskbar = ({ tasks }) => {
 function AddProduct() {
 
 
+
+
+  useEffect(() => {
+    const validateToken = async () => {
+      token = Cookies.get('Login');
+      result = await request.Post(Url.tokenValidator, { token: token });
+    };
+    setTimeout(async () => {
+      await validateToken();
+      document.getElementById('header-user').innerHTML = ' (فروشنده) ' + result.userName;
+    }, 200);
+  }, []);
+
+
+
   const navigate = useNavigate();
    setTimeout(() => {
     document.getElementById('task-item0').addEventListener('click', ()=>{
@@ -63,7 +74,7 @@ function AddProduct() {
       navigate(Router_path.root);
      });
 
-    document.getElementById('header-user').innerHTML = userNameSeller + '(فروشنده)';
+    document.getElementById('header-user').innerHTML = result.userName + '(فروشنده)';
   }, 500);
 
 

@@ -1,6 +1,7 @@
 const { json } = require('express');
 const {ProductsModel} = require('../models/product-model');
-const {Product, Date} = require('../utilities/classes');
+const {Product} = require('../utilities/classes');
+const {newest_products, cheapest_products, moreExpensive_products, filterByCategory_products} = require('../utilities/functions');
 
 
 
@@ -18,10 +19,22 @@ async function addProduct(req,res){
     
 }
 
-async function getNewestProduct(req,res){
+async function getFilteredProducts(req,res){
   let products = await ProductsModel.getProducts();
-  
+  if(req.body.filter1 !== 'همه محصولات'){
+    products = filterByCategory_products(products, req.body.filter1);
+  }
+
+  if(req.body.filter2 === 'ارزان ترین'){
+    products = cheapest_products(products);
+  }else if(req.body.filter2 === 'گران ترین'){
+    products = moreExpensive_products(products);
+  }else if (req.body.filter2 === 'جدید ترین'){
+    products = newest_products(products);
+  }
+
+
   res.send(products);
 }
 
-module.exports = {addProduct, getNewestProduct};
+module.exports = {addProduct, getFilteredProducts};
