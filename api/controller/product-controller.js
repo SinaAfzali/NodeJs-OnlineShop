@@ -1,6 +1,7 @@
 const { json } = require('express');
 const {ProductsModel} = require('../models/product-model');
-const {Product} = require('../utilities/classes')
+const {Product, Date} = require('../utilities/classes');
+
 
 
 
@@ -17,9 +18,10 @@ async function addProduct(req,res){
     
 }
 
-async function getProducts(req,res){
+async function getNewestProduct(req,res){
   let products = await ProductsModel.getProducts();
+  
   res.send(products);
 }
 
-module.exports = {addProduct, getProducts};
+module.exports = {addProduct, getNewestProduct};

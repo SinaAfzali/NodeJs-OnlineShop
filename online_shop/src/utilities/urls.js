@@ -11,6 +11,10 @@ class Url{
 
     static tokenValidator = this.root + "api/user/login/token/validator";
 
+    static getNewestProducts_url = this.root + "api/product/get/newest";
+
+    static addProduct_url = this.root + "api/product/add"
+
 }
 
 

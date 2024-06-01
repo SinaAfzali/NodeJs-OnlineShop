@@ -1,7 +1,6 @@
 import Cookies from 'js-cookie';
 import React, { useState } from 'react';
 import '../css/sellerAccount.css';
-import '../css/addProduct.css'; // Import CSS file for styling
 import { useNavigate } from 'react-router-dom';
 import Router_path from '../utilities/routes';
 const request = require('../utilities/HTTP_REQUEST');
@@ -104,8 +103,8 @@ function AddProduct() {
     });
   };
   
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
+    // e.preventDefault();
     const { name, price, description, productNumber, image, filter, discount, features } = formData;
   
     var productFeatures = "";
@@ -128,7 +127,7 @@ function AddProduct() {
     <div className="seller-account">
       <Taskbar tasks={tasks} />
       <div className="main-content">
-        <div className="header">
+        <div className="header headerSeller">
           <h1 id="header-user"></h1>
         </div>
         <div id='content-div' className="content">
@@ -146,7 +145,7 @@ function AddProduct() {
         <p>فروشنده عزیز لطفا از نماد مناسب برای فاصله استفاده کنید</p>
       </div>
       <h2>افزودن محصول</h2>
-      <form id="register_form" onSubmit={handleSubmit}>
+      <form id="register_form">
         <div className="form-group">
           <label>نام<span className="required">*</span>:</label>
           <input type="text" name="name" value={formData.name} onChange={handleChange} required />
@@ -209,8 +208,7 @@ function AddProduct() {
         {/* Button to add a new feature */}
         <button type="button" onClick={handleAddFeature}>افزودن ویژگی جدید</button>
         <div className="button-group">
-          <button type="button" className="red-button">Back</button>
-          <button type="submit">Confirm</button>
+          <button type="button" onClick={handleSubmit} className='submit-btn-add-product'>ثبت محصول</button>
         </div>
       </form>
     </div>

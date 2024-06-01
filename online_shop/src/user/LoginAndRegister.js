@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState,  } from 'react';
 import '../css/LoginAndRegister.css'; 
 import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
+import Router_path from '../utilities/routes';
 const request = require('../utilities/HTTP_REQUEST');
 const Url = require('../utilities/urls');
 const { userNameValidator, validatePasswords }  =  require('../utilities/functions'); 
@@ -40,6 +42,7 @@ const LoginAndRegister = () => {
     }
   };
 
+  const navigate = useNavigate();
   const handleLogin = async () => {
     let usernameInput = document.getElementById('userNameLogin');
     let passwordInput = document.getElementById('passwordLogin');
@@ -52,6 +55,8 @@ const LoginAndRegister = () => {
       role: "customer",
     };
 
+   
+
     let result = await request.Post(Url.login_url, userData);
     if (result !== null) {
      // Successful login logic, e.g., redirect to the dashboard
@@ -61,7 +66,8 @@ const LoginAndRegister = () => {
         const token = await request.Post(Url.tokenLogin_url, {userName: userData.userName, role: userData.role});
         Cookies.set('Login', token, { expires: 7 });
       }
-    
+
+      navigate(Router_path.sellerAcount);
 
     } else {
       alert('نام کاربری یا رمز عبور اشتباه است');
@@ -85,16 +91,6 @@ const LoginAndRegister = () => {
   const confirmPasswordChange = () => {
     passwordChange();
   };
-
-  useEffect(() => {
-    if (showNotification) {
-      const timer = setTimeout(() => {
-        setShowNotification(false);
-      }, 5000); // Hide notification after 5 seconds
-
-      return () => clearTimeout(timer); // Clear timeout if component unmounts
-    }
-  }, [showNotification]);
 
   return (
     <div className="container">

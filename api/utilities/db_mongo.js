@@ -152,7 +152,7 @@ static async deleteDocument(collection_name, document, one_or_many){
             var findCollection = (await database.listCollections({name: collection_name}).toArray()).length;
             if(findCollection === 1){
                 let collection = database.collection(collection_name);
-                let documents = await collection.getDocuments();
+                let documents = await collection.find({}).toArray(); 
                 if(documents !== null)return documents;
                 else return -1;
           }else return "collection does not exist!";

@@ -15,7 +15,6 @@ class Date{
 
     static date_splite(date_s){
         let arr = date_s.split(" "); 
-        console.log(arr);
         let [year, month, day] = arr[0].split("/"); 
         let [hour, minute, second] = arr[1].split(":");
         year = Number(year);
