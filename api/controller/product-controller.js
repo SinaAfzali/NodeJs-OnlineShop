@@ -33,8 +33,12 @@ async function getFilteredProducts(req,res){
     products = newest_products(products);
   }
 
-
   res.send(products);
 }
 
-module.exports = {addProduct, getFilteredProducts};
+async function getOneProduct(){
+  let product = await ProductsModel.getProduct(String(req.body._id));
+  return product;
+}
+
+module.exports = {addProduct, getFilteredProducts, getOneProduct};

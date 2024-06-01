@@ -13,6 +13,7 @@ let token, result;
 
 
 const tasks = [
+  { name: 'صفحه اصلی' },
   { name: 'پروفایل' },
   { name: 'افزودن محصول' },
   { name: 'نمایش محصولات من' },
@@ -45,7 +46,7 @@ const SellerAccount = () => {
     setTimeout(async () => {
       await validateToken();
       document.getElementById('header-user').innerHTML = ' (فروشنده) ' + result.userName;
-    }, 200);
+    }, 100);
   }, []);
 
 
@@ -61,18 +62,21 @@ const SellerAccount = () => {
    const navigate = useNavigate();
    setTimeout(() => {
     document.getElementById('task-item0').addEventListener('click', ()=>{
+      navigate(Router_path.root);
+     });
+    document.getElementById('task-item1').addEventListener('click', ()=>{
      navigate(Router_path.addProduct);
     });
-    document.getElementById('task-item1').addEventListener('click', ()=>{
-      navigate(Router_path.addProduct);
-     });
-     document.getElementById('task-item2').addEventListener('click', ()=>{
+    document.getElementById('task-item2').addEventListener('click', ()=>{
       navigate(Router_path.addProduct);
      });
      document.getElementById('task-item3').addEventListener('click', ()=>{
       navigate(Router_path.addProduct);
      });
      document.getElementById('task-item4').addEventListener('click', ()=>{
+      navigate(Router_path.addProduct);
+     });
+     document.getElementById('task-item5').addEventListener('click', ()=>{
       Cookies.remove('Login');
       navigate(Router_path.root);
      });

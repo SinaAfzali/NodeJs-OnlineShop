@@ -2,13 +2,17 @@ const Database = require('../utilities/db_mongo');
 const {Date} = require('../utilities/classes')
 
 
+const colletion_name = "products";
+
 class ProductsModel{
     static async getProducts(){
-        let products = await Database.getDocuments("products");
+        let products = await Database.getDocuments(colletion_name);
         return products;
     }
 
-    static getProduct(id){
+    static async getProduct(_id){
+        let product = await Database.getDocument(colletion_name, {_id : _id});
+        return product;
     }
 
     static updateProduct(id, newProduct, set_or_unset){
@@ -16,7 +20,7 @@ class ProductsModel{
     }
 
     static async insertProduct(product){
-        let result = await Database.insertDocument("products", Object.assign({}, product, {date_add: Date.now()}));
+        let result = await Database.insertDocument(colletion_name, Object.assign({}, product, {date_add: Date.now()}));
         return result;
     }
 
