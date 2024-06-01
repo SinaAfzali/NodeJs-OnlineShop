@@ -1,7 +1,7 @@
 // src/SellerAccount.js
 import '../css/sellerAccount.css';
+import '../css/addProduct.css'; // Import CSS file for styling
 import Cookies from 'js-cookie';
-import React, { useEffect , } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Router_path from '../utilities/routes';
 const request = require('../utilities/HTTP_REQUEST');
@@ -9,7 +9,11 @@ const Url = require('../utilities/urls');
 
 
 
-let token,result;
+let token =  Cookies.get('Login');
+let result = await request.Post(Url.tokenValidator, {token: token});
+let userNameSeller = '';
+if(result)userNameSeller = result.userName;
+
 
 
 const tasks = [
@@ -35,25 +39,7 @@ const Taskbar = ({ tasks }) => {
 
 
 
-
 const SellerAccount = () => {
-
-
-
-
-  useEffect(() => {
-    const validateToken = async () => {
-      token = Cookies.get('Login');
-      result = await request.Post(Url.tokenValidator, { token: token });
-    };
-    setTimeout(async () => {
-      await validateToken();
-      document.getElementById('header-user').innerHTML = ' (فروشنده) ' + result.userName;
-    }, 200);
-  }, []);
-
-
-
    const navigate = useNavigate();
    setTimeout(() => {
     document.getElementById('task-item0').addEventListener('click', ()=>{
@@ -72,14 +58,15 @@ const SellerAccount = () => {
       Cookies.remove('Login');
       navigate(Router_path.root);
      });
+
+    document.getElementById('header-user').innerHTML = userNameSeller + '(فروشنده)';
   }, 500);
 
   return (
     <div className="seller-account">
       <Taskbar tasks={tasks} />
       <div className="main-content">
-        <div className="header headerSeller">
-          <h1 id="header-user"></h1>
+        <div className="header">
         </div>
         <div id='content-div' className="content">
 
