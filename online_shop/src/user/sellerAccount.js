@@ -1,6 +1,5 @@
 // src/SellerAccount.js
 import '../css/sellerAccount.css';
-import '../css/addProduct.css'; // Import CSS file for styling
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import Router_path from '../utilities/routes';
@@ -66,7 +65,8 @@ const SellerAccount = () => {
     <div className="seller-account">
       <Taskbar tasks={tasks} />
       <div className="main-content">
-        <div className="header">
+        <div className="header headerSeller">
+        <h1 id="header-user"></h1>
         </div>
         <div id='content-div' className="content">
 

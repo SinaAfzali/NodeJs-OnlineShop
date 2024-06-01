@@ -24,4 +24,3 @@ const cheapest_products = (products)=>{
     return products;
 }
 
-const
