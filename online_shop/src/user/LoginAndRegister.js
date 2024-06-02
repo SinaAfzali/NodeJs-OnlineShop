@@ -12,7 +12,20 @@ const { userNameValidator, validatePasswords }  =  require('../utilities/functio
 const LoginAndRegister = () => {
   const [notification,] = useState('');
   const [showNotification, setShowNotification] = useState(false);
-  const [userType, setUserType] = useState('customer'); // Default to customer
+
+  let userTypeLogin = 'customer';
+  let userTypeRegister = 'customer';
+
+  const setType = (val, reg_or_login)=>{
+    if(reg_or_login === 'register'){
+      userTypeRegister = val;
+      document.getElementById('userTypeRegister').value = val;
+      inputChange();
+    }else if(reg_or_login === 'login'){
+      userTypeLogin = val;
+      document.getElementById('userTypeLogin').value = val;
+    }
+  }
 
   const handleRegister = async () => {
     let usernameInput = document.getElementById('userNameRegister');
@@ -30,7 +43,7 @@ const LoginAndRegister = () => {
       let userData = {
         userName: String(usernameInput.value),
         password: String(passwordInput.value),
-        role: "customer" // Add user type to the data
+        role: String(userTypeRegister),// Add user type to the data
       };
 
       let result = await request.Post(Url.register_url, userData);
@@ -43,6 +56,8 @@ const LoginAndRegister = () => {
   };
 
   const navigate = useNavigate();
+
+
   const handleLogin = async () => {
     let usernameInput = document.getElementById('userNameLogin');
     let passwordInput = document.getElementById('passwordLogin');
@@ -52,8 +67,10 @@ const LoginAndRegister = () => {
     let userData = {
       userName: String(usernameInput.value),
       password: String(passwordInput.value),
-      role: "customer",
+      role: String(userTypeLogin),
     };
+
+
 
    
 
@@ -77,7 +94,7 @@ const LoginAndRegister = () => {
   const inputChange = () => {
     let usernameInput = document.getElementById('userNameRegister');
     let usernameValidatorLabel = document.getElementById('userNameValidatorLabel');
-    userNameValidator(usernameInput, usernameValidatorLabel);
+    userNameValidator(usernameInput, usernameValidatorLabel, userTypeRegister);
   };
 
   const passwordChange = () => {
@@ -102,6 +119,10 @@ const LoginAndRegister = () => {
         <form action="#">
           <input id='userNameLogin' type="text" placeholder="نام کابری خود را وارد کنید" />
           <input id='passwordLogin' type="password" placeholder="رمز عبور خود را وارد کنید" />
+          <select id="userTypeLogin" onChange={(e) => setType(e.target.value, 'login')}>
+            <option value="customer">مشتری</option>
+            <option value="seller">فروشنده</option>
+          </select>
           <a href='#'>رمز عبور خود را فراموش کرده اید؟</a>
           <input type="button" className="button" value="ورود" onClick={handleLogin} />
         </form>
@@ -120,7 +141,7 @@ const LoginAndRegister = () => {
           <label id="passwordValidatorLabel"></label>
           <input onInput={confirmPasswordChange} id="confirmPasswordRegister" type="password" placeholder="رمز عبور خود را تایید کنید" />
           <label id="passwordMatchValidatorLabel"></label>
-          <select id="userTypeRegister" value={userType} onChange={(e) => setUserType(e.target.value)}>
+          <select id="userTypeRegister" onChange={(e) => setType(e.target.value, 'register')}>
             <option value="customer">مشتری</option>
             <option value="seller">فروشنده</option>
           </select>

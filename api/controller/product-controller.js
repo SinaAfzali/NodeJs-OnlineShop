@@ -40,4 +40,25 @@ async function getOneProduct(){
   return product;
 }
 
-module.exports = {addProduct, getFilteredProducts, getOneProduct};
+
+async function getCartProducts(){
+  let cart_products = req.body.split('||');
+  let total_price = 0;
+  let products = await ProductsModel.getProducts();
+  let result = [];
+  let k = 0;
+  for(let i=0;i<cart_products.length;i+=2){
+    for(let j=0;j<products.length;j++){
+       if(cart_products[i] === products[j]._id){
+        result[k] = products[j];
+        k++;
+        total_price += Number(cart_products[i+1]) * Number(products[j].price);
+        break;
+      }
+    }
+  }
+  result[k] = {total_price: total_price};
+  res.send(JSON.stringify(result));
+}
+
+module.exports = {addProduct, getFilteredProducts, getOneProduct, getCartProducts};
