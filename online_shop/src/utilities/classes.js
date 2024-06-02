@@ -13,7 +13,7 @@ class Product {
 
 
   
-  class Transaction{
+class Transaction{
     constructor(customer_id, products_list, numberProduct_list , sellers_list){
         this.customer_id = customer_id;
         this.products_list = products_list;
@@ -37,8 +37,21 @@ class Product {
         return list_string;
     }
 
+}
+
+
+class Discount{
+    constructor(seller_creator, code, category, percent, time, number_uses){
+        this.seller_creator = seller_creator;
+        this.code = code;
+        this.category = category;
+        this.percent = percent;
+        this.time = time;
+        this.number_uses = number_uses;
+    }
   }
+
 
   
 
-module.exports = {Product, Transaction};
+module.exports = {Product, Transaction, Discount};

@@ -24,7 +24,7 @@ class UserController{
           }else {
             const hashPassword = await bcrypt.hash(String(req.body.password), 10);
             let user = await UserModel.createUser({userName : String(req.body.userName),password : hashPassword, role: String(req.body.role)});
-            if(user !== null){
+            if(user !== -1){
                 return res.send(JSON.stringify("ok"));
             }
             else return res.send(JSON.stringify(null));

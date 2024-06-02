@@ -66,7 +66,7 @@ class Database{
             }else return "collection does not exist!";
      
         } catch (e) {
-            console.error(e);
+            return -1;
         } 
         // finally {
         //     await client.close();

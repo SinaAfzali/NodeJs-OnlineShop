@@ -62,7 +62,6 @@ class Date{
         return jalaliDate;
     }
 
-
 }
 
 
@@ -127,11 +126,23 @@ class Product {
         return list_string;
     }
 
-  }
+}
+
+class Discount{
+    constructor(seller_creator, code, category, percent, time, number_uses){
+        this.seller_creator = seller_creator;
+        this.code = code;
+        this.category = category;
+        this.percent = percent;
+        this.time = time;
+        this.number_uses = number_uses;
+    }
+}
 
   
 module.exports = {
     Date,
     Product,
-    Transaction
+    Transaction,
+    Discount,
 };

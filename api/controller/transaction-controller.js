@@ -6,7 +6,10 @@ const {Transaction} = require('../utilities/classes');
 
 async function addTransaction(req, res){
     let transaction = await TransactionModel.insertTransaction(req.body);
-    res.send(JSON.stringify(transaction));
+    if(transaction !== -1){
+        return res.send(JSON.stringify("ok"));
+    }
+   res.send(JSON.stringify(null));
 }
 
 async function getTransactions(req, res){

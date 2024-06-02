@@ -10,12 +10,11 @@ async function addProduct(req,res){
     let obj = req.body;
     var product = new Product(obj.name,obj.price,obj.description,obj.productNumber, 
       obj.image,obj.filter,obj.discount,obj.features, Product.status_available, obj.seller_id, 0, 0);
-    result = await ProductsModel.insertProduct(product);
-    if(result.ok){
-      res.send(JSON.stringify("ok"));
-    }else{
-      console.log("product does not add");
+    let result = await ProductsModel.insertProduct(product);
+    if(result !== -1){
+      return res.send(JSON.stringify("ok"));
     }
+    res.send(JSON.stringify(null));
     
 }
 
