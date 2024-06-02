@@ -145,6 +145,9 @@ const MainPage = () => {
       </div>
       
       <div className="top-taskbar">
+      <button onClick={() => alert('Top Task 1')}>
+          همه محصولات
+        </button>
         <button onClick={() => alert('Top Task 1')}>
           ارزان ترین
         </button>
@@ -181,6 +184,9 @@ const MainPage = () => {
       </button>
 
       <div className={`right-taskbar ${isRightTaskbarVisible ? 'visible' : ''}`}>
+        <button onClick={() => alert('Task 1')}>
+          همه محصولات
+        </button>
         <button onClick={() => alert('Task 1')}>
           <img src={foodfilter} alt="Task 1" /> مواد غذایی
         </button>
