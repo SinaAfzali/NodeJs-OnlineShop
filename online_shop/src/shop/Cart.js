@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/Cart.css';
+const {money_standard} = require('../utilities/functions');
 
 const Cart = () => {
   // Sample cart data for demonstration
   const [cartItems, setCartItems] = useState([
-    { id: 1, name: 'Product 1', price: 10, quantity: 2 },
-    { id: 2, name: 'Product 2', price: 20, quantity: 1 },
-    { id: 3, name: 'Product 3', price: 15, quantity: 3 }
+    { id: 1, name: 'Product 1', price: 100000, quantity: 2 },
+    { id: 2, name: 'Product 2', price: 200000, quantity: 1 },
+    { id: 3, name: 'Product 3', price: 150000, quantity: 3 }
   ]);
 
   const navigate = useNavigate();
@@ -55,16 +56,16 @@ const Cart = () => {
                     <span>Quantity: {item.quantity}</span>
                   </div>
                   <div>
-                    <button onClick={() => incrementQuantity(item.id)}>+</button>
-                    <button onClick={() => decrementQuantity(item.id)}>-</button>
-                    <button onClick={() => removeFromCart(item.id)}>Remove</button>
+                    <button className='quantity-btn' onClick={() => incrementQuantity(item.id)}>+</button>
+                    <button className='quantity-btn' onClick={() => decrementQuantity(item.id)}>-</button>
+                    <button className='remove-btn' onClick={() => removeFromCart(item.id)}>حذف محصول</button>
                   </div>
                 </li>
               ))}
             </ul>
             <div className="total-section">
-              <span className="total-label">Total:</span>
-              <span className="total-price">${calculateTotal().toFixed(2)}</span>
+              <span className="total-label">قیمت کل : </span>
+              <span className="total-price">تومان {money_standard(calculateTotal())}</span>
             </div>
           </div>
         )}

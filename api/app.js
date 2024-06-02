@@ -8,7 +8,6 @@ var cors = require("cors");
 var productRouter = require('./routes/product-route')
 var userRouter = require('./routes/user-route');
 var transactionRouter = require('./routes/user-route');
-var discountRouter = require('./routes/discount-route');
 require("dotenv").config();
 var app = express();
 app.use(express.json());
@@ -44,7 +43,6 @@ app.use(express.static('../online_shop/public'));
 app.use('/api/product/', productRouter);
 app.use('/api/user/', userRouter);
 app.use('/api/transaction/', transactionRouter);
-app.use('/api/discount/', discountRouter)
 
 
 

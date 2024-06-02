@@ -9,5 +9,6 @@ var {addProduct, getFilteredProducts, getOneProduct} = require('../controller/pr
 router.post('/add', addProduct);
 router.post('/get/filter', getFilteredProducts);
 router.post('/get/one', getOneProduct);
+router.post('/cart/get', )
 
 module.exports = router;

@@ -54,9 +54,39 @@ const validatePasswords = (passwordInput, confirmPasswordInput, passwordValidato
 
 
 
+const money_standard = (money)=>{
+  let m = String(money);
+  let result = "";
+  let len = m.length;
+  let x = 0;
+  if(len <= 3)return m;
+  if(len % 3 !== 0){
+    if(len % 3 === 1){
+      result += String(m[x]);
+      x++;len--;
+    }else{
+      result += String(m[x]);
+      x++;len--;
+      result += String(m[x]);
+      x++;len--;
+    }
+    result += "/";
+  }
+
+  while(len > 3){
+    result += m[x] + m[x+1] + m[x+2] + "/";
+    x+=3;
+    len-=3;
+  }
+  result += m[x] + m[x+1] + m[x+2];
+  return result;
+
+}
+
 
 
 module.exports = { 
   userNameValidator, 
   validatePasswords,
+  money_standard,
 };
