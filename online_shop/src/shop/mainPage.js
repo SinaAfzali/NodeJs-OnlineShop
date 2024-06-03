@@ -192,19 +192,25 @@ const MainPage = () => {
           <img src={toolsfilter} alt="Task 3" /> ابزار آلات
         </button>
         <button onClick={() => alert('Task 4')}>
-          <img src={clothesfilter} alt="Task 4" /> مد و پوشاک
+          <img src={clothesfilter} alt="Task 4" /> آرایشی بهداشتی
         </button>
         <button onClick={() => alert('Task 5')}>
-          <img src={clothesfilter} alt="Task 5" /> مد و پوشاک
+          <img src={clothesfilter} alt="Task 5" /> اسباب بازی
         </button>
         <button onClick={() => alert('Task 6')}>
-          <img src={clothesfilter} alt="Task 6" /> مد و پوشاک
+          <img src={clothesfilter} alt="Task 6" /> کالا های سوپرمارکتی
         </button>
         <button onClick={() => alert('Task 7')}>
-          <img src={clothesfilter} alt="Task 7" /> مد و پوشاک
+          <img src={clothesfilter} alt="Task 7" /> لوازم تحریر
         </button>
         <button onClick={() => alert('Task 8')}>
-          <img src={clothesfilter} alt="Task 8" /> مد و پوشاک
+          <img src={clothesfilter} alt="Task 8" /> موبایل
+        </button>
+        <button onClick={() => alert('Task 9')}>
+          <img src={clothesfilter} alt="Task 9" /> ورزش و سفر
+        </button>
+        <button onClick={() => alert('Task 10')}>
+          <img src={clothesfilter} alt="Task 10" /> تجهیزات پزشکی و سلامت
         </button>
       </div>
     </div>
