@@ -5,8 +5,8 @@ import toggleIcon from '../images/toggle-icon.png';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import foodfilter from '../images/food.png';
-import clothesfilter from '../images/clothes.png'
-import toolsfilter from '../images/tools.png'
+import clothesfilter from '../images/clothes.png';
+import toolsfilter from '../images/tools.png';
 const request = require('../utilities/HTTP_REQUEST');
 const Url = require('../utilities/urls');
 const Router_path = require('../utilities/routes');
@@ -62,58 +62,51 @@ const MainPage = () => {
     setIsRightTaskbarVisible(!isRightTaskbarVisible);
   };
 
-
-
-
-
-
   const sampleProducts = [
     {
       image: require('../images/sample-product.png'), // Use imported image directly
       name: 'پیراهن مردانه شیک',
       price: '$25.99',
+      rating: 4.5, // Add rating
     },
     {
       image: require('../images/sample-product.png'), // Use imported image directly
       name: 'کفش ورزشی زنانه',
       price: '$39.99',
+      rating: 4.0, // Add rating
     },
     {
       image: require('../images/sample-product.png'), // Use imported image directly
       name: 'پیراهن مردانه شیک',
       price: '$25.99',
+      rating: 4.5, // Add rating
     },
     {
       image: require('../images/sample-product.png'), // Use imported image directly
       name: 'کفش ورزشی زنانه',
       price: '$39.99',
+      rating: 4.0, // Add rating
     },
-    {
-      image: require('../images/sample-product.png'), // Use imported image directly
-      name: 'پیراهن مردانه شیک',
-      price: '$25.99',
-    },
-    {
-      image: require('../images/sample-product.png'), // Use imported image directly
-      name: 'کفش ورزشی زنانه',
-      price: '$39.99',
-    },
-    {
-      image: require('../images/sample-product.png'), // Use imported image directly
-      name: 'پیراهن مردانه شیک',
-      price: '$25.99',
-    },
-    {
-      image: require('../images/sample-product.png'), // Use imported image directly
-      name: 'کفش ورزشی زنانه',
-      price: '$39.99',
-    },
+    // Add more products as needed...
   ];
 
+  const renderStars = (rating) => {
+    const fullStars = Math.floor(rating);
+    const halfStar = rating % 1 !== 0;
+    const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
 
-
-
-
+    return (
+      <>
+        {Array.from({ length: fullStars }, (_, index) => (
+          <span key={`full-${index}`} className="star full">★</span>
+        ))}
+        {halfStar && <span className="star half">☆</span>}
+        {Array.from({ length: emptyStars }, (_, index) => (
+          <span key={`empty-${index}`} className="star empty">☆</span>
+        ))}
+      </>
+    );
+  };
 
   return (
     <div className="main-page">
@@ -129,7 +122,7 @@ const MainPage = () => {
             placeholder="... چی لازم داری"
           />
           <button className="search-icon" onClick={() => alert(`Search for: ${searchQuery}`)}>
-            جست و جو
+            جستو جو
           </button>
         </div>
         <div className="login-options">
@@ -143,9 +136,9 @@ const MainPage = () => {
           )}
         </div>
       </div>
-      
+
       <div className="top-taskbar">
-      <button onClick={() => alert('Top Task 1')}>
+        <button onClick={() => alert('Top Task 1')}>
           همه محصولات
         </button>
         <button onClick={() => alert('Top Task 1')}>
@@ -167,6 +160,7 @@ const MainPage = () => {
               <img src={product.image} alt={product.name} className="product-image" />
               <p className="product-name">{product.name}</p>
               <p className="product-price">{product.price}</p>
+              <div className="product-rating">{renderStars(product.rating)}</div>
               <button onClick={() => alert(`Add ${product.name} to cart`)}>
                 Add to Cart
               </button>
@@ -178,8 +172,9 @@ const MainPage = () => {
       <button className="bottom-left-button" onClick={handleBottomButtonClick}>
         سازندگان
       </button>
-      
+
       <button className="toggle-right-taskbar" onClick={toggleRightTaskbar}>
+        دسته بندی
         <img src={toggleIcon} alt="Toggle" />
       </button>
 
@@ -210,12 +205,6 @@ const MainPage = () => {
         </button>
         <button onClick={() => alert('Task 8')}>
           <img src={clothesfilter} alt="Task 8" /> مد و پوشاک
-        </button>
-        <button onClick={() => alert('Task 9')}>
-          <img src={clothesfilter} alt="Task 9" /> مد و پوشاک
-        </button>
-        <button onClick={() => alert('Task 10')}>
-          <img src={clothesfilter} alt="Task 10" /> مد و پوشاک
         </button>
       </div>
     </div>

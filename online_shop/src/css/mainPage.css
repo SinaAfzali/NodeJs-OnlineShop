@@ -209,11 +209,12 @@
 .toggle-right-taskbar {
   position: absolute;
   top: 155px; 
-  width: 40px;  /* Set the width to create a square */
-  height: 40px; /* Set the height to create a square */
-  right: -2px;
+  width: 60px;  /* Set the width to create a square */
+  height: 50px; /* Set the height to create a square */
+  right: 0px;
   background-color: #ff9100;
-  color: #fff;
+  color: #000000;
+  font-size: x-small;
   border: none;
   cursor: pointer;
   transition: background-color 0.3s ease-in-out;
@@ -227,7 +228,7 @@
 }
 
 .toggle-right-taskbar img {
-  width: 30px; /* Adjust the size of the image */
+  width: 20px; /* Adjust the size of the image */
   height: auto; /* Maintain the aspect ratio */
 }
 
@@ -345,8 +346,23 @@
   background-color: #45a049;
 }
 
+.star {
+  font-size: 20px;
+  color: gold;
+  margin-right: 2px;
+}
 
+.star.full {
+  color: gold;
+}
 
+.star.half {
+  color: gold;
+}
+
+.star.empty {
+  color: lightgray;
+}
 
 
 
