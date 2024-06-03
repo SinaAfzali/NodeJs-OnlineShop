@@ -2,14 +2,14 @@ const { json } = require('express');
 const {ProductsModel} = require('../models/product-model');
 const {Product} = require('../utilities/classes');
 const {newest_products, cheapest_products, moreExpensive_products, filterByCategory_products} = require('../utilities/functions');
-
+const { ObjectId } = require('mongodb'); 
 
 
 
 async function addProduct(req,res){
     let obj = req.body;
-    var product = new Product(obj.name,obj.price,obj.description,obj.productNumber, 
-      obj.image,obj.filter,obj.discount,obj.features, Product.status_available, obj.seller_id, 0, 0);
+    var product = new Product(obj.name,Number(obj.price),obj.description,Number(obj.productNumber), 
+      obj.image,obj.filter,Number(obj.discount),obj.features, Product.status_available, obj.seller_id, 0, 0);
     let result = await ProductsModel.insertProduct(product);
     if(result !== -1){
       return res.send(JSON.stringify("ok"));
@@ -32,7 +32,16 @@ async function getFilteredProducts(req,res){
     products = newest_products(products);
   }
 
-  res.send(products);
+  const replacer = function(key, value) {   
+    if (value instanceof ObjectId) {   
+      return value.toString();   
+    } else {   
+      return value;   
+    }   
+  };  
+  
+const jsonProducts = JSON.stringify(products, replacer, 2);  
+  res.send(jsonProducts);
 }
 
 async function getOneProduct(){
@@ -42,7 +51,7 @@ async function getOneProduct(){
 
 
 async function getCartProducts(){
-  let cart_products = req.body.split('||');
+  let cart_products = req.body;
   let total_price = 0;
   let products = await ProductsModel.getProducts();
   let result = [];
@@ -52,7 +61,7 @@ async function getCartProducts(){
        if(cart_products[i] === products[j]._id){
         result[k] = products[j];
         k++;
-        total_price += Number(cart_products[i+1]) * Number(products[j].price);
+        total_price += Number(cart_products[i+1]) * products[j].price;
         break;
       }
     }

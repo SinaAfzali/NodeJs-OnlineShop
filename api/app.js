@@ -4,7 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require("cors");
-
+var fileUpload = require('express-fileupload'); 
 var productRouter = require('./routes/product-route')
 var userRouter = require('./routes/user-route');
 var transactionRouter = require('./routes/user-route');
@@ -30,6 +30,42 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static('../online_shop/public'));
+app.use(express.static('../online_shop/src/images/productsImage'));
+
+
+
+
+const randomNumber = (n)=>{
+let randomImageName = '';  
+const characters = '0123456789';  
+const charactersLength = characters.length;  
+for (let i = 0; i < n; i++) {  
+    randomImageName += characters.charAt(Math.floor(Math.random() * charactersLength));  
+}  
+return randomImageName;
+}
+app.use(fileUpload()); 
+ 
+app.post('/upload', (req, res) => { 
+    if (!req.files || !req.files.file) { 
+        return res.status(400).send('فایلی انتخاب نشده است.'); 
+    } 
+ 
+    const file = req.files.file; 
+    const arr = file.name.split('.');
+    const fileName = randomNumber(32) + '.' + arr[1];
+    const uploadPath = path.join(__dirname, '../online_shop/src/images/productsImage', fileName); 
+ 
+    file.mv(uploadPath, (err) => { 
+        if (err) { 
+            return res.status(500).send('خطا در ذخیره فایل.'); 
+        } 
+ 
+        res.send(JSON.stringify(fileName)); 
+    }); 
+}); 
+ 
+
 
 
 

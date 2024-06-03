@@ -10,7 +10,8 @@ const {Product, } = require('../utilities/classes');
 
 
 // get userName and role from cookie
-let token, result;
+var token, result;
+var fileData_upload = '';
 
 
 const tasks = [
@@ -118,23 +119,50 @@ function AddProduct() {
     });
   };
   
-  const handleSubmit = () => {
+  const handleSubmit = async() => {
     // e.preventDefault();
+    await save_image_to_disck();
     const { name, price, description, productNumber, image, filter, discount, features } = formData;
+
+    token = Cookies.get('Login');
+    let currSeller = await request.Post(Url.tokenValidator, { token: token });
+    let userName1 = currSeller.userName;
+    const product = new Product(null, name, price, description, productNumber, image, filter, discount, features, Product.status_available,
+      userName1,0,0);
   
-    var productFeatures = "";
-    for (let i = 0; i < features.length; i++) {
-      productFeatures += features[i].name + "||" + features[i].value 
-      if(i !== features.length-1)productFeatures+='||';
+
+    let result = await request.Post(Url.addProduct_url, product);
+    if(result === "ok"){
+      navigate(Router_path.sellerAcount);
+      alert("محصول با موفقیت اضافه شد");
+    }else{
+      alert("خطا در افزودن محصول")
     }
-  
-    const product = new Product(name, price, description, productNumber, image, filter, discount, productFeatures);
-  
-    request.Post(Url.addProduct_url, product);
+
   };
 
+  
+  const handleImage = async(e) => { 
+    const file = e.target.files[0]; 
+    fileData_upload = new FormData(); 
+    fileData_upload.append('file', file); 
+ 
+   
+ } 
 
+ const save_image_to_disck = async()=>{
+      const response = await fetch('http://localhost:9000/upload', { 
+        method: 'POST', 
+        body: fileData_upload 
+    }); 
 
+    if (response.ok) { 
+      const data = await response.json();
+      formData.image = data; 
+    } else { 
+        console.error('خطا در ارسال فایل.'); 
+    } 
+ }
 
 
 
@@ -179,21 +207,22 @@ function AddProduct() {
         </div>
         <div className="form-group">
           <label>عکس محصول:</label>
-          <input type="file" name="image" onChange={handleChange} accept="image/*" />
+          <input type="file" name="image" onChange={handleImage} accept="image/*" />
         </div>
         <div className="form-group">
           <label>دسته بندی<span className="required">*</span>:</label>
           <select name="filter" value={formData.filter} onChange={handleChange} required>
-            <option value="">انتخاب کنید</option>
-            <option value="موبایل">موبایل</option>
-            <option value="لوازم تحریر">لوازم تحریر</option>
-            <option value="کالا های سوپرمارکتی">کالا های سوپرمارکتی</option>
-            <option value="اسباب بازی">اسباب بازی</option>
-            <option value="آرایشی بهداشتی">آرایشی بهداشتی</option>
-            <option value="مد و پوشاک">مد و پوشاک</option>
-            <option value="ورزش و سفر">ورزش و سفر</option>
-            <option value="ابزار آلات و تجهیزات">ابزار آلات و تجهیزات</option>
-            <option value="تجهیزات پزشکی و سلامت">تجهیزات پزشکی و سلامت</option>
+          <option value="">انتخاب کنید</option>
+          <option value="مواد غذایی">مواد غذایی</option> 
+          <option value="مد و پوشاک">مد و پوشاک</option>
+          <option value="ابزار آلات">ابزار آلات</option>
+          <option value="آرایشی بهداشتی">آرایشی بهداشتی</option>
+          <option value="اسباب بازی">اسباب بازی</option>
+          <option value="لوازم تحریر">لوازم تحریر</option>
+          <option value="موبایل">موبایل</option>
+          <option value="ورزش و سفر">ورزش و سفر</option>
+          <option value="پزشکی و سلامت">پزشکی و سلامت</option>
+
           </select>
         </div>
         <div className="form-group">

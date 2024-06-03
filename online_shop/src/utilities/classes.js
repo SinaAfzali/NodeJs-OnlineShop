@@ -1,14 +1,26 @@
 class Product {
-    constructor(name, price, description, productNumber, image, filter, discount, features) {
-      this.name = name;
-      this.price = price;
-      this.description = description;
-      this.productNumber = productNumber;
-      this.image = image;
-      this.filter = filter;
-      this.discount = discount;
-      this.features = features;
-    }
+  constructor(_id,name, price, description, productNumber, image, filter, discount, features, status, seller_id, total_scores, number_scores) {
+    this.name = name;
+    this.price = price;
+    this.description = description;
+    this.productNumber = productNumber;
+    this.image = image;
+    this.filter = filter;
+    this.features = features;
+    this.status = status;
+    this.seller_id = seller_id;
+    this.total_scores = total_scores;
+    this.number_scores = number_scores;
+    if(discount)this.addDiscount(discount);
+  }
+  addDiscount(discount){
+    this.discount = discount;
+  }
+  static status_available = "موجود";
+
+  static status_unavailable = "ناموجود";
+
+  static status_dontdisplay = "عدم نمایش";
   };
 
 

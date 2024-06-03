@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../css/mainPage.css';
+import '../css/Cart.css'
 import logoImage from '../images/shopping-cart.png';
 import toggleIcon from '../images/toggle-icon.png';
 import { useNavigate } from 'react-router-dom';
@@ -10,9 +11,12 @@ import toolsfilter from '../images/tools.png';
 const request = require('../utilities/HTTP_REQUEST');
 const Url = require('../utilities/urls');
 const Router_path = require('../utilities/routes');
+const {money_standard} = require('../utilities/functions');
 
 let token;
 let result;
+
+let filter1 = 'همه محصولات', filter2 = '';
 
 const MainPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -35,7 +39,22 @@ const MainPage = () => {
       if (roleUserElement) {
         roleUserElement.style = 'font-size:12px;color:red';
       }
+
+
+
+
+      filter1 = 'همه محصولات';
+      filter2 = '';
+      let filtered_products = await request.Post(Url.getFilterdProducts_url, {filter1: filter1, filter2: filter2});
+      for(let i=0;i<filtered_products.length;i++){
+        filtered_products[i].image = require('../images/productsImage/' + filtered_products[i].image);
+      }
+      setProducts(filtered_products);
+
     }, 200);
+
+   
+
   }, []);
 
   const handleSearchChange = (e) => {
@@ -62,51 +81,82 @@ const MainPage = () => {
     setIsRightTaskbarVisible(!isRightTaskbarVisible);
   };
 
-  const sampleProducts = [
-    {
-      image: require('../images/sample-product.png'), // Use imported image directly
-      name: 'پیراهن مردانه شیک',
-      price: '$25.99',
-      rating: 4.5, // Add rating
-    },
-    {
-      image: require('../images/sample-product.png'), // Use imported image directly
-      name: 'کفش ورزشی زنانه',
-      price: '$39.99',
-      rating: 4.0, // Add rating
-    },
-    {
-      image: require('../images/sample-product.png'), // Use imported image directly
-      name: 'پیراهن مردانه شیک',
-      price: '$25.99',
-      rating: 4.5, // Add rating
-    },
-    {
-      image: require('../images/sample-product.png'), // Use imported image directly
-      name: 'کفش ورزشی زنانه',
-      price: '$39.99',
-      rating: 4.0, // Add rating
-    },
-    // Add more products as needed...
-  ];
 
-  const renderStars = (rating) => {
-    const fullStars = Math.floor(rating);
-    const halfStar = rating % 1 !== 0;
-    const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+  const setFilter1 = async(category)=>{
+    filter1 = category;
+    let filtered_products = await request.Post(Url.getFilterdProducts_url, {filter1: filter1, filter2: filter2});
+    for(let i=0;i<filtered_products.length;i++){
+      filtered_products[i].image = require('../images/productsImage/' + filtered_products[i].image);
+    }
+    setProducts(filtered_products);
+  }
 
-    return (
-      <>
-        {Array.from({ length: fullStars }, (_, index) => (
-          <span key={`full-${index}`} className="star full">★</span>
-        ))}
-        {halfStar && <span className="star half">☆</span>}
-        {Array.from({ length: emptyStars }, (_, index) => (
-          <span key={`empty-${index}`} className="star empty">☆</span>
-        ))}
-      </>
-    );
-  };
+  const setFilter2 = async(filter)=>{
+    filter2 = filter;
+    let filtered_products = await request.Post(Url.getFilterdProducts_url, {filter1: filter1, filter2: filter2});
+    for(let i=0;i<filtered_products.length;i++){
+      filtered_products[i].image = require('../images/productsImage/' + filtered_products[i].image);
+    }
+    setProducts(filtered_products);
+  }
+
+  const setProducts = (list_products) => {
+    console.log("setp", list_products);
+    let html = '';
+   
+    for(let i = 0;i< list_products.length;i++){
+      let product = list_products[i];
+      html += `<div id="product-item${String(product._id)}">
+        <img src=${product.image} alt=${product.name} id='image${String(i)}' />
+        <p id="product-name${String(i)}">${product.name}</p>
+        <div id="product-rating${String(i)}">
+        <div id='product-point${String(i)}'></div>
+        <div id='product-discount${String(i)}'></div>
+      </div>  
+        <p id="product-price${String(i)}">${money_standard(product.price)} تومان </p>           
+      </div>`;
+    }
+   
+    
+    document.getElementById('product-list').innerHTML = html;
+
+    for(let i=0;i<list_products.length;i++) {
+      let product = list_products[i]
+      document.getElementById('product-item' + String(product._id)).className = 'product-item';
+      document.getElementById('image' + String(i)).className = 'product-image';
+      document.getElementById('product-name' + String(i)).className = 'product-name';
+      document.getElementById('product-price' + String(i)).className = 'product-price';
+      document.getElementById('product-rating' + String(i)).className = 'product-rating';
+      document.getElementById('product-point' + String(i)).className = 'product-point';
+      document.getElementById('product-discount' + String(i)).className = 'product-discount';
+      let score = '';
+      if(product.number_scores > 0)score = product.total_scores/product.number_scores;
+      if(score !== ''){
+        score = score.toFixed(1);
+        document.getElementById('product-point' + String(i)).innerHTML = score + '☆';
+      }
+      if(product.discount > 0 && product.discount <= 100){
+        document.getElementById('product-discount' + String(i)).innerHTML = product.discount + '%';
+      }
+      
+
+      document.getElementById('product-item' + String(product._id)).addEventListener('click', ()=>{
+        // go to product page
+        alert(product._id)
+      });
+    }
+  }
+
+  // const sampleProducts = [
+  //   {
+  //     image: require('../images/sample-product.png'), // Use imported image directly
+  //     name: 'پیراهن مردانه شیک',
+  //     price: '80000',
+  //     rating: 4.5, // Add rating
+  //   },
+  //   // Add more products as needed...
+  // ];
+
 
   return (
     <div className="main-page">
@@ -138,34 +188,28 @@ const MainPage = () => {
       </div>
 
       <div className="top-taskbar">
-        <button onClick={() => alert('Top Task 1')}>
+        <button onClick={() => setFilter2('')}>
           همه محصولات
         </button>
-        <button onClick={() => alert('Top Task 1')}>
+        <button onClick={() => setFilter2('ارزان ترین')}>
           ارزان ترین
         </button>
-        <button onClick={() => alert('Top Task 2')}>
+        <button onClick={() => setFilter2('گران ترین')}>
           گران ترین
         </button>
-        <button onClick={() => alert('Top Task 3')}>
+        <button onClick={() => setFilter2('جدید ترین')}>
           جدید ترین
         </button>
       </div>
 
       <div className="product-panel">
         <h2>محصولات</h2>
-        <div className="product-list">
-          {sampleProducts.map((product, index) => (
-            <div key={index} className="product-item">
-              <img src={product.image} alt={product.name} className="product-image" />
-              <p className="product-name">{product.name}</p>
-              <p className="product-price">{product.price}</p>
-              <div className="product-rating">{renderStars(product.rating)}</div>
-              <button onClick={() => alert(`Add ${product.name} to cart`)}>
-                Add to Cart
-              </button>
-            </div>
-          ))}
+        <div id='product-list' className="product-list">
+         
+  
+
+
+
         </div>
       </div>
 
@@ -179,38 +223,35 @@ const MainPage = () => {
       </button>
 
       <div className={`right-taskbar ${isRightTaskbarVisible ? 'visible' : ''}`}>
-        <button onClick={() => alert('Task 1')}>
+        <button onClick={() => setFilter1('همه محصولات')}>
           همه محصولات
         </button>
-        <button onClick={() => alert('Task 1')}>
+        <button  onClick={() => setFilter1("مواد غذایی")}>
           <img src={foodfilter} alt="Task 1" /> مواد غذایی
         </button>
-        <button onClick={() => alert('Task 2')}>
+        <button onClick={() => setFilter1("مد و پوشاک")}>
           <img src={clothesfilter} alt="Task 2" /> مد و پوشاک
         </button>
-        <button onClick={() => alert('Task 3')}>
+        <button onClick={() => setFilter1("ابزار آلات")}>
           <img src={toolsfilter} alt="Task 3" /> ابزار آلات
         </button>
-        <button onClick={() => alert('Task 4')}>
+        <button onClick={() => setFilter1("آرایشی بهداشتی")}>
           <img src={clothesfilter} alt="Task 4" /> آرایشی بهداشتی
         </button>
-        <button onClick={() => alert('Task 5')}>
+        <button onClick={() => setFilter1("اسباب بازی")}>
           <img src={clothesfilter} alt="Task 5" /> اسباب بازی
         </button>
-        <button onClick={() => alert('Task 6')}>
-          <img src={clothesfilter} alt="Task 6" /> کالا های سوپرمارکتی
-        </button>
-        <button onClick={() => alert('Task 7')}>
+        <button onClick={() => setFilter1("لوازم تحریر")}>
           <img src={clothesfilter} alt="Task 7" /> لوازم تحریر
         </button>
-        <button onClick={() => alert('Task 8')}>
+        <button onClick={() => setFilter1("موبایل")}>
           <img src={clothesfilter} alt="Task 8" /> موبایل
         </button>
-        <button onClick={() => alert('Task 9')}>
+        <button onClick={() => setFilter1("ورزش و سفر")}>
           <img src={clothesfilter} alt="Task 9" /> ورزش و سفر
         </button>
-        <button onClick={() => alert('Task 10')}>
-          <img src={clothesfilter} alt="Task 10" /> تجهیزات پزشکی و سلامت
+        <button onClick={() => setFilter1("پزشکی و سلامت")}>
+          <img src={clothesfilter} alt="Task 10" /> پزشکی و سلامت
         </button>
       </div>
     </div>
