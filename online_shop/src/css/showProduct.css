@@ -1,0 +1,131 @@
+.product-detail-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: aqua;
+    font-family: 'Arial', sans-serif;
+}
+
+.product-card {
+    background: linear-gradient(45deg, #FF6F61, #FF9671);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+.product-name {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.product-image {
+    width: 250px;
+    height: auto;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+.product-image.enlarged {
+    transform: scale(2);
+}
+
+
+.price-rating {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.product-price {
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+    margin-right: 10px;
+}
+
+.product-rating .star {
+    font-size: 24px;
+    color: #ffd700;
+}
+
+.product-description {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.product-odd-information strong {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #fff;
+}
+
+.user-rating {
+    margin-top: 30px;
+}
+
+.rating-options label {
+    margin: 0 10px;
+    font-size: 24px;
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+.rating-options label:hover {
+    transform: scale(1.2);
+}
+
+.submit-rating {
+    margin-top: 20px;
+    padding: 15px 30px;
+    background-color: #ff3e75;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.submit-rating:hover {
+    background-color: #ff5c8d;
+}
+
+
+/* Add these styles at the end of the CSS file */
+
+.rating-options label.selected {
+    background-color: #ffd700;
+}
+
+.rating-options label {
+    margin: 0 10px;
+    font-size: 24px;
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+.rating-options label:hover {
+    transform: scale(1.2);
+}
+
+.selected-rating {
+    margin-top: 10px;
+    font-size: 18px;
+    color: #fff;
+}

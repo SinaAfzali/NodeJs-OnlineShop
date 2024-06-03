@@ -13,6 +13,8 @@ class Router_path{
 
     static addProduct = '/user/seller/account/product/add'
 
+    static showProduct = '/showProduct.js'
+
 }
 
 
