@@ -1,3 +1,4 @@
+// shop/mainPage.js
 import React, { useState, useEffect } from 'react';
 import '../css/mainPage.css';
 import logoImage from '../images/shopping-cart.png';
@@ -55,7 +56,7 @@ const MainPage = () => {
   };
 
   const handleBottomButtonClick = () => {
-    navigate('/sellerAccount');
+    navigate(Router_path.showProduct); // Navigate to showProduct route
   };
 
   const toggleRightTaskbar = () => {
@@ -64,28 +65,28 @@ const MainPage = () => {
 
   const sampleProducts = [
     {
-      image: require('../images/sample-product.png'), // Use imported image directly
+      image: require('../images/sample-product.png'),
       name: 'پیراهن مردانه شیک',
       price: '$25.99',
-      rating: 4.5, // Add rating
+      rating: 4.5,
     },
     {
-      image: require('../images/sample-product.png'), // Use imported image directly
+      image: require('../images/sample-product.png'),
       name: 'کفش ورزشی زنانه',
       price: '$39.99',
-      rating: 4.0, // Add rating
+      rating: 4.0,
     },
     {
-      image: require('../images/sample-product.png'), // Use imported image directly
+      image: require('../images/sample-product.png'),
       name: 'پیراهن مردانه شیک',
       price: '$25.99',
-      rating: 4.5, // Add rating
+      rating: 4.5,
     },
     {
-      image: require('../images/sample-product.png'), // Use imported image directly
+      image: require('../images/sample-product.png'),
       name: 'کفش ورزشی زنانه',
       price: '$39.99',
-      rating: 4.0, // Add rating
+      rating: 4.0,
     },
     // Add more products as needed...
   ];
