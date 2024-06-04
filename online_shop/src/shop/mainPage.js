@@ -138,7 +138,6 @@ const MainPage = () => {
       if(product.discount > 0 && product.discount <= 100){
         document.getElementById('product-discount' + String(i)).innerHTML = product.discount + '%';
       }
-      
 
       document.getElementById('product-item' + String(product._id)).addEventListener('click', ()=>{
         // go to product page
@@ -147,15 +146,6 @@ const MainPage = () => {
     }
   }
 
-  // const sampleProducts = [
-  //   {
-  //     image: require('../images/sample-product.png'), // Use imported image directly
-  //     name: 'پیراهن مردانه شیک',
-  //     price: '80000',
-  //     rating: 4.5, // Add rating
-  //   },
-  //   // Add more products as needed...
-  // ];
 
 
   return (

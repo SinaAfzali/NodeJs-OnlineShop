@@ -9,7 +9,7 @@ import LoginAndRegister from './user/LoginAndRegister';
 import Cart from './shop/Cart';
 import Creator from './shop/Creator';
 import ProfileView from './user/sellerAccount';
-import ShowProduct from './shop/showProduct'; // Import the ShowProduct component
+import ShowProduct from './product/showProduct'; // Import the ShowProduct component
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
