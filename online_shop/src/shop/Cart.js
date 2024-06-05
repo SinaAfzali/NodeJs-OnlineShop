@@ -1,7 +1,7 @@
 import React, { useState , useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/Cart.css';
-import {getCookie, money_standard, update_cart_cookie, update_cookie} from '../utilities/functions';
+import {getCookie, money_standard, update_cart_cookie, update_cookie,checkCharacterOrder} from '../utilities/functions';
 const request = require('../utilities/HTTP_REQUEST');
 const Url = require('../utilities/urls');
 
@@ -13,7 +13,7 @@ const Cart = () => {
     const setProducts = async()=>{
       let cookieValue = getCookie('cart');
       let product = null;
-      if(cookieValue !== null){
+      if(cookieValue && checkCharacterOrder(',', cookieValue)){
         let product_split = cookieValue.split(',');
         for(let i=0;i<product_split.length;i+=2){
           product = await request.Post(Url.getOneProduct_url, {product_id: String(product_split[i])});
@@ -48,7 +48,7 @@ const Cart = () => {
         cookieValue += product_split[i] + ',' + product_split[i+1] + ',';
       }
       else if(String(id) !== product_split[i] && i === product_split.length - 2)cookieValue += product_split[i] + ',' + product_split[i+1];
-      if(String(id) === product_split[i] && i === product_split.length - 2){
+      if(String(id) === product_split[i] && i === product_split.length - 2 && product_split.length > 2){
         cookieValue = cookieValue.substring(0,cookieValue.length-1);
       }
     }

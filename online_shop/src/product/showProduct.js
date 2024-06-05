@@ -1,7 +1,7 @@
 import React, { useState , useEffect} from 'react';
 import { useParams } from 'react-router-dom'; 
 import '../css/showProduct.css';
-import {money_standard, getCookie, update_cookie, update_cart_cookie} from '../utilities/functions';
+import {money_standard, getCookie, update_cookie, update_cart_cookie, checkCharacterOrder} from '../utilities/functions';
 
 
 const request = require('../utilities/HTTP_REQUEST');
@@ -69,10 +69,10 @@ const ShowProduct = () => {
    sendRequest();
    setTimeout(() => {
     let cookieValue = getCookie('cart');
-    if(cookieValue){
+    if(cookieValue && checkCharacterOrder(',', cookieValue)){
      let product_split = cookieValue.split(',');
      for(let i=0;i<product_split.length;i+=2){
-       if(String(product._id) === product_split[i]){
+       if(String(id) === product_split[i]){
          document.getElementById('increase-cart-show-product').style.display = 'block';
          document.getElementById('add-cart-show-product').style.display = 'none';
          document.getElementById('number-product-in-cart').innerHTML = "تعداد در سبد خرید : " + product_split[i+1];
@@ -92,11 +92,11 @@ const ShowProduct = () => {
     let product_split = cookieValue.split(',');
     cookieValue = '';
     for(let i=0;i<product_split.length;i+=2){
-      if(String(product._id) !== product_split[i] && i !== product_split.length - 2){
+      if(String(id) !== product_split[i] && i !== product_split.length - 2){
         cookieValue += product_split[i] + ',' + product_split[i+1] + ',';
       }
-      else if(String(product._id) !== product_split[i] && i === product_split.length - 2)cookieValue += product_split[i] + ',' + product_split[i+1];
-      if(String(product._id) === product_split[i] && i === product_split.length - 2){
+      else if(String(id) !== product_split[i] && i === product_split.length - 2)cookieValue += product_split[i] + ',' + product_split[i+1];
+      if(String(id) === product_split[i] && i === product_split.length - 2 && product_split.length > 2){
         cookieValue = cookieValue.substring(0,cookieValue.length-1);
       }
     }
@@ -105,8 +105,8 @@ const ShowProduct = () => {
   const add = async()=>{
     let cookieValue = getCookie('cart');
     if(cookieValue){
-      cookieValue += ',' + String(product._id) + ',1'
-    }else cookieValue = String(product._id) + ',1';
+      cookieValue += ',' + String(id) + ',1'
+    }else cookieValue = String(id) + ',1';
     update_cookie('cart', cookieValue, 0);
     document.getElementById('increase-cart-show-product').style.display = 'block';
     document.getElementById('add-cart-show-product').style.display = 'none';
@@ -114,12 +114,12 @@ const ShowProduct = () => {
   }
 
   const plus = async()=>{
-    let number = update_cart_cookie(product._id, 'plus', Number(product.productNumber));
+    let number = update_cart_cookie(id, 'plus', Number(product.productNumber));
     document.getElementById('number-product-in-cart').innerHTML = "تعداد در سبد خرید : " + number;
     }
 
   const minus = ()=>{
-    let number = update_cart_cookie(product._id, 'minus' , 0);
+    let number = update_cart_cookie(id, 'minus' , 0);
     document.getElementById('number-product-in-cart').innerHTML = "تعداد در سبد خرید : " + number;
   }
 
