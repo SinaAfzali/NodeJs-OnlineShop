@@ -1,7 +1,7 @@
 .main-page {
   position: relative;
   min-height: 100vh; /* Ensure the page takes full height */
-  background-color: cyan;
+  background-color: ghostwhite;
 }
 
 .header {
@@ -288,7 +288,7 @@
   background-color: #fff;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
   transition: transform 0.3s ease-in-out;
   text-align: center;
   cursor: pointer;

@@ -1,18 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/Cart.css';
-import product1Image from '../images/sample-product.png';
-import product2Image from '../images/sample-product.png';
-import product3Image from '../images/sample-product.png';
-import product4Image from '../images/sample-product.png';
+import {getCookie, money_standard, update_cart_cookie, update_cookie} from '../utilities/functions';
+const request = require('../utilities/HTTP_REQUEST');
+const Url = require('../utilities/urls');
 
 const Cart = () => {
-  const [cartItems, setCartItems] = useState([
-    { id: 1, name: 'Product 1', price: 100000, quantity: 2, image: product1Image },
-    { id: 2, name: 'Product 2', price: 200000, quantity: 1, image: product2Image },
-    { id: 3, name: 'Product 3', price: 150000, quantity: 3, image: product3Image },
-    { id: 4, name: 'Product 4', price: 120000, quantity: 2, image: product4Image }
-  ]);
+  const [cartItems, setCartItems] = useState([]);
+
+  useEffect(()=>{
+    let cart_products = [];
+    const setProducts = async()=>{
+      let cookieValue = getCookie('cart');
+      let product = null;
+      if(cookieValue !== null){
+        let product_split = cookieValue.split(',');
+        for(let i=0;i<product_split.length;i+=2){
+          product = await request.Post(Url.getOneProduct_url, {product_id: String(product_split[i])});
+          let price = (product.price * (100 - product.discount)) / 100;
+          let image = require('../images/productsImage/' + product.image);
+          cart_products.push({
+            id:product._id,
+            name:product.name,
+            price:price,
+            quantity:product_split[i+1],
+            image:image
+          });
+        }
+      }
+      if(cart_products.length !== 0 )setCartItems(cart_products);
+    }
+    setProducts();
+  }, []);
 
   const navigate = useNavigate();
 
@@ -21,19 +40,35 @@ const Cart = () => {
   };
 
   const removeFromCart = (id) => {
+    let cookieValue = getCookie('cart');
+    let product_split = cookieValue.split(',');
+    cookieValue = '';
+    for(let i=0;i<product_split.length;i+=2){
+      if(String(id) !== product_split[i] && i !== product_split.length - 2){
+        cookieValue += product_split[i] + ',' + product_split[i+1] + ',';
+      }
+      else if(String(id) !== product_split[i] && i === product_split.length - 2)cookieValue += product_split[i] + ',' + product_split[i+1];
+      if(String(id) === product_split[i] && i === product_split.length - 2){
+        cookieValue = cookieValue.substring(0,cookieValue.length-1);
+      }
+    }
+    update_cookie('cart', cookieValue, 0);
     setCartItems(cartItems.filter(item => item.id !== id));
   };
-
-  const incrementQuantity = (id) => {
+ 
+  const incrementQuantity = async(id) => {
+    let product1 = await request.Post(Url.getOneProduct_url, {product_id: String(id)});
+    let number = update_cart_cookie(String(id), 'plus', Number(product1.productNumber));
     const updatedCartItems = cartItems.map(item =>
-      item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+      item.id === id ? { ...item, quantity: number } : item
     );
     setCartItems(updatedCartItems);
   };
 
   const decrementQuantity = (id) => {
+    let number = update_cart_cookie(String(id), 'minus' , 0);
     const updatedCartItems = cartItems.map(item =>
-      item.id === id && item.quantity > 1 ? { ...item, quantity: item.quantity - 1 } : item
+      item.id === id && item.quantity > 1 ? { ...item, quantity: number } : item
     );
     setCartItems(updatedCartItems);
   };
@@ -57,7 +92,7 @@ const Cart = () => {
                     <img src={item.image} alt={item.name} className="product-image-cart" />
                     <div className="item-details">
                       <span className="item-name">{item.name}</span>
-                      <span className="item-price">قیمت: {item.price} تومان</span>
+                      <span className="item-price">قیمت: {money_standard(item.price)} تومان  </span>
                       <span className="item-quantity">تعداد: {item.quantity}</span>
                     </div>
                   </div>
@@ -71,7 +106,7 @@ const Cart = () => {
             </ul>
             <div className="total-section">
               <span className="total-label">قیمت کل : </span>
-              <span className="total-price">{calculateTotal()} تومان</span>
+              <span className="total-price">{money_standard(calculateTotal())} تومان</span>
             </div>
           </div>
         )}

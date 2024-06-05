@@ -11,7 +11,7 @@ body{
   min-height: 100vh;
   width: 100%;
   /* background: #009579; */
-  background-color: aqua;
+  background-color: white;
 }
 .container{
   position: absolute;
@@ -22,7 +22,7 @@ body{
   width: 100%;
   background: #fff;
   border-radius: 7px;
-  box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.3);
 }
 .container .registration{
   display: none;

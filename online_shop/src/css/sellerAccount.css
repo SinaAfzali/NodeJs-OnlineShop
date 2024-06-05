@@ -5,7 +5,7 @@
 }
 .seller-account {
     display: flex;
-    background-color: aqua;
+    background-color: white;
     background-attachment: fixed;
     height: 100vh; /* Ensure it covers the full height of the viewport */
     

@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 const request = require('./HTTP_REQUEST');
 
 
@@ -53,8 +54,7 @@ const validatePasswords = (passwordInput, confirmPasswordInput, passwordValidato
 };
 
 
-
-const money_standard = (money)=>{
+export function money_standard(money){
   let m = String(money);
   let result = "";
   let len = m.length;
@@ -85,7 +85,7 @@ const money_standard = (money)=>{
 
 
 
-function checkCharacterOrder(subString, mainString) { 
+export function checkCharacterOrder(subString, mainString) { 
   let subIndex = 0; 
    
   for (let i = 0; i < mainString.length; i++) { 
@@ -102,9 +102,40 @@ function checkCharacterOrder(subString, mainString) {
 } 
 
 
-module.exports = { 
-  userNameValidator, 
-  validatePasswords,
-  money_standard,
-  checkCharacterOrder,
-};
+export function update_cookie(cookieName, data, period){
+  let cookieValue = Cookies.get(cookieName);
+  cookieValue = data;
+  Cookies.remove(cookieName);
+  if(period !== 0)Cookies.set(cookieName, cookieValue, { expires: period });
+  else Cookies.set(cookieName, cookieValue);
+}
+
+export function getCookie(cookieName){
+  return Cookies.get(cookieName);
+}
+
+
+
+export function update_cart_cookie(product_id, plus_or_minus, limit){
+  let current_number = 0;
+  let cookieValue = getCookie('cart');
+  let product_split = cookieValue.split(',');
+  cookieValue = '';
+    for(let i=0;i<product_split.length;i+=2){
+      if(String(product_id) === product_split[i]){
+        if(plus_or_minus === 'plus' && Number(product_split[i+1]) < limit){
+          product_split[i+1] = Number(product_split[i+1]) + 1;
+        }else if(plus_or_minus === 'minus' && Number(product_split[i+1]) > 1){
+          product_split[i+1] = Number(product_split[i+1]) - 1;
+        }
+        current_number = Number(product_split[i+1]);
+      }
+      if(i !== product_split.length - 2){
+        cookieValue += product_split[i] + ',' + product_split[i+1] + ',';
+      }
+      if(i === product_split.length - 2)cookieValue += product_split[i] + ',' + product_split[i+1];
+    }
+ 
+  update_cookie('cart', cookieValue, 0); 
+  return current_number;
+}

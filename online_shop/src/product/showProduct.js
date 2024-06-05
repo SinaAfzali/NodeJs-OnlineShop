@@ -1,7 +1,7 @@
 import React, { useState , useEffect} from 'react';
 import { useParams } from 'react-router-dom'; 
 import '../css/showProduct.css';
-import { money_standard } from '../utilities/functions';
+import {money_standard, getCookie, update_cookie, update_cart_cookie} from '../utilities/functions';
 
 
 const request = require('../utilities/HTTP_REQUEST');
@@ -44,14 +44,14 @@ const ShowProduct = () => {
     if(product.number_scores !== 0){
       score = (product.total_scores / product.number_scores).toFixed(1);
     }else score = '';
+    let price = money_standard((product.price * (100 - product.discount)) / 100);
     currentProduct = {
       name: product.name,
       score: score,
       description: product.description,
       image: product.image,
-      price: money_standard(product.price),
+      price: price,
     }
-    console.log(product.features);
     document.getElementById('product-image').src = require('../images/productsImage/' + String(currentProduct.image));
     document.getElementById('product-name').innerHTML = currentProduct.name;
     document.getElementById('product-description').innerHTML = currentProduct.description;
@@ -67,34 +67,60 @@ const ShowProduct = () => {
     document.getElementById('title-moreinfo').style.marginBottom = '20px';
    }
    sendRequest();
+   setTimeout(() => {
+    let cookieValue = getCookie('cart');
+    if(cookieValue){
+     let product_split = cookieValue.split(',');
+     for(let i=0;i<product_split.length;i+=2){
+       if(String(product._id) === product_split[i]){
+         document.getElementById('increase-cart-show-product').style.display = 'block';
+         document.getElementById('add-cart-show-product').style.display = 'none';
+         document.getElementById('number-product-in-cart').innerHTML = "تعداد در سبد خرید : " + product_split[i+1];
+       }
+     }
+    }
+   }, 200);
   });
 
 
 
-  const remove = ()=>{
+  const remove = async()=>{
     document.getElementById('increase-cart-show-product').style.display = 'none';
     document.getElementById('add-cart-show-product').style.display = 'block';
-    number_product_in_cart = 0;
-    document.getElementById('number-product-in-cart').innerHTML = "تعداد در سبد خرید : " + number_product_in_cart;
+    document.getElementById('number-product-in-cart').innerHTML = "تعداد در سبد خرید : " + 0;
+    let cookieValue = getCookie('cart');
+    let product_split = cookieValue.split(',');
+    cookieValue = '';
+    for(let i=0;i<product_split.length;i+=2){
+      if(String(product._id) !== product_split[i] && i !== product_split.length - 2){
+        cookieValue += product_split[i] + ',' + product_split[i+1] + ',';
+      }
+      else if(String(product._id) !== product_split[i] && i === product_split.length - 2)cookieValue += product_split[i] + ',' + product_split[i+1];
+      if(String(product._id) === product_split[i] && i === product_split.length - 2){
+        cookieValue = cookieValue.substring(0,cookieValue.length-1);
+      }
+    }
+    update_cookie('cart', cookieValue, 0);
   }
-  const add = ()=>{
+  const add = async()=>{
+    let cookieValue = getCookie('cart');
+    if(cookieValue){
+      cookieValue += ',' + String(product._id) + ',1'
+    }else cookieValue = String(product._id) + ',1';
+    update_cookie('cart', cookieValue, 0);
     document.getElementById('increase-cart-show-product').style.display = 'block';
     document.getElementById('add-cart-show-product').style.display = 'none';
-    number_product_in_cart = 1;
-    document.getElementById('number-product-in-cart').innerHTML = "تعداد در سبد خرید : " + number_product_in_cart;
+    document.getElementById('number-product-in-cart').innerHTML = "تعداد در سبد خرید : " + 1;
   }
+
   const plus = async()=>{
-    product = await request.Post(Url.getOneProduct_url, {product_id: String(id)});
-    if(product.productNumber > number_product_in_cart){
-    number_product_in_cart++;
-    document.getElementById('number-product-in-cart').innerHTML = "تعداد در سبد خرید : " + number_product_in_cart;
+    let number = update_cart_cookie(product._id, 'plus', Number(product.productNumber));
+    document.getElementById('number-product-in-cart').innerHTML = "تعداد در سبد خرید : " + number;
     }
-  }
+
   const minus = ()=>{
-    if(number_product_in_cart > 1){
-      number_product_in_cart--;
-      document.getElementById('number-product-in-cart').innerHTML = "تعداد در سبد خرید : " + number_product_in_cart;
-    }
+    let number = update_cart_cookie(product._id, 'minus' , 0);
+    document.getElementById('number-product-in-cart').innerHTML = "تعداد در سبد خرید : " + number;
   }
 
 
@@ -134,9 +160,9 @@ const ShowProduct = () => {
         </div>
         <div id='increase-cart-show-product' className='increase-cart-show-product'>
            <h2 id='number-product-in-cart'>تعداد در سبد خرید : 1</h2>
-           <button className='quantity-btn' onClick={plus}>+</button>
-           <button className='quantity-btn' onClick={minus}>-</button>
-           <button className='remove-btn' onClick={remove}>حذف محصول</button>
+           <button className='quantity-btn-cart' onClick={plus}>+</button>
+           <button className='quantity-btn-cart' onClick={minus}>-</button>
+           <button className='remove-btn-cart' onClick={remove}>حذف محصول</button>
         </div>
         <div id='add-cart-show-product' onClick={add}>
         <button className='add-product-to-cart'>افزودن به سبد خرید</button>
@@ -165,5 +191,4 @@ const ShowProduct = () => {
     </div>
   );
 };
-
 export default ShowProduct;

@@ -7,10 +7,10 @@ import Cookies from 'js-cookie';
 import foodfilter from '../images/food.png';
 import clothesfilter from '../images/clothes.png';
 import toolsfilter from '../images/tools.png';
+import {money_standard, checkCharacterOrder} from '../utilities/functions';
 const request = require('../utilities/HTTP_REQUEST');
 const Url = require('../utilities/urls');
 const Router_path = require('../utilities/routes');
-const {money_standard, checkCharacterOrder} = require('../utilities/functions');
 
 let token;
 let result;
@@ -24,6 +24,7 @@ const MainPage = () => {
   const [isRightTaskbarVisible, setIsRightTaskbarVisible] = useState(false);
 
   useEffect(() => {
+    // Cookies.remove('cart');
     const validateToken = async () => {
       token = Cookies.get('Login');
       result = await request.Post(Url.tokenValidator, { token: token });
@@ -136,7 +137,6 @@ const MainPage = () => {
   }
 
   const setProducts = (list_products) => {
-    console.log("setp", list_products);
     let html = '';
    
     for(let i = 0;i< list_products.length;i++){
