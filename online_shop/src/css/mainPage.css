@@ -116,6 +116,13 @@
  
 }
 
+.top-taskbar label{
+  background-color: #222;
+  color: red;
+  font-size: large;
+  font-weight: bolder;
+}
+
 .top-taskbar button:hover {
   background-color: #ffffff;
   color: #000000;
@@ -278,12 +285,13 @@
 
 
 .product-item {
-  background-color: black;
+  background-color: #fff;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease-in-out;
   text-align: center;
+  cursor: pointer;
 }
 
 .product-item:hover {

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import '../css/mainPage.css';
-import '../css/Cart.css'
 import logoImage from '../images/shopping-cart.png';
 import toggleIcon from '../images/toggle-icon.png';
 import { useNavigate } from 'react-router-dom';
@@ -11,7 +10,7 @@ import toolsfilter from '../images/tools.png';
 const request = require('../utilities/HTTP_REQUEST');
 const Url = require('../utilities/urls');
 const Router_path = require('../utilities/routes');
-const {money_standard} = require('../utilities/functions');
+const {money_standard, checkCharacterOrder} = require('../utilities/functions');
 
 let token;
 let result;
@@ -57,6 +56,40 @@ const MainPage = () => {
 
   }, []);
 
+
+  const searchProducts = async()=>{
+    filter1 = 'همه محصولات';
+    filter2 = '';
+    let filtered_products = await request.Post(Url.getFilterdProducts_url, {filter1: filter1, filter2: filter2});
+    let searchProducts = [];
+    let searchPartStr = searchQuery.split(' ');
+    for(let x=0;x<searchPartStr.length;x++) {
+      if(searchPartStr[x] === ' ' || searchPartStr[x] === '')continue;
+      for(let i=0;i<filtered_products.length;i++){
+      if(checkCharacterOrder(searchPartStr[x], filtered_products[i].name)){
+        searchProducts.push(filtered_products[i]);
+        filtered_products.splice(i,1)
+      }
+    }
+   }
+   for(let x=0;x<searchPartStr.length;x++) {
+    if(searchPartStr[x] === ' ' || searchPartStr[x] === '')continue;    
+   for(let i=0;i<filtered_products.length;i++){
+    if(checkCharacterOrder(searchPartStr[x], filtered_products[i].description)){
+      searchProducts.push(filtered_products[i]);
+      filtered_products.splice(i,1)
+    }
+  }
+}
+    for(let i=0;i<searchProducts.length;i++){
+      searchProducts[i].image = require('../images/productsImage/' + searchProducts[i].image);
+    }
+    setProducts(searchProducts);
+    document.getElementById('top-taskbar-show-filter1').innerHTML = ' # ' + filter1;
+  }
+
+
+
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
@@ -89,6 +122,7 @@ const MainPage = () => {
       filtered_products[i].image = require('../images/productsImage/' + filtered_products[i].image);
     }
     setProducts(filtered_products);
+    document.getElementById('top-taskbar-show-filter1').innerHTML = '#' + filter1;
   }
 
   const setFilter2 = async(filter)=>{
@@ -98,6 +132,7 @@ const MainPage = () => {
       filtered_products[i].image = require('../images/productsImage/' + filtered_products[i].image);
     }
     setProducts(filtered_products);
+    document.getElementById('top-taskbar-show-filter1').innerHTML = ' # ' + filter1;
   }
 
   const setProducts = (list_products) => {
@@ -113,7 +148,7 @@ const MainPage = () => {
         <div id='product-point${String(i)}'></div>
         <div id='product-discount${String(i)}'></div>
       </div>  
-        <p id="product-price${String(i)}">${money_standard(product.price)} تومان </p>           
+        <p id="product-price${String(i)}">${money_standard(((100-product.discount) * product.price / 100).toFixed(0))} تومان </p>           
       </div>`;
     }
    
@@ -141,7 +176,7 @@ const MainPage = () => {
 
       document.getElementById('product-item' + String(product._id)).addEventListener('click', ()=>{
         // go to product page
-        alert(product._id)
+        navigate('/showProduct/' + product._id);
       });
     }
   }
@@ -161,7 +196,7 @@ const MainPage = () => {
             onChange={handleSearchChange}
             placeholder="... چی لازم داری"
           />
-          <button className="search-icon" onClick={() => alert(`Search for: ${searchQuery}`)}>
+          <button className="search-icon" onClick={searchProducts}>
             جستو جو
           </button>
         </div>
@@ -178,9 +213,9 @@ const MainPage = () => {
       </div>
 
       <div className="top-taskbar">
-        <button onClick={() => setFilter2('')}>
-          همه محصولات
-        </button>
+        <label id='top-taskbar-show-filter1' >
+          #همه محصولات
+        </label>
         <button onClick={() => setFilter2('ارزان ترین')}>
           ارزان ترین
         </button>

@@ -1,5 +1,6 @@
 const Database = require('../utilities/db_mongo');
-const {Date} = require('../utilities/classes')
+const {Date} = require('../utilities/classes');
+const { ObjectId } = require('mongodb');
 
 
 const colletion_name = "products";
@@ -10,8 +11,8 @@ class ProductsModel{
         return products;
     }
 
-    static async getProduct(_id){
-        let product = await Database.getDocument(colletion_name, {_id : _id});
+    static async getProduct(product_id){
+        let product = await Database.getDocument(colletion_name, {_id : new ObjectId(product_id)});
         return product;
     }
 

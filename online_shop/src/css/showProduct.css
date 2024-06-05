@@ -3,31 +3,31 @@
     justify-content: center;
     align-items: center;
     background-color: aqua;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Yekan', serif;
 }
 
-.product-card {
-    background: linear-gradient(45deg, #FF6F61, #FF9671);
+.show-product-card {
+    background: linear-gradient(45deg, #fe41c5, #c549ac);
     border-radius: 15px;
     padding: 30px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     text-align: center;
     transition: transform 0.3s ease-in-out;
-}
+} 
 
-.product-card:hover {
+.show-product-card:hover {
     transform: translateY(-5px);
 }
 
-.product-name {
-    font-size: 28px;
-    font-weight: bold;
+.show-product-name {
+    font-size: 45px;
+    font-weight: bolder;
     margin-bottom: 20px;
     color: #fff;
 }
 
-.product-image {
-    width: 250px;
+.show-product-image {
+    width: 350px;
     height: auto;
     border-radius: 15px;
     margin-bottom: 20px;
@@ -36,8 +36,8 @@
     transition: transform 0.3s ease-in-out;
 }
 
-.product-image.enlarged {
-    transform: scale(2);
+.show-product-image.enlarged {
+    transform: scale(1.5);
 }
 
 
@@ -48,29 +48,40 @@
     margin-bottom: 20px;
 }
 
-.product-price {
-    font-size: 24px;
-    font-weight: bold;
+.show-product-price {
+    font-size: 30px;
+    font-weight: bolder;
     color: #fff;
     margin-right: 10px;
+    margin-bottom: 50px;
 }
 
-.product-rating .star {
-    font-size: 24px;
+.show-product-rating .star {
+    font-size: 30px;
     color: #ffd700;
 }
 
-.product-description {
-    font-size: 18px;
+.show-product-description {
+    font-size: 30px;
     margin-bottom: 20px;
     color: #fff;
+    margin-bottom: 50px;
 }
 
-.product-odd-information strong {
-    display: block;
+.product-odd-information {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
     margin-bottom: 10px;
-    font-size: 18px;
-    color: #fff;
+    font-size: 30px;
+    font-weight: bolder;
+    border-radius: 15px;
+    background-color: #e19fce;
+    padding: 5px 0 10px 0;
+}
+
+.product-odd-information p{
+    color:black;
+    font-weight: bold;
 }
 
 .user-rating {
@@ -128,4 +139,23 @@
     margin-top: 10px;
     font-size: 18px;
     color: #fff;
+}
+
+
+.increase-cart-show-product{
+    display: none;
+    margin-bottom: 30px;
+    cursor: pointer;
+}
+
+
+.add-product-to-cart{
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 30px;
 }

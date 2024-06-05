@@ -40,13 +40,21 @@ async function getFilteredProducts(req,res){
     }   
   };  
   
-const jsonProducts = JSON.stringify(products, replacer, 2);  
+  const jsonProducts = JSON.stringify(products, replacer, 2);  
   res.send(jsonProducts);
 }
 
-async function getOneProduct(){
-  let product = await ProductsModel.getProduct(String(req.body._id));
-  return product;
+async function getOneProduct(req,res){
+  let product = await ProductsModel.getProduct(String(req.body.product_id));
+  const replacer = function(key, value) {   
+    if (value instanceof ObjectId) {   
+      return value.toString();   
+    } else {   
+      return value;   
+    }   
+  };  
+  const jsonProduct = JSON.stringify(product, replacer, 2);  
+  res.send(jsonProduct);
 }
 
 

@@ -85,8 +85,26 @@ const money_standard = (money)=>{
 
 
 
+function checkCharacterOrder(subString, mainString) { 
+  let subIndex = 0; 
+   
+  for (let i = 0; i < mainString.length; i++) { 
+    if (mainString[i] === subString[subIndex]) { 
+      subIndex++; 
+    } 
+     
+    if (subIndex === subString.length) { 
+      return true; 
+    } 
+  } 
+   
+  return false; 
+} 
+
+
 module.exports = { 
   userNameValidator, 
   validatePasswords,
   money_standard,
+  checkCharacterOrder,
 };

@@ -4,7 +4,7 @@ const {Date} = require('../utilities/classes');
 const newest_products = (products)=>{
     for(let i=0;i<products.length;i++){
         for(let j=i+1;j<products.length;j++){
-          if((new Date(products[i].date_add).compareTo(products[j].date_add)) === 1){
+          if((new Date(products[i].date_add).compareTo(products[j].date_add)) === -1){
             let temp = products[i];
             products[i] = products[j];
             products[j] = temp;
