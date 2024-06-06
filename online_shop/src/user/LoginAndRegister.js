@@ -89,6 +89,7 @@ const LoginAndRegister = () => {
     } else {
       alert('نام کاربری یا رمز عبور اشتباه است');
     }
+    
   };
 
   const inputChange = () => {

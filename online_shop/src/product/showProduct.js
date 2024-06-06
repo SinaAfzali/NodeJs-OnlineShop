@@ -147,6 +147,7 @@ const ShowProduct = () => {
   return (
     <div className="product-detail-page">
       <div className="show-product-card">
+      <p className='space-p'>-------------------------------------------------------------------------------------</p>
         <h1 id='product-name' className="show-product-name"></h1>
         <img id='product-image'
           src=''
