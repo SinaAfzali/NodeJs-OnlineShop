@@ -257,14 +257,6 @@ function AddProduct() {
       </form>
     </div>
 
-
-
-
-
-
-
-
-
         </div>
       </div>
     </div>

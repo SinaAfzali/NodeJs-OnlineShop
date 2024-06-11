@@ -108,7 +108,7 @@ const MainPage = () => {
   };
 
   const handleBottomButtonClick = () => {
-    navigate('/sellerAccount');
+    navigate(Router_path.sellerAcount);
   };
 
   const toggleRightTaskbar = () => {

@@ -1,16 +1,13 @@
-// src/SellerAccount.js
+import React, { useState } from 'react';
 import '../css/sellerAccount.css';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import Router_path from '../utilities/routes';
-import React, { useEffect , } from 'react';
+import Profile from './Profile';
+import ProductDisplay from './ProductDisplay';
+import SalesHistory from './SalesHistory'; // Import SalesHistory component
 const request = require('../utilities/HTTP_REQUEST');
 const Url = require('../utilities/urls');
-
-
-
-let token, result;
-
 
 const tasks = [
   { name: 'صفحه اصلی' },
@@ -21,11 +18,11 @@ const tasks = [
   { name: 'خروج' },
 ];
 
-const Taskbar = ({ tasks }) => {
+const Taskbar = ({ tasks, onTaskClick }) => {
   return (
     <div className="taskbar">
       {tasks.map((task, index) => (
-        <div id={"task-item"+String(index)} key={index} className="taskbar-item">
+        <div id={"task-item" + String(index)} key={index} className="taskbar-item" onClick={() => onTaskClick(index)}>
           {task.name}
         </div>
       ))}
@@ -33,81 +30,58 @@ const Taskbar = ({ tasks }) => {
   );
 };
 
-
-
-
 const SellerAccount = () => {
+  const [showProfile, setShowProfile] = useState(false);
+  const [showProductDisplay, setShowProductDisplay] = useState(false);
+  const [showSalesHistory, setShowSalesHistory] = useState(false); // State for displaying sales history
 
-  useEffect(() => {
-    const validateToken = async () => {
-      token = Cookies.get('Login');
-      result = await request.Post(Url.tokenValidator, { token: token });
-    };
-    setTimeout(async () => {
-      await validateToken();
-      document.getElementById('header-user').innerHTML = ' (فروشنده) ' + result.userName;
-    }, 100);
-  }, []);
+  const navigate = useNavigate();
 
-
-
-
-
-
-
-
-
-
-
-   const navigate = useNavigate();
-   setTimeout(() => {
-    document.getElementById('task-item0').addEventListener('click', ()=>{
-      navigate(Router_path.root);
-     });
-    document.getElementById('task-item1').addEventListener('click', ()=>{
-     navigate(Router_path.addProduct);
-    });
-    document.getElementById('task-item2').addEventListener('click', ()=>{
-      navigate(Router_path.addProduct);
-     });
-     document.getElementById('task-item3').addEventListener('click', ()=>{
-      navigate(Router_path.addProduct);
-     });
-     document.getElementById('task-item4').addEventListener('click', ()=>{
-      navigate(Router_path.addProduct);
-     });
-     document.getElementById('task-item5').addEventListener('click', ()=>{
-      Cookies.remove('Login');
-      navigate(Router_path.root);
-     });
-
-    document.getElementById('header-user').innerHTML =  '(فروشنده)' + result.userName;
-  }, 500);
+  const handleTaskClick = (index) => {
+    switch (index) {
+      case 0:
+        navigate(Router_path.root);
+        break;
+      case 1:
+        setShowProfile(true);
+        setShowProductDisplay(false);
+        setShowSalesHistory(false); // Hide sales history
+        break;
+      case 2:
+      case 3:
+        setShowProfile(false);
+        setShowProductDisplay(true);
+        setShowSalesHistory(false); // Hide sales history
+        break;
+      case 4:
+        setShowProfile(false);
+        setShowProductDisplay(false);
+        setShowSalesHistory(true); // Show sales history
+        break;
+      case 5:
+        Cookies.remove('Login');
+        navigate(Router_path.root);
+        break;
+      default:
+        break;
+    }
+  };
 
   return (
     <div className="seller-account">
-      <Taskbar tasks={tasks} />
+      <Taskbar tasks={tasks} onTaskClick={handleTaskClick} />
       <div className="main-content">
         <div className="header headerSeller">
-        <h1 id="header-user"></h1>
+          <h1 id="header-user"></h1>
         </div>
         <div id='content-div' className="content">
-
-
-
-
-
-
+          {showProfile && <Profile userName="Sample User" userPicture="https://via.placeholder.com/150" role="Seller" />}
+          {showProductDisplay && <ProductDisplay />}
+          {showSalesHistory && <SalesHistory />} {/* Conditionally render SalesHistory component */}
         </div>
       </div>
     </div>
   );
 };
-
-
-
-
-
-
 
 export default SellerAccount;
