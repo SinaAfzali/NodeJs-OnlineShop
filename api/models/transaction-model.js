@@ -7,8 +7,8 @@ const collection_name = "transactions";
 
 class TransactionModel{
     static async insertTransaction(transaction){
-        let transaction = await Database.insertDocument(collection_name, Object.assign({}, transaction, {date_add: Date.now()}));
-        return transaction;
+        let transaction1 = await Database.insertDocument(collection_name, Object.assign({}, transaction, {date_add: Date.now()}));
+        return transaction1;
     }
 
     static async getTransaction(_id){

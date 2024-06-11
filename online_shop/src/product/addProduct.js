@@ -51,7 +51,7 @@ function AddProduct() {
     };
     setTimeout(async () => {
       await validateToken();
-      document.getElementById('header-user').innerHTML = ' (فروشنده) ' + result.userName;
+      document.getElementById('header-user').innerHTML = '(فروشنده)' + result.userName;
     }, 100);
   }, []);
 
@@ -78,8 +78,6 @@ function AddProduct() {
       Cookies.remove('Login');
       navigate(Router_path.root);
      });
-
-    document.getElementById('header-user').innerHTML = result.userName + '(فروشنده)';
   }, 500);
 
 
@@ -185,7 +183,6 @@ function AddProduct() {
         <div className="add-product-container">
       <div className="background"></div>
       <div className="info-message">
-        <p>فروشنده عزیز لطفا از نماد مناسب برای فاصله استفاده کنید</p>
       </div>
       <h2>افزودن محصول</h2>
       <form id="register_form">

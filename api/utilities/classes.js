@@ -101,10 +101,9 @@ class Product {
 
 
   class Transaction{
-    constructor(customer_id, products_list, numberProduct_list , sellers_list){
-        this.customer_id = customer_id;
+    constructor(customer, products_list , sellers_list){
+        this.customer = customer;
         this.products_list = products_list;
-        this.numberProduct_list = numberProduct_list;
         this.sellers_list = sellers_list;
     }
 

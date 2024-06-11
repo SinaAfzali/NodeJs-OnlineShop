@@ -8,6 +8,7 @@ var fileUpload = require('express-fileupload');
 var productRouter = require('./routes/product-route')
 var userRouter = require('./routes/user-route');
 var transactionRouter = require('./routes/user-route');
+var commentRouter = require('./routes/comment-route');
 require("dotenv").config();
 var app = express();
 app.use(express.json());
@@ -79,7 +80,7 @@ app.post('/upload', (req, res) => {
 app.use('/api/product/', productRouter);
 app.use('/api/user/', userRouter);
 app.use('/api/transaction/', transactionRouter);
-
+app.use('/api/comment/', commentRouter);
 
 
 

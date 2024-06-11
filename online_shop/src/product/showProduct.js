@@ -1,7 +1,9 @@
 import React, { useState , useEffect} from 'react';
 import { useParams } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 import '../css/showProduct.css';
 import {money_standard, getCookie, update_cookie, update_cart_cookie, checkCharacterOrder} from '../utilities/functions';
+import Cookies from 'js-cookie';
 
 
 const request = require('../utilities/HTTP_REQUEST');
@@ -34,6 +36,8 @@ const renderStars = (rating) => {
 const ShowProduct = () => {
   const [userRating, setUserRating] = useState(null);
   const [isImageEnlarged, setIsImageEnlarged] = useState(false);
+  const [nameComment, setnameComment] = useState('');
+  const [textComment, settextComment] = useState('');
   const { id } = useParams(); 
  
 
@@ -42,7 +46,7 @@ const ShowProduct = () => {
     product = await request.Post(Url.getOneProduct_url, {product_id: String(id)});
     let score;
     if(product.number_scores !== 0){
-      score = (product.total_scores / product.number_scores).toFixed(1);
+      score =  '('+ product.Scorers.length +') ' +  (product.total_scores / product.number_scores).toFixed(1) + '★';
     }else score = '';
     let price = money_standard((product.price * (100 - product.discount)) / 100);
     currentProduct = {
@@ -80,6 +84,25 @@ const ShowProduct = () => {
      }
     }
    }, 200);
+
+
+   setTimeout(async() => {
+  document.getElementById('comments-list').innerHTML = '';
+  let comments = await request.Post(Url.get_comments, {product_id: id});
+  for(let i=0;i<comments.length;i++){
+    document.getElementById('comments-list').innerHTML += `  <div id='comment-show${i}'>
+    <div id='comment-title${i}'>
+      <div id='comment-title-char${i}'>${comments[i].name[0]}</div>
+      <div id='comment-title-name${i}'>${comments[i].name}</div>
+      <div id='comment-title-date${i}'>${comments[i].date_add}</div>
+    </div>
+    <div id='comment-text${i}'>${comments[i].text}</div>
+  </div>`;
+  }
+
+   }, 200);
+
+
   });
 
 
@@ -132,11 +155,31 @@ const ShowProduct = () => {
     setUserRating(Number(e.target.value));
   };
 
-  const handleSubmitRating = () => {
+  const handleSubmitRating = async() => {
     if (userRating) {
-      alert(`You rated this product: ${userRating} stars`);
-      // Update the displayed rating stars
-      currentProduct.rate = userRating;
+      let token = Cookies.get('Login');
+      if(token){
+        let user = await request.Post(Url.tokenValidator, { token: token });
+        if(user.role === 'seller')alert('شما به عنوان فروشنده لاگین کرده اید \n بنابراین نمیتوانید امتیاز دهید');
+        else{
+          let result = await request.Post(Url.check_rating, {userName: user.userName, product_id : id});
+          if (result) {
+            let result = await request.Post(Url.submit_rating, {userName: user.userName, product_id : id, score: userRating});
+            if(result){
+              alert('امتیاز شما با موفقیت ثبت شد')
+            }else{
+              alert('شما قبلا به این محصول امتباز داده اید');
+            }
+            
+          }else{
+            alert('شما این محصول را خریداری نکرده اید \n بنابراین نمیتوانید به آن امتیاز دهید')
+          }
+
+        }
+      }else{
+        alert("ابتدا باید وارد حساب کاربری خود شوید");
+      }
+
     }
   };
 
@@ -144,8 +187,37 @@ const ShowProduct = () => {
     setIsImageEnlarged(!isImageEnlarged);
   };
 
+  const navigate = useNavigate();
+  const handleBottomButtonClick = () => {
+    navigate('/');
+  };
+
+
+  const changeNameComment = (e)=>{
+    setnameComment(e.target.value);
+  }
+
+  const changeTextAreaComment = (e)=>{
+    settextComment(e.target.value);
+  }
+
+  const submitComment = async()=>{
+    if(nameComment.length < 2 )alert('نام باید حداقل شامل 3 کاراکتر باشد');
+    else if(textComment.length < 5)alert('نظر شما باید حداقل شامل 5 کاراکتر باشد');
+    else{
+      let comment = await request.Post(Url.add_comment, {product_id: id, name: nameComment, text: textComment});
+      if(comment)alert('نظر شما با موفقیت ثبت شد');
+    }
+
+  }
+
+
+
+
+
   return (
     <div className="product-detail-page">
+       <button className="top-left-button" onClick={handleBottomButtonClick}>صفحه اصلی</button>
       <div className="show-product-card">
       <p className='space-p'>-------------------------------------------------------------------------------------</p>
         <h1 id='product-name' className="show-product-name"></h1>
@@ -157,7 +229,6 @@ const ShowProduct = () => {
         />
         <div className="show-price-rating">
           <p id='product-price'  className="show-product-price"></p>
-          <div id='product-rating' className="show-product-rating"></div>
         </div>
         <div id='increase-cart-show-product' className='increase-cart-show-product'>
            <h2 id='number-product-in-cart'>تعداد در سبد خرید : 1</h2>
@@ -170,6 +241,7 @@ const ShowProduct = () => {
         </div>
         <p id='product-description' className="show-product-description"></p>
         <div id='product-features' className="product-odd-information"></div>
+        <div id='product-rating' className="show-product-rating"></div>
         <div className="user-rating">
           <p>امتیاز دهید:</p>
           <div className="rating-options">
@@ -188,6 +260,22 @@ const ShowProduct = () => {
           <button onClick={handleSubmitRating} className="submit-rating">ثبت امتیاز</button>
           {userRating && <p className="selected-rating">امتیاز انتخاب شده : {userRating} ستاره</p>}
         </div>
+        <div className='comment-section'>
+
+
+        <h1>نظر خود را بنویسید</h1>
+        <div className="form-group">
+          <input type="text" onChange={(e)=>changeNameComment(e)} placeholder='نام خود را وارد کنید'/>
+          <textarea className='textarea-comments' onChange={(e)=>changeTextAreaComment(e)} placeholder='نظر خود را بنویسید ...'/>
+          <button onClick={submitComment}>ثبت نظر</button>
+
+          <div id='comments-list' className='comments-list'>
+
+          </div>
+
+
+        </div>
+      </div>
       </div>
     </div>
   );

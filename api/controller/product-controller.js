@@ -1,5 +1,5 @@
-const { json } = require('express');
-const {ProductsModel} = require('../models/product-model');
+const ProductsModel = require('../models/product-model');
+const TransactionModel = require('../models/transaction-model');
 const {Product} = require('../utilities/classes');
 const {newest_products, cheapest_products, moreExpensive_products, filterByCategory_products} = require('../utilities/functions');
 const { ObjectId } = require('mongodb'); 
@@ -78,4 +78,38 @@ async function getCartProducts(){
   res.send(JSON.stringify(result));
 }
 
-module.exports = {addProduct, getFilteredProducts, getOneProduct, getCartProducts};
+
+async function check_rating(req,res){
+  let transactions = await TransactionModel.getTransactions();
+  for(let i=0;i<transactions.length;i++){
+    if(transactions[i].customer === req.body.userName){
+        for(let j=0;j<transactions[i].products_list.length;j++){
+            if(req.body.product_id === transactions[i].products_list[j]._id){
+                return res.send(JSON.stringify(true));
+            }
+        }
+    }
+}
+res.send(JSON.stringify(false));
+}
+
+async function submit_rating(req,res){
+    let product = await ProductsModel.getProduct(req.body.product_id);
+    if(product.Scorers){
+      for(let i=0;i<product.Scorers.length;i++){
+        if(product.Scorers[i] === req.body.userName){
+          return res.send(JSON.stringify(false));
+        }
+      }
+    }
+    let list = product.Scorers;
+    if(!list)list = [];
+    list.push(req.body.userName);
+    product.Scorers = list;
+    product.total_scores += Number(req.body.score);
+    product.number_scores += 1;
+    let update = await ProductsModel.updateProduct(product._id, product, 'set');
+    return res.send(JSON.stringify(true));
+}
+
+module.exports = {addProduct, getFilteredProducts, getOneProduct, getCartProducts, check_rating,submit_rating,};

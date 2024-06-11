@@ -85,7 +85,7 @@
 }
 
 .user-rating {
-    margin-top: 30px;
+    margin-top: 8vw;
 }
 
 .rating-options label {
@@ -170,4 +170,56 @@
 }
 .space-p{
     color: white;
+}
+
+.show-product-rating{
+    color: darkgoldenrod;
+    font-size: 60px;
+}
+
+.comment-section{
+    margin-top: 10vw;
+}
+.textarea-comments{
+    height: 15vw;
+    margin-top: 5px;
+    resize: none;
+}
+
+.comments-list{
+    padding-top: 20px;
+}
+
+.comment-show{
+    border-radius: 20px;
+    padding: 10px;
+    box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.1);
+}
+.comment-title{
+    display: flex;
+    margin-bottom: 30px;
+}
+.comment-title-char{
+    border-radius: 50%;
+    background-color: blueviolet;
+     padding: 0 10px 10px 10px;
+     font-size: 30px;
+     font-weight: bolder;
+     margin-left: 5px;
+}
+
+.comment-title-name{
+    margin-left: 100px;
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.comment-title-date{
+   margin-right: 50%;
+}
+
+.comment-text{
+    text-align: right;
+    margin: 0 30px 10px 20px;
 }

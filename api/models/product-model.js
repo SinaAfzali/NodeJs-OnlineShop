@@ -16,8 +16,10 @@ class ProductsModel{
         return product;
     }
 
-    static updateProduct(id, newProduct, set_or_unset){
-       
+    static async updateProduct(id, newProduct, set_or_unset){
+       let lastProduct = await this.getProduct(id); 
+       let result = await Database.updateDocument(colletion_name, lastProduct, newProduct, set_or_unset);
+       return result;
     }
 
     static async insertProduct(product){
@@ -28,8 +30,7 @@ class ProductsModel{
     static deleteProduct(id){
 
     }
-    
 }
 
 
-module.exports = {ProductsModel};
+module.exports = ProductsModel;
