@@ -1,4 +1,5 @@
 const CommentsModel = require('../models/comment-model');
+const {newest_comments, } = require('../utilities/functions');
 
 
 async function addComment(req,res) {
@@ -7,6 +8,19 @@ async function addComment(req,res) {
     res.send(JSON.stringify(false));
 }
 
+async function getComments(req,res){
+    let comments = await CommentsModel.getComments();
+    comments = newest_comments(comments);
+    let selected_comments = [];
+    for(let i=0;i<comments.length;i++){
+        if(comments[i].product_id === req.body.product_id){
+            selected_comments.push(comments[i]);
+        }
+    }
+
+    res.send(JSON.stringify(selected_comments));
+}
 
 
-module.exports = {addComment,};
+
+module.exports = {addComment, getComments};

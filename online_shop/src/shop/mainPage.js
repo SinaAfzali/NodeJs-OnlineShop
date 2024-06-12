@@ -74,7 +74,7 @@ const MainPage = () => {
     }
    }
    for(let x=0;x<searchPartStr.length;x++) {
-    if(searchPartStr[x] === ' ' || searchPartStr[x] === '')continue;    
+    if(searchPartStr[x] === ' ' || searchPartStr[x] === '' || searchPartStr[x].length < 2)continue;    
    for(let i=0;i<filtered_products.length;i++){
     if(checkCharacterOrder(searchPartStr[x], filtered_products[i].description)){
       searchProducts.push(filtered_products[i]);

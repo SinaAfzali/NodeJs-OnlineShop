@@ -31,11 +31,10 @@ const Taskbar = ({ tasks, onTaskClick }) => {
 };
 
 const SellerAccount = () => {
-  const [showProfile, setShowProfile] = useState(false);
+  const [showProfile, setShowProfile] = useState(true);
   const [showProductDisplay, setShowProductDisplay] = useState(false);
   const [showSalesHistory, setShowSalesHistory] = useState(false); // State for displaying sales history
 
-<<<<<<< Updated upstream
   const navigate = useNavigate();
 
   const handleTaskClick = (index) => {
@@ -67,60 +66,16 @@ const SellerAccount = () => {
         break;
     }
   };
-=======
-  useEffect(() => {
-    const validateToken = async () => {
-      token = Cookies.get('Login');
-      result = await request.Post(Url.tokenValidator, { token: token });
-    };
-    setTimeout(async () => {
-      await validateToken();
-      document.getElementById('header-user').innerHTML =  '(فروشنده)' + result.userName;
-    }, 100);
-  }, []);
+
+  
 
 
 
-
-
-
-
-
-
-
-
-   const navigate = useNavigate();
-   setTimeout(() => {
-    document.getElementById('task-item0').addEventListener('click', ()=>{
-      navigate(Router_path.root);
-     });
-    document.getElementById('task-item1').addEventListener('click', ()=>{
-     navigate(Router_path.addProduct);
-    });
-    document.getElementById('task-item2').addEventListener('click', ()=>{
-      navigate(Router_path.addProduct);
-     });
-     document.getElementById('task-item3').addEventListener('click', ()=>{
-      navigate(Router_path.addProduct);
-     });
-     document.getElementById('task-item4').addEventListener('click', ()=>{
-      navigate(Router_path.addProduct);
-     });
-     document.getElementById('task-item5').addEventListener('click', ()=>{
-      Cookies.remove('Login');
-      navigate(Router_path.root);
-     });
-
-  }, 500);
->>>>>>> Stashed changes
 
   return (
     <div className="seller-account">
       <Taskbar tasks={tasks} onTaskClick={handleTaskClick} />
       <div className="main-content">
-        <div className="header headerSeller">
-          <h1 id="header-user"></h1>
-        </div>
         <div id='content-div' className="content">
           {showProfile && <Profile userName="Sample User" userPicture="https://via.placeholder.com/150" role="Seller" />}
           {showProductDisplay && <ProductDisplay />}

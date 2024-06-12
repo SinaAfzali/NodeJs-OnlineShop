@@ -14,6 +14,19 @@ const newest_products = (products)=>{
       return products;
 }
 
+const newest_comments = (comments)=>{
+  for(let i=0;i<comments.length;i++){
+      for(let j=i+1;j<comments.length;j++){
+        if((new Date(comments[i].date_add).compareTo(comments[j].date_add)) === -1){
+          let temp = comments[i];
+          comments[i] = comments[j];
+          comments[j] = temp;
+        }
+      }
+    }
+    return comments;
+}
+
 const cheapest_products = (products)=>{
     for(let i=0;i<products.length;i++){
         for(let j=i+1;j<products.length;j++){
@@ -59,4 +72,5 @@ module.exports = {
   cheapest_products,
   moreExpensive_products,
   filterByCategory_products,
+  newest_comments,
 }

@@ -9,29 +9,12 @@ import Cookies from 'js-cookie';
 const request = require('../utilities/HTTP_REQUEST');
 const Url = require('../utilities/urls');
 
-var number_product_in_cart = 0;
 
 var product;
 
 var currentProduct;
 
-const renderStars = (rating) => {
-  const fullStars = Math.floor(rating);
-  const halfStar = rating % 1 !== 0;
-  const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
-
-  return (
-    <>
-      {Array.from({ length: fullStars }, (_, index) => (
-        <span key={`full-${index}`} className="star full">★</span>
-      ))}
-      {halfStar && <span className="star half">☆</span>}
-      {Array.from({ length: emptyStars }, (_, index) => (
-        <span key={`empty-${index}`} className="star empty">☆</span>
-      ))}
-    </>
-  );
-};
+var commentLength = 0;
 
 const ShowProduct = () => {
   const [userRating, setUserRating] = useState(null);
@@ -87,17 +70,33 @@ const ShowProduct = () => {
 
 
    setTimeout(async() => {
-  document.getElementById('comments-list').innerHTML = '';
-  let comments = await request.Post(Url.get_comments, {product_id: id});
-  for(let i=0;i<comments.length;i++){
-    document.getElementById('comments-list').innerHTML += `  <div id='comment-show${i}'>
-    <div id='comment-title${i}'>
-      <div id='comment-title-char${i}'>${comments[i].name[0]}</div>
-      <div id='comment-title-name${i}'>${comments[i].name}</div>
-      <div id='comment-title-date${i}'>${comments[i].date_add}</div>
-    </div>
-    <div id='comment-text${i}'>${comments[i].text}</div>
-  </div>`;
+     let comments = await request.Post(Url.get_comments, {product_id: id});
+     let html = '';
+     let colors = ['red', 'blue', 'green', 'blueviolet', 'chocolate' , 'darkgrey', 'gold', 'pink', 'orange', 'mediumturquoise'];
+     if(comments.length !== 0 && comments.length !== commentLength){
+      commentLength = comments.length;
+      document.getElementById('comments-list').innerHTML = '<h1>نظرات کاربران</h1><p>هیچ نظری برای این محصول ثبت نشده است</p>';
+          for(let i=0;i<comments.length;i++){
+        html += `  <div id='comment-show${i}'>
+        <div id='comment-title${i}'>
+          <div id='comment-title-char${i}'>${comments[i].name[0]}</div>
+          <div id='comment-title-name${i}'>${comments[i].name}</div>
+          <div id='comment-title-date${i}'>${comments[i].date_add.substring(10,16)}</div>
+          <div>${comments[i].date_add.substring(0,10)}</div>
+        </div>
+        <div id='comment-text${i}'>${comments[i].text}</div>
+      </div>`;
+      }
+      document.getElementById('comments-list').innerHTML = ' <h1>نظرات کاربران</h1>' +  html;
+      for(let i=0;i<comments.length;i++){
+        document.getElementById('comment-show'+i).className = 'comment-show';
+        document.getElementById('comment-title'+i).className = 'comment-title';
+        document.getElementById('comment-title-char'+i).className = 'comment-title-char';
+        document.getElementById('comment-title-char'+i).style.backgroundColor = colors[Math.floor(Math.random() * 10)];
+        document.getElementById('comment-title-name'+i).className = 'comment-title-name';
+        document.getElementById('comment-title-date'+i).className = 'comment-title-date';
+        document.getElementById('comment-text'+i).className = 'comment-text';
+      }
   }
 
    }, 200);
@@ -206,7 +205,13 @@ const ShowProduct = () => {
     else if(textComment.length < 5)alert('نظر شما باید حداقل شامل 5 کاراکتر باشد');
     else{
       let comment = await request.Post(Url.add_comment, {product_id: id, name: nameComment, text: textComment});
-      if(comment)alert('نظر شما با موفقیت ثبت شد');
+      if(comment){
+        alert('نظر شما با موفقیت ثبت شد');
+        setnameComment('');
+        settextComment('');
+        document.getElementById('inputecomment').value = '';
+        document.getElementById('textareacomment').value = '';
+      }
     }
 
   }
@@ -265,12 +270,14 @@ const ShowProduct = () => {
 
         <h1>نظر خود را بنویسید</h1>
         <div className="form-group">
-          <input type="text" onChange={(e)=>changeNameComment(e)} placeholder='نام خود را وارد کنید'/>
-          <textarea className='textarea-comments' onChange={(e)=>changeTextAreaComment(e)} placeholder='نظر خود را بنویسید ...'/>
+          <input id='inputecomment' type="text" onChange={(e)=>changeNameComment(e)} placeholder='نام خود را وارد کنید'/>
+          <textarea id='textareacomment' className='textarea-comments' onChange={(e)=>changeTextAreaComment(e)} placeholder='نظر خود را بنویسید ...'/>
           <button onClick={submitComment}>ثبت نظر</button>
 
+         
           <div id='comments-list' className='comments-list'>
-
+           <h1>نظرات کاربران</h1>
+           <p>هیچ نظری برای این محصول ثبت نشده است</p>
           </div>
 
 

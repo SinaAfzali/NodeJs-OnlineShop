@@ -1,9 +1,29 @@
 import React, { useState } from 'react';
 import '../css/Profile.css';
+import { useEffect } from 'react';
+import Cookies from 'js-cookie';
 
-const Profile = ({ userName, userPicture, role }) => {
+const request = require('../utilities/HTTP_REQUEST');
+const Url = require('../utilities/urls');
+
+const Profile = ({ userName, userPicture}) => {
+
+  useEffect(()=>{
+    let result;
+   async function getUerData(){
+    let token = Cookies.get('Login');
+    result = await request.Post(Url.tokenValidator, { token: token });
+   }
+   getUerData();
+   setTimeout(() => {
+    setNewUserName(result.userName);
+    setRole(result.role);
+   }, 100);
+  })
+
   const [editOption, setEditOption] = useState('none');
   const [newUserName, setNewUserName] = useState(userName);
+  const [role, setRole] = useState(userName);
   const [newImage, setNewImage] = useState('');
 
   const handleEditOptionChange = (e) => {
@@ -28,27 +48,27 @@ const Profile = ({ userName, userPicture, role }) => {
   return (
     <div className="profile-panel">
       <div className="profile-picture">
-        <img src={newImage || userPicture} alt={`${userName}'s profile`} />
+        <img src={newImage || userPicture} alt={`${newUserName}'s profile`} />
       </div>
       <div className="profile-info">
-        <h2>{userName}</h2>
-        <p>{role}</p>
+        <h2 id='usename-profile'>{newUserName}</h2>
+        <p id='role-profile'>{role}</p>
         <select value={editOption} onChange={handleEditOptionChange}>
-          <option value="none">Select Option</option>
-          <option value="editUsername">Edit Username</option>
-          <option value="changeImage">Change Profile Image</option>
+          <option value="none">انتخاب کنید</option>
+          <option value="تغییر رمز عبور">تغییر رمز عبور</option>
+          <option value="انتخاب یا تغییر عکس">انتخاب یا تغییر عکس</option>
         </select>
-        {editOption === 'editUsername' && (
+        {editOption === "تغییر رمز عبور" && (
           <div>
             <input type="text" value={newUserName} onChange={handleUserNameChange} />
           </div>
         )}
-        {editOption === 'changeImage' && (
+        {editOption === "انتخاب یا تغییر عکس" && (
           <div>
             <input type="file" onChange={handleImageChange} />
           </div>
         )}
-        <button onClick={handleSubmit}>Save Changes</button>
+        <button onClick={handleSubmit}>ذخیره تغییرات</button>
       </div>
     </div>
   );

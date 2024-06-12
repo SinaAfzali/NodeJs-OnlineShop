@@ -187,13 +187,14 @@
 }
 
 .comments-list{
-    padding-top: 20px;
+    margin-top: 100px;
 }
 
 .comment-show{
     border-radius: 20px;
     padding: 10px;
-    box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+    box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.2);
 }
 .comment-title{
     display: flex;
@@ -216,10 +217,12 @@
 }
 
 .comment-title-date{
-   margin-right: 50%;
+   margin-right: 45%;
+   margin-left: 5px;
 }
 
 .comment-text{
     text-align: right;
-    margin: 0 30px 10px 20px;
+    margin: 0 50px 10px 40px;
+    max-width: 40vw;
 }

@@ -8,6 +8,11 @@ class CommentsModel{
         let comment = await Database.insertDocument(collection_name, {product_id:product_id, name:name, text:text, date_add: Date.now()});
         return comment;
     }
+
+    static async getComments(){
+        let comments = await Database.getDocuments(collection_name);
+        return comments;
+    }
 }
 
 
