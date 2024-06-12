@@ -26,29 +26,14 @@ class Product {
 
   
 class Transaction{
-    constructor(customer_id, products_list, numberProduct_list , sellers_list){
+    constructor(customer_id, products_list, total_price){
         this.customer_id = customer_id;
         this.products_list = products_list;
-        this.numberProduct_list = numberProduct_list;
-        this.sellers_list = sellers_list;
+        this.total_price = total_price;
     }
     setID(_id){
       this._id = _id;
     }
-    static formated(list_string) {
-        let result = "";
-        for(let i=0;i<list_string.length;i++){
-            result += list_string[i];
-            if(i !== list_string.length - 1)result += "||";
-        }
-        return result;
-    }
-
-    static reformat(string_formated){
-        let list_string = string_formated.split("||");
-        return list_string;
-    }
-
 }
 
 

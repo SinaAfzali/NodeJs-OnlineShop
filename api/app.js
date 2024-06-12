@@ -7,7 +7,7 @@ var cors = require("cors");
 var fileUpload = require('express-fileupload'); 
 var productRouter = require('./routes/product-route')
 var userRouter = require('./routes/user-route');
-var transactionRouter = require('./routes/user-route');
+var transactionRouter = require('./routes/transaction-route');
 var commentRouter = require('./routes/comment-route');
 require("dotenv").config();
 var app = express();

@@ -24,6 +24,14 @@ class Url{
     static add_comment = this.root + "api/comment/add";
 
     static get_comments = this.root + "api/comment/get";
+
+    static get_transaction = this.root + "api/transaction/getOne";
+
+    static add_transaction = this.root + "api/transaction/add";
+
+    static remove_transaction = this.root + "api/transaction/removeOne";
+
+    static update_transaction = this.root + "api/transaction/update"
 }
 
 

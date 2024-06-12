@@ -2,6 +2,8 @@ import React, { useState , useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/Cart.css';
 import {getCookie, money_standard, update_cart_cookie, update_cookie,checkCharacterOrder} from '../utilities/functions';
+import { Transaction } from '../utilities/classes';
+import Cookies from 'js-cookie';
 const request = require('../utilities/HTTP_REQUEST');
 const Url = require('../utilities/urls');
 
@@ -77,6 +79,45 @@ const Cart = () => {
     return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
   };
 
+  const goToPaymentPage = async()=>{
+    let token = Cookies.get('Login');
+    let user =  await request.Post(Url.tokenValidator, { token: token });
+    let current_transaction = Cookies.get('current_transaction');
+    if(current_transaction){
+      await request.Post(Url.remove_transaction, {transaction_id: current_transaction});
+      Cookies.remove('current_transaction');
+    }
+
+    if(user && user.role === 'customer'){
+      let product_list = [];
+      let products = getCookie('cart');
+      let product_split = products.split(',');
+      for(let i=0;i<product_split.length;i+=2){
+        let product = await request.Post(Url.getOneProduct_url, {product_id: String(product_split[i])});
+        let price = 0;
+        if(product.discount && product.discount !==0)price = (100-Number(product.discount)) * product.price / 100;
+        else price = product.price;
+        product_list.push({product_id:product._id, name: product.name, number:Number(product_split[i+1]), price: price, seller: product.seller_id});
+      }
+
+        let result = await request.Post(Url.add_transaction, new Transaction(user.userName,product_list, calculateTotal()));
+        if(result){
+          Cookies.set('current_transaction', result.insertedId);
+          navigate('/pay/'+ String(result.insertedId));
+        }else{
+          alert('مشکلی رخ داده است')
+        }
+    }else if(!user){
+      alert('ابتدا لاگین کنید')
+    }else if(user.role === 'seller'){
+      alert('شما به عنوان فروشنده لاگین کرده اید \n بنابراین نمیتوانید خرید کنید \n یک حساب کاربری خریدار بسازید')
+    }
+
+    
+  }
+
+
+
   return (
     <div className="cart-container">
       <button className="top-left-button" onClick={handleBottomButtonClick}>ادامه خرید</button>
@@ -108,6 +149,7 @@ const Cart = () => {
               <span className="total-label">قیمت کل : </span>
               <span className="total-price">{money_standard(calculateTotal())} تومان</span>
             </div>
+            <button onClick={goToPaymentPage}>انتقال به درگاه پرداخت</button>
           </div>
         )}
       </div>

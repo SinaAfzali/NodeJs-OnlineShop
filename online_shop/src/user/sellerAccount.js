@@ -6,8 +6,6 @@ import Router_path from '../utilities/routes';
 import Profile from './Profile';
 import ProductDisplay from './ProductDisplay';
 import SalesHistory from './SalesHistory'; // Import SalesHistory component
-const request = require('../utilities/HTTP_REQUEST');
-const Url = require('../utilities/urls');
 
 const tasks = [
   { name: 'صفحه اصلی' },

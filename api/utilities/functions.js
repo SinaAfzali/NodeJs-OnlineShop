@@ -1,10 +1,10 @@
-const {Date} = require('../utilities/classes');
+const {myDate} = require('../utilities/classes');
 
 
 const newest_products = (products)=>{
     for(let i=0;i<products.length;i++){
         for(let j=i+1;j<products.length;j++){
-          if((new Date(products[i].date_add).compareTo(products[j].date_add)) === -1){
+          if((new myDate(products[i].date_add).compareTo(products[j].date_add)) === -1){
             let temp = products[i];
             products[i] = products[j];
             products[j] = temp;
@@ -17,7 +17,7 @@ const newest_products = (products)=>{
 const newest_comments = (comments)=>{
   for(let i=0;i<comments.length;i++){
       for(let j=i+1;j<comments.length;j++){
-        if((new Date(comments[i].date_add).compareTo(comments[j].date_add)) === -1){
+        if((new myDate(comments[i].date_add).compareTo(comments[j].date_add)) === -1){
           let temp = comments[i];
           comments[i] = comments[j];
           comments[j] = temp;

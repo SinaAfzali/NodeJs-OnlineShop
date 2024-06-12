@@ -1,13 +1,28 @@
-
-
+const { ObjectId } = require('mongodb'); 
 const TransactionModel = require('../models/transaction-model');
 const {Transaction} = require('../utilities/classes'); 
+const {myDate} = require('../utilities/classes')
 
 
 async function addTransaction(req, res){
+    let transactions = await TransactionModel.getTransactions();
+    let now = Number((new Date().getTime() / 1000).toFixed(0));
+    for(let i=0;i<transactions.length;i++){
+        if((now - transactions[i].time_start) > 600 && transactions[i].status !== "paid")TransactionModel.deleteTransaction(transactions[i]._id);
+    }
+
     let transaction = await TransactionModel.insertTransaction(req.body);
-    if(transaction !== -1){
-        return res.send(JSON.stringify("ok"));
+    if(transaction){
+        const replacer = function(key, value) {   
+            if (value instanceof ObjectId) {   
+              return value.toString();   
+            } else {   
+              return value;   
+            }   
+          };  
+          
+          const jsonTransaction = JSON.stringify(transaction, replacer, 2);  
+        return res.send(jsonTransaction);
     }
    res.send(JSON.stringify(null));
 }
@@ -62,9 +77,31 @@ async function getTransactionsBySellerId(req,res){
     res.send(JSON.stringify(filtered_transactions));
 }
 
+async function getTransaction(req, res){
+    let transaction = await TransactionModel.getTransaction(req.body.transaction_id);
+    return res.send(JSON.stringify(transaction));
+}
+
+async function removeTransaction(req,res){
+    let transaction = await TransactionModel.getTransaction(req.body.transaction_id);
+    if(transaction && transaction.status === "Awaiting Payment"){
+        await TransactionModel.deleteTransaction(req.body.transaction_id);
+    }
+    res.send(JSON.stringify(true));
+}
+
+async function updateTransaction(req, res){
+    let update = await TransactionModel.updateTransaction(req.body._id, {status:"paid", date_paid: myDate.now()});
+    if(update)return res.send(JSON.stringify(true));
+    res.send(JSON.stringify(false));
+}
+
 module.exports = {
+    removeTransaction,
     addTransaction,
     getTransactions,
     getTransactionsBySellerId,
-    getTransactionsByCustomerId
+    getTransactionsByCustomerId,
+    getTransaction,
+    updateTransaction,
 }

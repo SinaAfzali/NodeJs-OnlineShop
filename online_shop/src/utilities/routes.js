@@ -13,7 +13,9 @@ class Router_path{
 
     static addProduct = '/user/seller/account/product/add'
 
-    static showProduct = '/showProduct/:id'
+    static showProduct = '/showProduct/:id';
+
+    static PaymentForm = '/pay/:id';
 
 }
 

@@ -1,10 +1,10 @@
 const moment = require('moment-jalaali');
 
 
-class Date{
+class myDate{
     constructor(date){
         this.date = date;
-        let list_date = Date.date_splite(date);
+        let list_date = myDate.date_splite(date);
         this.year = list_date[0];
         this.month = list_date[1];
         this.day = list_date[2];
@@ -27,7 +27,7 @@ class Date{
     }
 
     compareTo(date2){
-        let list_date = Date.date_splite(date2);
+        let list_date = myDate.date_splite(date2);
         if(this.year > list_date[0])return 1;
         else if(list_date[0] > this.year) return -1;
         else{
@@ -130,7 +130,7 @@ class Product {
 
   
 module.exports = {
-    Date,
+    myDate,
     Product,
     Transaction,
 };

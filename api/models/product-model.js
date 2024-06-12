@@ -1,5 +1,5 @@
 const Database = require('../utilities/db_mongo');
-const {Date} = require('../utilities/classes');
+const {myDate} = require('../utilities/classes');
 const { ObjectId } = require('mongodb');
 
 
@@ -23,7 +23,7 @@ class ProductsModel{
     }
 
     static async insertProduct(product){
-        let result = await Database.insertDocument(colletion_name, Object.assign({}, product, {date_add: Date.now()}));
+        let result = await Database.insertDocument(colletion_name, Object.assign({}, product, {date_add: myDate.now()}));
         return result;
     }
 
