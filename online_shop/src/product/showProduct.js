@@ -14,7 +14,10 @@ var product;
 
 var currentProduct;
 
-var commentLength = 0;
+var commentLength = -10;
+
+var setComments;
+
 
 const ShowProduct = () => {
   const [userRating, setUserRating] = useState(null);
@@ -22,6 +25,10 @@ const ShowProduct = () => {
   const [nameComment, setnameComment] = useState('');
   const [textComment, settextComment] = useState('');
   const { id } = useParams(); 
+
+  setTimeout(() => {
+    setComments();
+  }, 500);
  
 
   useEffect(()=>{
@@ -66,44 +73,49 @@ const ShowProduct = () => {
        }
      }
     }
-   }, 200);
+   }, 100);
 
-
-   setTimeout(async() => {
-     let comments = await request.Post(Url.get_comments, {product_id: id});
-     let html = '';
-     let colors = ['red', 'blue', 'green', 'blueviolet', 'chocolate' , 'darkgrey', 'gold', 'pink', 'orange', 'mediumturquoise'];
-     if(comments.length !== 0 && comments.length !== commentLength){
-      commentLength = comments.length;
-      document.getElementById('comments-list').innerHTML = '<h1>نظرات کاربران</h1><p>هیچ نظری برای این محصول ثبت نشده است</p>';
-          for(let i=0;i<comments.length;i++){
-        html += `  <div id='comment-show${i}'>
-        <div id='comment-title${i}'>
-          <div id='comment-title-char${i}'>${comments[i].name[0]}</div>
-          <div id='comment-title-name${i}'>${comments[i].name}</div>
-          <div id='comment-title-date${i}'>${comments[i].date_add.substring(10,16)}</div>
-          <div>${comments[i].date_add.substring(0,10)}</div>
-        </div>
-        <div id='comment-text${i}'>${comments[i].text}</div>
-      </div>`;
-      }
-      document.getElementById('comments-list').innerHTML = ' <h1>نظرات کاربران</h1>' +  html;
-      for(let i=0;i<comments.length;i++){
-        document.getElementById('comment-show'+i).className = 'comment-show';
-        document.getElementById('comment-title'+i).className = 'comment-title';
-        document.getElementById('comment-title-char'+i).className = 'comment-title-char';
-        document.getElementById('comment-title-char'+i).style.backgroundColor = colors[Math.floor(Math.random() * 10)];
-        document.getElementById('comment-title-name'+i).className = 'comment-title-name';
-        document.getElementById('comment-title-date'+i).className = 'comment-title-date';
-        document.getElementById('comment-text'+i).className = 'comment-text';
-      }
-  }
-
-   }, 200);
-
+   setComments();
 
   });
 
+
+
+  setComments = async()=>{
+    setTimeout(async() => {
+      let comments = await request.Post(Url.get_comments, {product_id: id});
+      let html = '';
+      let colors = ['red', 'blue', 'green', 'blueviolet', 'chocolate' , 'darkgrey', 'gold', 'pink', 'orange', 'mediumturquoise'];
+      if(comments.length !== 0 && comments.length !== commentLength){
+       document.getElementById('comments-list').innerHTML = '<h1>نظرات کاربران</h1><p>هیچ نظری برای این محصول ثبت نشده است</p>';
+           commentLength = comments.length;
+       for(let i=0;i<comments.length;i++){
+         html += `  <div id='comment-show${i}'>
+         <div id='comment-title${i}'>
+           <div id='comment-title-char${i}'>${comments[i].name[0]}</div>
+           <div id='comment-title-name${i}'>${comments[i].name}</div>
+           <div id='comment-title-date${i}'>${comments[i].date_add.substring(10,16)}</div>
+           <div>${comments[i].date_add.substring(0,10)}</div>
+         </div>
+         <div id='comment-text${i}'>${comments[i].text}</div>
+       </div>`;
+       }
+       document.getElementById('comments-list').innerHTML = ' <h1>نظرات کاربران</h1>' +  html;
+       for(let i=0;i<comments.length;i++){
+         document.getElementById('comment-show'+i).className = 'comment-show';
+         document.getElementById('comment-title'+i).className = 'comment-title';
+         document.getElementById('comment-title-char'+i).className = 'comment-title-char';
+         document.getElementById('comment-title-char'+i).style.backgroundColor = colors[Math.floor(Math.random() * 10)];
+         document.getElementById('comment-title-name'+i).className = 'comment-title-name';
+         document.getElementById('comment-title-date'+i).className = 'comment-title-date';
+         document.getElementById('comment-text'+i).className = 'comment-text';
+       }
+   }
+ 
+    }, 150);
+ 
+ 
+  }
 
 
   const remove = async()=>{
