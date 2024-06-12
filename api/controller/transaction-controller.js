@@ -78,8 +78,10 @@ async function getTransactionsBySellerId(req,res){
 }
 
 async function getTransaction(req, res){
+    if(req.body.transaction_id.length !== 24)return res.send(JSON.stringify(false));
     let transaction = await TransactionModel.getTransaction(req.body.transaction_id);
-    return res.send(JSON.stringify(transaction));
+    if(transaction !== null)return res.send(JSON.stringify(transaction));
+    res.send(JSON.stringify(false));
 }
 
 async function removeTransaction(req,res){

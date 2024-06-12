@@ -30,7 +30,11 @@ const PaymentForm = () => {
   useEffect(()=>{
     setTimeout(async() => {
       let current_transaction = await request.Post(Url.get_transaction, {transaction_id:id});
-      if(current_transaction.status === "paid")navigate(Router_path.root);
+      if(current_transaction && current_transaction.status === "paid")navigate(Router_path.root);
+      if(!current_transaction){
+        alert('خطایی رخ داده است ');
+        navigate(Router_path.root);
+      }
       setMoney(current_transaction.total_price);
       const time_start = current_transaction.time_start;
       setInterval(async() => {
@@ -132,8 +136,14 @@ const PaymentForm = () => {
     alert('رمز پویا : ' + randomCodeString);
   };
 
+
+  const handleBottomButtonClick = () => {
+    navigate(Router_path.root);
+  };
+
   return (
     <div className="payment-form">
+        <button className="top-left-button" onClick={handleBottomButtonClick}>انصراف و ادامه خرید</button>
       <h2>{secound} : {minute}</h2>
       <h2 className='payment-header'>نام فروشگاه     :   از من بخر</h2>
       <h2 className="payment-header">مبلغ قابل پرداخت : {money_standard(money)} تومان</h2>
