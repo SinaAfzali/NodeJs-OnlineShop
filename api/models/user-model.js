@@ -11,11 +11,25 @@ class UserModel{
           }else return false;
     };
 
+    static async existSeller(){
+        let users = await Database.getDocuments(collection_name);
+        for(let i=0;i<users.length;i++){
+            if(users[i].role === 'seller')return true;
+        }
+        return false;
+    }
+
     static async createUser(user){
         let result = await this.existUser({userName: user.userName, role: user.role});
         if(result){
             return null;
         }else {
+            if(user.role === 'seller'){
+                let exist_seller = await this.existSeller();
+                if(!exist_seller)user = Object.assign({},user, {position:'SuperAdmin'});
+                else user = Object.assign({},user, {position:'Member'});
+            user = Object.assign({}, user, {money:0});
+            }
             let result = await Database.insertDocument(collection_name, user);
             return result;
         }

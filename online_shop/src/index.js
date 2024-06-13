@@ -11,7 +11,7 @@ import Cart from './shop/Cart';
 import Creator from './shop/Creator';
 import ProfileView from './user/sellerAccount';
 import ShowProduct from './product/showProduct'; // Import the ShowProduct component
-import ChangeProduct from './user/changeProduct'; // Import the ChangeProduct component
+import ChangeProduct from './product/changeProduct'; // Import the ChangeProduct component
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 

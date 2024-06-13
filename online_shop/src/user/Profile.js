@@ -9,18 +9,17 @@ const Url = require('../utilities/urls');
 
 
 var fileData_upload = '';
-let current_user;
+let token = Cookies.get('Login');
+let current_user = await request.Post(Url.tokenValidator, { token: token });
 
 const Profile = ({ userName, userPicture}) => {
 
   useEffect(()=>{
    async function getUerData(){
-    let token = Cookies.get('Login');
-    current_user = await request.Post(Url.tokenValidator, { token: token });
-    let data = await request.Post(Url.get_user_info, {userName:current_user.userName, role: current_user.role});
-    if(data){
-      let image = require('../images/usersImage/' + data.image);
-      setNewImage(image);
+      let data = await request.Post(Url.get_user_info, {userName:current_user.userName, role: current_user.role});
+        if(data){
+           let image = await require(('../images/usersImage/' + data.image));
+           setNewImage(image);
     }
    }
    getUerData();
@@ -70,7 +69,7 @@ const Profile = ({ userName, userPicture}) => {
   //   }
     let update = await request.Post(Url.user_update_url, {userName:current_user.userName, role:current_user.role, image:data});
     if(update)alert('عکس شما با موفقیت تغییر کرد');
-    let image = require('../images/usersImage/' + data);
+    let image = await require(('../images/usersImage/' + data));
     setNewImage(image);
   } else { 
       console.error('خطا در ارسال فایل.'); 

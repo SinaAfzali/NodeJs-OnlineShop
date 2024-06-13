@@ -1,22 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../css/SalesHistory.css'; // Import CSS file for styling
+import { money_standard } from '../utilities/functions';
+import Cookies from 'js-cookie';
+
+
+const request = require('../utilities/HTTP_REQUEST');
+const Url = require('../utilities/urls'); 
+
+
+let token = Cookies.get('Login');
+let current_user = await request.Post(Url.tokenValidator, { token: token });
 
 const SalesHistory = () => {
-  const [salesData, setSalesData] = useState([
-    { id: 1, price: 50, date: '2023-05-15', receiptNumber: '123456', count: 3, products: ['Product A', 'Product B'] },
-    { id: 2, price: 30, date: '2023-05-17', receiptNumber: '789012', count: 5, products: ['Product C', 'Product D'] },
-    { id: 3, price: 80, date: '2023-05-18', receiptNumber: '345678', count: 2, products: ['Product E', 'Product F'] },
-    { id: 4, price: 40, date: '2023-05-20', receiptNumber: '901234', count: 4, products: ['Product G', 'Product H'] },
-  ]);
+  const [salesData, setSalesData] = useState([]);
 
-  const [expandedSaleId, setExpandedSaleId] = useState(null);
+
+  useEffect(()=>{
+    setTimeout(async() => {
+      let transactions = await request.Post(Url.get_Transaction_seller, {userName: current_user.userName});
+      let current_transactions = []
+      setSalesData([]);
+      for(let i=0;i<transactions.length;i++){
+        current_transactions.push({
+          id: transactions[i]._id,
+          price: transactions[i].total_price,
+          date: transactions[i].date_paid.substring(10,16) + ' ' + transactions[i].date_paid.substring(0,10),
+          receiptNumber: transactions[i]._id,
+          count:transactions[i].products_list.length,
+        })
+      }
+      setSalesData(current_transactions);
+    }, 500);
+  })
+
 
   const handleViewMore = (saleId) => {
-    if (expandedSaleId === saleId) {
-      setExpandedSaleId(null); 
-    } else {
-      setExpandedSaleId(saleId); 
-    }
   };
 
   return (
@@ -26,24 +44,14 @@ const SalesHistory = () => {
         {salesData.map((sale) => (
           <div key={sale.id} className="sale-item">
             <div className="sale-info">
-              <p className="price">قیمت فروش: ${sale.price}</p>
+              <p className="price">مبلغ فاکتور : {money_standard(sale.price)} تومان</p>
               <p className="date">تاریخ: {sale.date}</p>
-              <p className="receipt-number">شماره رسید: {sale.receiptNumber}</p>
+              <p id='receipt-number' className="receipt-number">کدپیگیری : {sale.receiptNumber}</p>
               <p className="count">تعداد محصولات: {sale.count}</p>
             </div>
-            <button onClick={() => handleViewMore(sale.id)}>
-              {expandedSaleId === sale.id ? 'بستن جزئیات' : 'جزئیات بیشتر'}
+            <button className='button-sales' onClick={() => handleViewMore(sale.id)}>
+            جزئیات بیشتر
             </button>
-            {expandedSaleId === sale.id && (
-              <div className="sample-products">
-                <h3>محصولات تاریخ {sale.date}:</h3>
-                <ul>
-                  {sale.products.map((productName, index) => (
-                    <li key={index}>{productName}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
           </div>
         ))}
       </div>

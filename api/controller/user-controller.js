@@ -20,12 +20,12 @@ class UserController{
     static async registerUser(req,res){
         let result = await UserModel.existUser({userName: String(req.body.userName), role: String(req.body.role)});
         if(result){
-            return res.send(JSON.stringify("user already exist"));
+            return res.send(JSON.stringify(null));
           }else {
             const hashPassword = await bcrypt.hash(String(req.body.password), 10);
             let user = await UserModel.createUser({userName : String(req.body.userName),password : hashPassword, role: String(req.body.role)});
             if(user !== -1){
-                return res.send(JSON.stringify("ok"));
+                return res.send(JSON.stringify(true));
             }
             else return res.send(JSON.stringify(null));
         }

@@ -7,7 +7,7 @@ import Profile from './Profile';
 import ProductDisplay from './ProductDisplay';
 import SalesHistory from './SalesHistory';
 import AddProduct from '../product/addProduct';
-import ChangeProduct from '../user/changeProduct'; // Import ChangeProduct component
+import ChangeProduct from '../product/changeProduct'; // Import ChangeProduct component
 
 const tasks = [
   { name: 'صفحه اصلی' },

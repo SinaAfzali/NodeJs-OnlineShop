@@ -112,4 +112,22 @@ async function submit_rating(req,res){
     return res.send(JSON.stringify(true));
 }
 
-module.exports = {addProduct, getFilteredProducts, getOneProduct, getCartProducts, check_rating,submit_rating,};
+async function getSellerProducts(req,res){
+  let products = await ProductsModel.getProducts();
+  let filtered_products = [];
+  for(let i=0;i<products.length;i++){
+    if(products[i].seller_id === req.body.userName){
+      filtered_products.push(products[i]);
+    }
+  }
+  res.send(JSON.stringify(filtered_products));
+}
+
+module.exports = {
+  addProduct,
+  getFilteredProducts,
+  getOneProduct,
+  getCartProducts,
+  check_rating,submit_rating,
+  getSellerProducts
+};

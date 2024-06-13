@@ -24,7 +24,6 @@ const MainPage = () => {
   const [isRightTaskbarVisible, setIsRightTaskbarVisible] = useState(false);
 
   useEffect(() => {
-    // Cookies.remove('cart');
     const validateToken = async () => {
       token = Cookies.get('Login');
       result = await request.Post(Url.tokenValidator, { token: token });
@@ -39,9 +38,6 @@ const MainPage = () => {
       if (roleUserElement) {
         roleUserElement.style = 'font-size:12px;color:red';
       }
-
-
-
 
       filter1 = 'همه محصولات';
       filter2 = '';
@@ -172,10 +168,11 @@ const MainPage = () => {
       if(score !== ''){
         score = score.toFixed(1);
         document.getElementById('product-point' + String(i)).innerHTML = score + '☆';
-      }
+      }else document.getElementById('product-point' + String(i)).style.backgroundColor = 'white';
+
       if(product.discount > 0 && product.discount <= 100){
         document.getElementById('product-discount' + String(i)).innerHTML = product.discount + '%';
-      }
+      }else document.getElementById('product-discount' + String(i)).style.backgroundColor = 'white';
 
       document.getElementById('product-item' + String(product._id)).addEventListener('click', ()=>{
         // go to product page
@@ -199,7 +196,7 @@ const MainPage = () => {
             onChange={handleSearchChange}
             placeholder="... چی لازم داری"
           />
-          <button className="search-icon" onClick={searchProducts}>
+          <button className="search-icon-main" onClick={searchProducts}>
             جستو جو
           </button>
         </div>

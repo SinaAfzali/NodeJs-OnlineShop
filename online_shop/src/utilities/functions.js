@@ -2,7 +2,7 @@ import Cookies from 'js-cookie';
 const request = require('./HTTP_REQUEST');
 
 
-const userNameValidator = async (userInput ,  usernameValidator, role) => {
+export async function userNameValidator(userInput ,  usernameValidator, role){
   let apiUrl_validUserName = 'http://localhost:9000/api/user/register/username/validator';
   let pattern = /^[a-zA-Z0-9]+$/;
   let isValid = true;
@@ -30,7 +30,7 @@ const userNameValidator = async (userInput ,  usernameValidator, role) => {
   return isValid;
 };
 
-const validatePasswords = (passwordInput, confirmPasswordInput, passwordValidatorLabel, passwordMatchValidatorLabel) => {
+export async function validatePasswords(passwordInput, confirmPasswordInput, passwordValidatorLabel, passwordMatchValidatorLabel) {
   let pattern = /^[a-zA-Z0-9_-]{4,}$/;
   let isValid = true;
 

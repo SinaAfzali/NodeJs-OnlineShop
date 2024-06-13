@@ -25,6 +25,8 @@ class Url{
 
     static submit_rating = this.root + "api/product/rating/submit"
 
+    static getSellerProducts = this.root + "api/product/getSellerProducts";
+
     static add_comment = this.root + "api/comment/add";
 
     static get_comments = this.root + "api/comment/get";
@@ -36,6 +38,9 @@ class Url{
     static remove_transaction = this.root + "api/transaction/removeOne";
 
     static update_transaction = this.root + "api/transaction/update";
+
+    static get_Transaction_seller = this.root + "api/transaction/get/filter/seller";
+
 }
 
 

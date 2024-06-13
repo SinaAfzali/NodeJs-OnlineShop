@@ -41,7 +41,7 @@
 }
 
 .form-group select {
-  height: 40px;
+  height: 60px;
 }
 
 .form-group img.current-image,
@@ -71,9 +71,9 @@
   background-color: #0056b3;
 }
 
-button[type="button"] {
+/* button[type="button"] {
   margin: 5px 0;
   padding: 5px 10px;
   font-size: 14px;
   cursor: pointer;
-}
+} */

@@ -14,7 +14,7 @@
 
 .sales-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(4,1fr);
   grid-gap: 20px;
 }
 
@@ -22,7 +22,7 @@
   background-color: #fff;
   padding: 15px;
   border-radius: 8px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
 }
 
 .sale-info {
@@ -43,7 +43,7 @@
   font-weight: bold;
 }
 
-button {
+button-salse {
   margin-top: 10px;
   padding: 8px 16px;
   background-color: #007bff;
@@ -53,6 +53,6 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+button:hover-sales {
   background-color: #0056b3;
 }

@@ -47,10 +47,12 @@ const LoginAndRegister = () => {
       };
 
       let result = await request.Post(Url.register_url, userData);
-      if(result === "ok"){
+      if(result){
         alert("ثبت نام با موفقیت انجام شد. اکنون می توانید وارد شوید");
         setShowNotification(true);
         document.getElementById('check').checked = false;
+      }else{
+        alert('کاربری با این اطلاعات از قبل وجود دارد')
       }
     }
   };
