@@ -111,7 +111,7 @@ const MainPage = () => {
   };
 
   const handleBottomButtonClick = () => {
-    navigate(Router_path.sellerAcount);
+    navigate(Router_path.CustomerAccount);
   };
 
   const toggleRightTaskbar = () => {

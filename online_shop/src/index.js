@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import AddProduct from './product/addProduct';
 import PaymentForm from './shop/PaymentForm';
 import LoginAndRegister from './user/LoginAndRegister';
-import CustomerAccount from './user/customerAccount';
+import CustomerAccount from './user/customerAccount'; // Ensure this import is correct
 import Cart from './shop/Cart';
 import Creator from './shop/Creator';
 import ProfileView from './user/sellerAccount';
@@ -28,7 +28,7 @@ root.render(
         <Route path={Router_path.creator} element={<Creator />} />
         <Route path={Router_path.sellerAcount} element={<ProfileView />} />
         <Route path={Router_path.addProduct} element={<AddProduct />} />
-        <Route path={Router_path.CustomerAccount} element={<CustomerAccount />} />
+        <Route path={Router_path.CustomerAccount} element={<CustomerAccount />} /> {/* Ensure this route is correct */}
         <Route path={Router_path.PaymentForm} element={<PaymentForm />} />
         <Route path={Router_path.showProduct} element={<ShowProduct />} />
         <Route path={Router_path.changeProduct} element={<ChangeProduct />} /> {/* Add the ChangeProduct route */}
