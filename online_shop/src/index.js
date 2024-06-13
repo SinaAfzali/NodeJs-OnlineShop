@@ -1,4 +1,3 @@
-// index.js or App.js (where you set up routing)
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './css/index.css';
@@ -12,6 +11,7 @@ import Cart from './shop/Cart';
 import Creator from './shop/Creator';
 import ProfileView from './user/sellerAccount';
 import ShowProduct from './product/showProduct'; // Import the ShowProduct component
+import ChangeProduct from './user/changeProduct'; // Import the ChangeProduct component
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
@@ -30,7 +30,8 @@ root.render(
         <Route path={Router_path.addProduct} element={<AddProduct />} />
         <Route path={Router_path.CustomerAccount} element={<CustomerAccount />} />
         <Route path={Router_path.PaymentForm} element={<PaymentForm />} />
-        <Route path={Router_path.showProduct} element={<ShowProduct />} /> {/* Add the ShowProduct route */}
+        <Route path={Router_path.showProduct} element={<ShowProduct />} />
+        <Route path={Router_path.changeProduct} element={<ChangeProduct />} /> {/* Add the ChangeProduct route */}
       </Routes>
     </Router>
   </React.StrictMode>
