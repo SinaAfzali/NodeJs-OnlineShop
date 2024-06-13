@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { request, Url } from '../utilities/HTTP_REQUEST';
 import '../css/changeProduct.css'; // Import CSS file for styling
 
 const ChangeProduct = () => {
@@ -16,7 +15,9 @@ const ChangeProduct = () => {
     image: null,
     filter: '',
     discount: '',
-    features: []
+    features: [],
+    currentImage: null,
+    newImage: null
   });
 
   // Fetch product data based on ID
@@ -32,20 +33,22 @@ const ChangeProduct = () => {
           discount: 10,
           total_scores: 50,
           number_scores: 10,
-          image: require('../images/sample-product.png')
+          image: require('../images/sample-product.png'),
+          features: [{ name: 'Color', value: 'Red' }, { name: 'Size', value: 'M' }]
         };
 
         // Update state with fetched product data
-        setFormData({
+        setFormData((prevState) => ({
+          ...prevState,
           name: productData.name || '',
           price: productData.price.toString() || '',
           description: productData.description || '',
           productNumber: productData.productNumber || '',
-          image: productData.image || null,
+          currentImage: productData.image || null,
           filter: productData.filter || '',
           discount: productData.discount.toString() || '',
-          features: [] // Assuming no features initially
-        });
+          features: productData.features || []
+        }));
       } catch (error) {
         console.error('Error fetching product:', error);
       }
@@ -55,17 +58,34 @@ const ChangeProduct = () => {
   }, [id]);
 
   // Handle input change
-  const handleChange = (e) => {
+  const handleChange = (e, index) => {
     const { name, value } = e.target;
-
-    // Update form data based on input name
-    setFormData({ ...formData, [name]: value });
+    if (typeof index !== 'undefined') { // Check if index is defined
+      const updatedFeatures = [...formData.features];
+      updatedFeatures[index][name] = value;
+      setFormData((prevState) => ({
+        ...prevState,
+        features: updatedFeatures
+      }));
+    } else {
+      setFormData((prevState) => ({ ...prevState, [name]: value }));
+    }
   };
 
   // Handle image upload
   const handleImage = (e) => {
     const file = e.target.files[0];
-    setFormData({ ...formData, image: file });
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setFormData((prevState) => ({
+          ...prevState,
+          image: file,
+          newImage: reader.result
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   // Handle form submission
@@ -97,9 +117,12 @@ const ChangeProduct = () => {
     }
   };
 
-  // Handle adding new feature (assuming feature management)
+  // Handle adding new feature
   const handleAddFeature = () => {
-    // Add logic to manage features if needed
+    setFormData((prevState) => ({
+      ...prevState,
+      features: [...prevState.features, { name: '', value: '' }]
+    }));
   };
 
   return (
@@ -123,8 +146,10 @@ const ChangeProduct = () => {
           <input type="text" name="productNumber" value={formData.productNumber} onChange={handleChange} />
         </div>
         <div className="form-group">
-          <label>عکس محصول:</label>
+          <label>عکس محصول فعلی:</label>
+          {formData.currentImage && <img src={formData.currentImage} alt="Current Product" className="current-image" />}
           <input type="file" name="image" onChange={handleImage} />
+          {formData.newImage && <img src={formData.newImage} alt="New Product" className="new-image" />}
         </div>
         <div className="form-group">
           <label>دسته بندی:</label>
@@ -145,8 +170,27 @@ const ChangeProduct = () => {
           <label>تخفیف:</label>
           <input type="text" name="discount" value={formData.discount} onChange={handleChange} />
         </div>
-        {/* Features handling */}
-        {/* You can add logic here to manage features dynamically */}
+        {/* Render input fields for features */}
+        {formData.features.map((feature, index) => (
+          <div key={index} className="form-group">
+            <label>ویژگی {index + 1}:</label>
+            <input
+              type="text"
+              name="name"
+              placeholder="نام ویژگی"
+              value={feature.name}
+              onChange={(e) => handleChange(e, index)}
+            />
+            <input
+              type="text"
+              name="value"
+              placeholder="مقدار ویژگی"
+              value={feature.value}
+              onChange={(e) => handleChange(e, index)}
+            />
+          </div>
+        ))}
+        {/* Button to add a new feature */}
         <button type="button" onClick={handleAddFeature}>افزودن ویژگی جدید</button>
         <div className="button-group">
           <button type="submit" className="submit-btn-add-product">ثبت تغییرات</button>
