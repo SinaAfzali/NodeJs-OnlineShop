@@ -6,18 +6,27 @@ import Cookies from 'js-cookie';
 const request = require('../utilities/HTTP_REQUEST');
 const Url = require('../utilities/urls');
 
+
+
+var fileData_upload = '';
+let current_user;
+
 const Profile = ({ userName, userPicture}) => {
 
   useEffect(()=>{
-    let result;
    async function getUerData(){
     let token = Cookies.get('Login');
-    result = await request.Post(Url.tokenValidator, { token: token });
+    current_user = await request.Post(Url.tokenValidator, { token: token });
+    let data = await request.Post(Url.get_user_info, {userName:current_user.userName, role: current_user.role});
+    if(data){
+      let image = require('../images/usersImage/' + data.image);
+      setNewImage(image);
+    }
    }
    getUerData();
    setTimeout(() => {
-    setNewUserName(result.userName);
-    setRole(result.role);
+    setNewUserName(current_user.userName);
+    setRole(current_user.role);
    }, 100);
   })
 
@@ -25,6 +34,7 @@ const Profile = ({ userName, userPicture}) => {
   const [newUserName, setNewUserName] = useState(userName);
   const [role, setRole] = useState(userName);
   const [newImage, setNewImage] = useState('');
+  const [change, setChange] = useState('');
 
   const handleEditOptionChange = (e) => {
     setEditOption(e.target.value);
@@ -35,14 +45,37 @@ const Profile = ({ userName, userPicture}) => {
   };
 
   const handleImageChange = (e) => {
-    setNewImage(URL.createObjectURL(e.target.files[0]));
+    const file = e.target.files[0]; 
+    fileData_upload = new FormData(); 
+    fileData_upload.append('file', file); 
+    setChange('image');
   };
 
-  const handleSubmit = () => {
-    // Your logic to handle username change or profile image update
-    console.log('New username:', newUserName);
-    console.log('New image:', newImage);
-    // You can send the new username and/or image to the server or update them locally
+  const handleSubmit = async() => {
+   if(change === 'image'){
+    const response = await fetch('http://localhost:9000/upload/userImage', { 
+      method: 'POST', 
+      body: fileData_upload 
+  }); 
+  if (response.ok) { 
+    const data = await response.json();
+  //   let data1 = await request.Post(Url.get_user_info, {userName:current_user.userName, role: current_user.role});
+  //   let file = new FormData(); 
+  //   file.append('file', data1.image); 
+  //   if(data1){
+  //     await fetch('http://localhost:9000/removeImage/user', { 
+  //     method: 'POST', 
+  //     body: file
+  // }); 
+  //   }
+    let update = await request.Post(Url.user_update_url, {userName:current_user.userName, role:current_user.role, image:data});
+    if(update)alert('عکس شما با موفقیت تغییر کرد');
+    let image = require('../images/usersImage/' + data);
+    setNewImage(image);
+  } else { 
+      console.error('خطا در ارسال فایل.'); 
+  } 
+   }
   };
 
   return (

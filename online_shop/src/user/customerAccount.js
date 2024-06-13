@@ -41,7 +41,9 @@ const CustomerAccount = () => {
         setShowBuysHistory(false); // Hide sales history
         break;
       case 2:
-      
+        setShowBuysHistory(true);
+        setShowProfile(false);
+        break
       case 3:
         Cookies.remove('Login');
         navigate(Router_path.root);
@@ -57,7 +59,7 @@ const CustomerAccount = () => {
       <div className="main-content">
         <div id='content-div' className="content">
           {showProfile && <Profile userName="Sample User" userPicture="https://via.placeholder.com/150" role="Seller" />}
-          {showBuysHistory && <BuysHistory />} {/* Conditionally render SalesHistory component */}
+          {showeBuysHistory && <BuysHistory />} {/* Conditionally render SalesHistory component */}
         </div>
       </div>
     </div>

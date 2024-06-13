@@ -95,11 +95,14 @@ const MainPage = () => {
     setSearchQuery(e.target.value);
   };
 
-  const handleLogin = () => {
+  const handleLogin = async() => {
     if (!isLoggedIn) {
       navigate(Router_path.loginAndRegister);
-    } else {
-      navigate(Router_path.sellerAcount);
+    } else{
+      let token = Cookies.get('Login');
+      let user = await request.Post(Url.tokenValidator, { token: token });
+      if(user.role === 'seller')navigate(Router_path.sellerAcount);
+      else navigate(Router_path.CustomerAccount);
     }
   };
 

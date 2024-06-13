@@ -11,6 +11,8 @@ class Router_path{
 
     static sellerAcount = '/user/seller/account';
 
+    static CustomerAccount = '/user/customer/acount';
+
     static addProduct = '/user/seller/account/product/add'
 
     static showProduct = '/showProduct/:id';

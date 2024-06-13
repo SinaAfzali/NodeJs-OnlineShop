@@ -58,6 +58,19 @@ class UserController{
             } 
         }); 
     }
+
+    static async userUpdate(req,res){
+        let update = await UserModel.updateInformation({userName:req.body.userName, role:req.body.role},{image:req.body.image});
+        if(update)return res.send(JSON.stringify(true));
+        res.send(JSON.stringify(false));
+    }
+    
+    static async sendUserData(req,res){
+        let user = await UserModel.getUser(req.body);
+        if(user.image){
+            res.send(JSON.stringify({image:user.image,}))
+        }else res.send(JSON.stringify(null));
+    }
 }
 
 

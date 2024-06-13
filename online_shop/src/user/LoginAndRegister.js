@@ -83,8 +83,12 @@ const LoginAndRegister = () => {
         const token = await request.Post(Url.tokenLogin_url, {userName: userData.userName, role: userData.role});
         Cookies.set('Login', token, { expires: 7 });
       }
-
-      navigate(Router_path.sellerAcount);
+      if(userData.role === 'seller'){
+        navigate(Router_path.sellerAcount);
+      }else{
+        navigate(Router_path.CustomerAccount);
+      }
+      
 
     } else {
       alert('نام کاربری یا رمز عبور اشتباه است');

@@ -5,6 +5,10 @@ class Url{
     
     static register_url = this.root + "api/user/register";
 
+    static user_update_url = this.root + "api/user/profile/update";
+
+    static get_user_info = this.root + "api/user/getInfo";
+
     static login_url = this.root + "api/user/login";
 
     static tokenLogin_url = this.root + "api/user/login/token";
@@ -31,7 +35,7 @@ class Url{
 
     static remove_transaction = this.root + "api/transaction/removeOne";
 
-    static update_transaction = this.root + "api/transaction/update"
+    static update_transaction = this.root + "api/transaction/update";
 }
 
 

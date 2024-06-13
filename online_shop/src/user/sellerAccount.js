@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import '../css/sellerAccount.css';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
-import Router_path from '../utilities/routes';
+import Router_path, { addProduct } from '../utilities/routes';
 import Profile from './Profile';
 import ProductDisplay from './ProductDisplay';
 import SalesHistory from './SalesHistory'; // Import SalesHistory component
+import AddProduct from '../product/addProduct';
 
 const tasks = [
   { name: 'صفحه اصلی' },
@@ -32,6 +33,7 @@ const SellerAccount = () => {
   const [showProfile, setShowProfile] = useState(true);
   const [showProductDisplay, setShowProductDisplay] = useState(false);
   const [showSalesHistory, setShowSalesHistory] = useState(false); // State for displaying sales history
+  const [showAddProduct, setShowAddProduct] = useState(false); 
 
   const navigate = useNavigate();
 
@@ -46,6 +48,9 @@ const SellerAccount = () => {
         setShowSalesHistory(false); // Hide sales history
         break;
       case 2:
+        setShowAddProduct(true);
+        setShowProfile(false);
+        break
       case 3:
         setShowProfile(false);
         setShowProductDisplay(true);
@@ -77,6 +82,7 @@ const SellerAccount = () => {
         <div id='content-div' className="content">
           {showProfile && <Profile userName="Sample User" userPicture="https://via.placeholder.com/150" role="Seller" />}
           {showProductDisplay && <ProductDisplay />}
+          {showAddProduct && <AddProduct />}
           {showSalesHistory && <SalesHistory />} {/* Conditionally render SalesHistory component */}
         </div>
       </div>

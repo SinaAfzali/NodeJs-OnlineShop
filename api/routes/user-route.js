@@ -13,4 +13,8 @@ router.post('/login/token', UserController.sendToken);
 
 router.post('/login/token/validator', UserController.tokenValidator);
 
+router.post('/profile/update', UserController.userUpdate);
+
+router.post('/getInfo', UserController.sendUserData);
+
 module.exports = router;

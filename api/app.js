@@ -9,6 +9,7 @@ var productRouter = require('./routes/product-route')
 var userRouter = require('./routes/user-route');
 var transactionRouter = require('./routes/transaction-route');
 var commentRouter = require('./routes/comment-route');
+var fs = require('fs'); 
 require("dotenv").config();
 var app = express();
 app.use(express.json());
@@ -47,7 +48,7 @@ return randomImageName;
 }
 app.use(fileUpload()); 
  
-app.post('/upload', (req, res) => { 
+app.post('/upload/productImage', (req, res) => { 
     if (!req.files || !req.files.file) { 
         return res.status(400).send('فایلی انتخاب نشده است.'); 
     } 
@@ -65,7 +66,50 @@ app.post('/upload', (req, res) => {
         res.send(JSON.stringify(fileName)); 
     }); 
 }); 
- 
+app.post('/upload/userImage', (req, res) => { 
+  if (!req.files || !req.files.file) { 
+      return res.status(400).send('فایلی انتخاب نشده است.'); 
+  } 
+
+  const file = req.files.file; 
+  const arr = file.name.split('.');
+  const fileName = randomNumber(32) + '.' + arr[1];
+  const uploadPath = path.join(__dirname, '../online_shop/src/images/usersImage', fileName); 
+
+  file.mv(uploadPath, (err) => { 
+      if (err) { 
+          return res.status(500).send('خطا در ذخیره فایل.'); 
+      } 
+
+      res.send(JSON.stringify(fileName)); 
+  }); 
+}); 
+
+app.use('/removeImage/product', (req,res)=>{
+  const filePath = path.join(__dirname, '../online_shop/src/images/productsImage', req.body.image); 
+fs.unlink(filePath, (err) => { 
+    if (err) { 
+        console.error('خطا در حذف فایل:', err); 
+        res.send(JSON.stringify(null))
+        return; 
+    } 
+}); 
+res.send(JSON.stringify(true))
+})
+
+app.use('/removeImage/user', (req,res)=>{
+  const file = req.files.file; 
+  const filePath = path.join(__dirname, '../online_shop/src/images/usersImage', file); 
+fs.unlink(filePath, (err) => { 
+    if (err) { 
+        console.error('خطا در حذف فایل:', err); 
+        res.send(JSON.stringify(null))
+        return; 
+    } 
+}); 
+res.send(JSON.stringify(true))
+})
+
 
 
 
