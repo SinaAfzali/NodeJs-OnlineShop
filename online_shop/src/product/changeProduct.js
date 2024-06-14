@@ -1,10 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../css/changeProduct.css'; // Import CSS file for styling
+import Cookies from 'js-cookie';
+import Router_path from '../utilities/routes';
+
+
+const {Product} = require('../utilities/classes');
+const request = require('../utilities/HTTP_REQUEST');
+const Url = require('../utilities/urls');
+var productData;
+var fileData_upload = '';
 
 const ChangeProduct = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [change_image, setChangeImage] = useState(false);
 
   // State to hold form data
   const [formData, setFormData] = useState({
@@ -25,17 +35,8 @@ const ChangeProduct = () => {
     const fetchProduct = async () => {
       try {
         // Simulating fetching product data from API using the product ID
-        const productData = {
-          _id: '1',
-          name: 'Product 1',
-          description: 'Description of Product 1',
-          price: 10000,
-          discount: 10,
-          total_scores: 50,
-          number_scores: 10,
-          image: require('../images/sample-product.png'),
-          features: [{ name: 'Color', value: 'Red' }, { name: 'Size', value: 'M' }]
-        };
+        productData = await request.Post(Url.getOneProduct_url, {product_id: String(id)});
+        productData.image = await require('../images/productsImage/' + productData.image);
 
         // Update state with fetched product data
         setFormData((prevState) => ({
@@ -74,48 +75,57 @@ const ChangeProduct = () => {
 
   // Handle image upload
   const handleImage = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setFormData((prevState) => ({
-          ...prevState,
-          image: file,
-          newImage: reader.result
-        }));
-      };
-      reader.readAsDataURL(file);
-    }
+    const file = e.target.files[0]; 
+    fileData_upload = new FormData(); 
+    fileData_upload.append('file', file);
+    setChangeImage(true);
   };
 
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent default form submission
-
-    const { name, price, description, productNumber, image, filter, discount, features } = formData;
-
+    var { name, price, description, productNumber, image, filter, discount, features } = formData;
+    if(change_image){
+      let newImage = save_image_to_disck();
+      image = newImage;
+    }else {
+      let currProduct = await request.Post(Url.getOneProduct_url, {product_id: String(id)});
+      image = currProduct.image;
+    }
     try {
-      const updatedProduct = {
-        id,
-        name,
-        price: parseInt(price, 10),
-        description,
-        productNumber,
-        image,
-        filter,
-        discount: parseInt(discount, 10),
-        features
-      };
-
-      // Simulate API call to update product
-      console.log('Updated Product:', updatedProduct);
-      alert('محصول با موفقیت تغییر یافت');
-      navigate('/sellerAccount'); // Redirect to seller account page after successful update
+      let token = Cookies.get('Login');
+      let currSeller = await request.Post(Url.tokenValidator, { token: token });
+      let userName1 = currSeller.userName;
+      const product = new Product(String(id), name, price, description, productNumber, image, filter, discount, features, Product.status_dontdisplay,
+        userName1,productData.total_scores,productData.number_scores);
+      let update = await request.Post(Url.update_product, product);
+      if(update){
+        alert('محصول با موفقیت به روز رسانی شد ');
+        navigate(Router_path.sellerAcount);
+      }else{
+        alert('خطایی رخ داده است')
+      }
+      
     } catch (error) {
       console.error('Error updating product:', error);
       alert('خطا در تغییر محصول');
     }
   };
+
+
+  const save_image_to_disck = async()=>{
+    const response = await fetch('http://localhost:9000/upload/productImage', { 
+      method: 'POST', 
+      body: fileData_upload 
+  }); 
+
+  if (response.ok) { 
+    const data = await response.json();
+    return data;
+  } else { 
+      console.error('خطا در ارسال فایل.'); 
+  } 
+}
 
   // Handle adding new feature
   const handleAddFeature = () => {
@@ -124,6 +134,24 @@ const ChangeProduct = () => {
       features: [...prevState.features, { name: '', value: '' }]
     }));
   };
+
+  const remove_feature = (index)=>{
+    let newFeatures = [];
+    for(let i=0;i<formData.features.length;i++){
+      if(i !== index)newFeatures.push(formData.features[i]);
+    }
+    setFormData((prevState) => ({
+      ...prevState,
+      name: productData.name || '',
+      price: productData.price.toString() || '',
+      description: productData.description || '',
+      productNumber: productData.productNumber || '',
+      currentImage: productData.image || null,
+      filter: productData.filter || '',
+      discount: productData.discount.toString() || '',
+      features: newFeatures || []
+    }));
+  }
 
   return (
     <div className="add-product-container">
@@ -146,7 +174,7 @@ const ChangeProduct = () => {
           <input type="text" name="productNumber" value={formData.productNumber} onChange={handleChange} />
         </div>
         <div className="form-group">
-          <label>عکس محصول فعلی:</label>
+          <label>عکس فعلی محصول:</label>
           {formData.currentImage && <img src={formData.currentImage} alt="Current Product" className="current-image" />}
           <input type="file" name="image" onChange={handleImage} />
           {formData.newImage && <img src={formData.newImage} alt="New Product" className="new-image" />}
@@ -174,6 +202,7 @@ const ChangeProduct = () => {
         {formData.features.map((feature, index) => (
           <div key={index} className="form-group">
             <label>ویژگی {index + 1}:</label>
+            <button type="button" className='remove-feature' onClick={()=>remove_feature(index)}>حذف ویژگی</button>
             <input
               type="text"
               name="name"

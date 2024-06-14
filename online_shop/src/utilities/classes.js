@@ -1,5 +1,6 @@
 class Product {
   constructor(_id,name, price, description, productNumber, image, filter, discount, features, status, seller_id, total_scores, number_scores) {
+    this._id =_id;
     this.name = name;
     this.price = price;
     this.description = description;
@@ -11,9 +12,6 @@ class Product {
     this.seller_id = seller_id;
     this.total_scores = total_scores;
     this.number_scores = number_scores;
-    if(discount)this.addDiscount(discount);
-  }
-  addDiscount(discount){
     this.discount = discount;
   }
   static status_available = "موجود";

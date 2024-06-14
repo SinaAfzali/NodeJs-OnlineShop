@@ -53,7 +53,9 @@ class UserController{
             } else { 
                 let user = await UserModel.getUser({userName: decoded.userName,role: decoded.role });
                 if(user !== null){
-                    return res.send({userName: user.userName, role: user.role});
+                    let obj = {userName: user.userName, role: user.role};
+                    if(user.role === 'seller')obj = Object.assign({}, obj, {position: user.position, money: user.money});
+                    return res.send(JSON.stringify(obj));
                 }else res.send(JSON.stringify(null));
             } 
         }); 
@@ -68,7 +70,7 @@ class UserController{
     static async sendUserData(req,res){
         let user = await UserModel.getUser(req.body);
         if(user.image){
-            res.send(JSON.stringify({image:user.image,}))
+            res.send(JSON.stringify({image:user.image, }))
         }else res.send(JSON.stringify(null));
     }
 }

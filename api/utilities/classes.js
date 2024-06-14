@@ -83,10 +83,6 @@ class Product {
       this.seller_id = seller_id;
       this.total_scores = total_scores;
       this.number_scores = number_scores;
-      if(discount)this.addDiscount(discount);
-    }
-
-    addDiscount(discount){
       this.discount = discount;
     }
 

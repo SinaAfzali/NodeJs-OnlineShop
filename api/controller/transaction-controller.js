@@ -1,6 +1,8 @@
 const { ObjectId } = require('mongodb'); 
 const TransactionModel = require('../models/transaction-model');
-const {Transaction} = require('../utilities/classes'); 
+const UserModel = require('../models/user-model');
+const ProductModel = require('../models/product-model');
+const {Transaction, Product} = require('../utilities/classes'); 
 const {myDate} = require('../utilities/classes')
 
 
@@ -35,20 +37,36 @@ async function getTransactions(req, res){
 async function getTransactionsByCustomerId(req, res){
     let transactions = await TransactionModel.getTransactions();
     let filtered_transactions = [];
-    let k = 0;
-    let customer_id = String(req.body.customer_id);
     for(let i=0;i<transactions.length;i++){
-        if(transactions[i].customer_id === customer_id){
-            filtered_transactions[k] = transactions[i];
-            k++;
+        if(transactions[i].customer_id === req.body.userName){
+            filtered_transactions.push(transactions[i]);
         }
     }
-    res.send(JSON.stringify(filtered_transactions));
+    for(let i=0;i<filtered_transactions.length;i++){
+        for(let j=i+1;j<filtered_transactions.length;j++){
+            if((new myDate(filtered_transactions[i].date_paid).compareTo(filtered_transactions[j].date_paid)) === -1){
+                let temp = filtered_transactions[i];
+                filtered_transactions[i] = filtered_transactions[j];
+                filtered_transactions[j] = temp;
+              }
+        }
+    }
+    const replacer = function(key, value) {   
+        if (value instanceof ObjectId) {   
+          return value.toString();   
+        } else {   
+          return value;   
+        }   
+      };  
+      const jsonTransactions = JSON.stringify(filtered_transactions, replacer, 2);  
+      res.send(jsonTransactions);
 }
 
 async function getTransactionsBySellerId(req,res){
     let transactions = await TransactionModel.getTransactions();
     let filtered_transactions = [];
+    if(req.body.position === 'SuperAdmin')filtered_transactions = transactions;
+    else{
     for(let i=0;i<transactions.length;i++){
       if(transactions[i].status === 'paid'){
         let products_curr = [];  
@@ -59,12 +77,15 @@ async function getTransactionsBySellerId(req,res){
                 price_curr += (transactions[i].products_list[j].price * transactions[i].products_list[j].number);
             }
         }
+       if(products_curr.length > 0){
         let transaction_curr = new Transaction(transactions[i].customer_id, products_curr, price_curr);
         transaction_curr.setID(transactions[i]._id);
         transaction_curr.setDate(transactions[i].date_paid);
         filtered_transactions.push(transaction_curr);
+       }
       }
     }
+  }
 
     for(let i=0;i<filtered_transactions.length;i++){
         for(let j=i+1;j<filtered_transactions.length;j++){
@@ -104,6 +125,36 @@ async function removeTransaction(req,res){
 
 async function updateTransaction(req, res){
     let update = await TransactionModel.updateTransaction(req.body._id, {status:"paid", date_paid: myDate.now()});
+    let transaction = await TransactionModel.getTransaction(req.body._id);
+
+    for(let i=0;i<transaction.products_list.length;i++){
+      // update users info
+      let seller = await UserModel.getUser({userName:transaction.products_list[i].seller, role:'seller'});
+      let money = seller.money;
+      if(seller.position === 'Member'){
+        money += Number(((95/100) * (transaction.products_list[i].price * transaction.products_list[i].number)).toFixed(0));
+        let money2 = Number(((5/100) * (transaction.products_list[i].price * transaction.products_list[i].number)).toFixed(0))
+        await UserModel.updateInformation({userName:transaction.products_list[i].seller, role:'seller'}, {money:money});
+        let SuperAdmin = await UserModel.getUser({position: 'SuperAdmin'});
+        money2 += SuperAdmin.money;
+        await UserModel.updateInformation({position: 'SuperAdmin'}, {money:money2})
+      }
+      else {
+        money += Number((transaction.products_list[i].price * transaction.products_list[i].number).toFixed(0));
+        await UserModel.updateInformation({userName:transaction.products_list[i].seller, role:'seller'}, {money:money})
+      }
+
+
+      // update products info
+      let product = await ProductModel.getProduct(transaction.products_list[i].product_id);
+      let number = product.productNumber - transaction.products_list[i].number;
+      if(number===0){
+        let status = Product.status_unavailable;
+        await ProductModel.updateProduct(product._id,{productNumber:number, status:status}, 'set')
+      }else{
+        await ProductModel.updateProduct(product._id, {productNumber:number},'set');
+      }
+    }
     if(update)return res.send(JSON.stringify(true));
     res.send(JSON.stringify(false));
 }

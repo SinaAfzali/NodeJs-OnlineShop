@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../css/sellerAccount.css';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
@@ -9,14 +9,22 @@ import SalesHistory from './SalesHistory';
 import AddProduct from '../product/addProduct';
 import ChangeProduct from '../product/changeProduct'; // Import ChangeProduct component
 
-const tasks = [
+const request = require('../utilities/HTTP_REQUEST');
+const Url = require('../utilities/urls');
+
+
+
+var tasks = [
   { name: 'صفحه اصلی' },
   { name: 'پروفایل' },
   { name: 'افزودن محصول' },
   { name: 'نمایش محصولات من' },
   { name: 'سوابق فروش' },
   { name: 'خروج' },
+  { name: 'محصولات' },
+  { name: 'سوابق فروش فروشگاه' }
 ];
+
 
 const Taskbar = ({ tasks, onTaskClick }) => {
   return (
@@ -30,14 +38,30 @@ const Taskbar = ({ tasks, onTaskClick }) => {
   );
 };
 
+
 const SellerAccount = () => {
   const [showProfile, setShowProfile] = useState(true);
   const [showProductDisplay, setShowProductDisplay] = useState(false);
   const [showSalesHistory, setShowSalesHistory] = useState(false);
   const [showAddProduct, setShowAddProduct] = useState(false);
-  const [showChangeProduct, setShowChangeProduct] = useState(false); // State for displaying ChangeProduct component
+  const [showChangeProduct, setShowChangeProduct] = useState(false);
+  const [filter_disply, setFilterDisplay] = useState(false);
 
   const navigate = useNavigate();
+
+
+  useEffect(()=>{
+    setTimeout(async() => {
+      
+  let token = Cookies.get('Login');
+  let current_user = await request.Post(Url.tokenValidator, { token: token });
+  if(current_user && current_user.position === 'Member'){
+    document.getElementById('task-item6').style.display = 'none';
+    document.getElementById('task-item7').style.display = 'none';
+  }
+    }, 200);
+  })
+  
 
   const handleTaskClick = (index) => {
     switch (index) {
@@ -49,33 +73,63 @@ const SellerAccount = () => {
         setShowProductDisplay(false);
         setShowSalesHistory(false);
         setShowAddProduct(false);
-        setShowChangeProduct(false); // Hide ChangeProduct component
+        setShowChangeProduct(false); 
         break;
       case 2:
         setShowAddProduct(true);
         setShowProfile(false);
         setShowProductDisplay(false);
         setShowSalesHistory(false);
-        setShowChangeProduct(false); // Hide ChangeProduct component
+        setShowChangeProduct(false); 
         break;
       case 3:
-        setShowProfile(false);
-        setShowProductDisplay(true);
-        setShowSalesHistory(false);
-        setShowAddProduct(false);
-        setShowChangeProduct(false); // Hide ChangeProduct component
-        break;
-      case 4:
+        setFilterDisplay(true);
         setShowProfile(false);
         setShowProductDisplay(false);
-        setShowSalesHistory(true);
+        setShowSalesHistory(false);
         setShowAddProduct(false);
-        setShowChangeProduct(false); // Hide ChangeProduct component
+        setShowChangeProduct(false); 
+        setTimeout(() => {
+          setShowProductDisplay(true);
+        }, 200);
+        break;
+      case 4:
+        setFilterDisplay(true);
+        setShowProfile(false);
+        setShowProductDisplay(false);
+        setShowSalesHistory(false);
+        setShowAddProduct(false);
+        setShowChangeProduct(false); 
+        setTimeout(() => {
+          setShowSalesHistory(true);
+        }, 200);
         break;
       case 5:
         Cookies.remove('Login');
         navigate(Router_path.root);
         break;
+      case 6:
+        setFilterDisplay(false);
+        setShowProfile(false);
+        setShowProductDisplay(false);
+        setShowSalesHistory(false);
+        setShowAddProduct(false);
+        setShowChangeProduct(false); 
+        setTimeout(() => {
+          setShowProductDisplay(true);
+        }, 200);
+        break;
+        case 7:
+          setFilterDisplay(false);
+          setShowProfile(false);
+          setShowProductDisplay(false);
+          setShowSalesHistory(false);
+          setShowAddProduct(false);
+          setShowChangeProduct(false); 
+          setTimeout(() => {
+            setShowSalesHistory(true);
+          }, 200);
+          break;
       default:
         break;
     }
@@ -95,9 +149,9 @@ const SellerAccount = () => {
       <div className="main-content">
         <div id='content-div' className="content">
           {showProfile && <Profile userName="Sample User" userPicture="https://via.placeholder.com/150" role="Seller" />}
-          {showProductDisplay && <ProductDisplay />}
+          {showProductDisplay && <ProductDisplay filter={filter_disply} />}
           {showAddProduct && <AddProduct />}
-          {showSalesHistory && <SalesHistory />}
+          {showSalesHistory && <SalesHistory filter={filter_disply} />}
           {showChangeProduct && <ChangeProduct />} {/* Conditionally render ChangeProduct component */}
         </div>
       </div>

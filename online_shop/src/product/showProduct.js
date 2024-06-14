@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import '../css/showProduct.css';
 import {money_standard, getCookie, update_cookie, update_cart_cookie, checkCharacterOrder} from '../utilities/functions';
 import Cookies from 'js-cookie';
+import { Product } from '../utilities/classes';
 
 
 const request = require('../utilities/HTTP_REQUEST');
@@ -45,16 +46,17 @@ const ShowProduct = () => {
       description: product.description,
       image: product.image,
       price: price,
+      status: product.status,
     }
     document.getElementById('product-image').src = require('../images/productsImage/' + String(currentProduct.image));
     document.getElementById('product-name').innerHTML = currentProduct.name;
     document.getElementById('product-description').innerHTML = currentProduct.description;
     document.getElementById('product-rating').innerHTML = currentProduct.score;
     document.getElementById('product-price').innerHTML = currentProduct.price + ' تومان ';
-    let html = '<div id="title-moreinfo"> مشخصات فنی </div><div></div><div></div>';
+    let html = '<div id="title-moreinfo"> مشخصات فنی </div><div></div>';
     for(let i=0;i<product.features.length;i++){
       html += `<p>${product.features[i].name} : </p>
-      <p>${product.features[i].value}</p><p></p>
+      <p>${product.features[i].value}</p>
       `
     }
     document.getElementById('product-features').innerHTML = html;
@@ -72,6 +74,11 @@ const ShowProduct = () => {
          document.getElementById('number-product-in-cart').innerHTML = "تعداد در سبد خرید : " + product_split[i+1];
        }
      }
+    }
+    if(currentProduct.status === Product.status_unavailable){
+      document.getElementById('increase-cart-show-product').style.display = 'none';
+      document.getElementById('add-cart-show-product').style.display = 'none';
+      document.getElementById('unavailable-showproduct').style.display = 'block';
     }
    }, 100);
 
@@ -247,6 +254,7 @@ const ShowProduct = () => {
         <div className="show-price-rating">
           <p id='product-price'  className="show-product-price"></p>
         </div>
+        <h1 id='unavailable-showproduct'>ناموجود</h1>
         <div id='increase-cart-show-product' className='increase-cart-show-product'>
            <h2 id='number-product-in-cart'>تعداد در سبد خرید : 1</h2>
            <button className='quantity-btn-cart' onClick={plus}>+</button>
@@ -256,7 +264,7 @@ const ShowProduct = () => {
         <div id='add-cart-show-product' onClick={add}>
         <button className='add-product-to-cart'>افزودن به سبد خرید</button>
         </div>
-        <p id='product-description' className="show-product-description"></p>
+        <div id='product-description' className="show-product-description"></div>
         <div id='product-features' className="product-odd-information"></div>
         <div id='product-rating' className="show-product-rating"></div>
         <div className="user-rating">

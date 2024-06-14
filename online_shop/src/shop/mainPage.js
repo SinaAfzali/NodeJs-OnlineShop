@@ -8,6 +8,8 @@ import foodfilter from '../images/food.png';
 import clothesfilter from '../images/clothes.png';
 import toolsfilter from '../images/tools.png';
 import {money_standard, checkCharacterOrder} from '../utilities/functions';
+
+const {Product} = require('../utilities/classes');
 const request = require('../utilities/HTTP_REQUEST');
 const Url = require('../utilities/urls');
 const Router_path = require('../utilities/routes');
@@ -41,9 +43,13 @@ const MainPage = () => {
 
       filter1 = 'همه محصولات';
       filter2 = '';
-      let filtered_products = await request.Post(Url.getFilterdProducts_url, {filter1: filter1, filter2: filter2});
-      for(let i=0;i<filtered_products.length;i++){
-        filtered_products[i].image = require('../images/productsImage/' + filtered_products[i].image);
+      let filtered_products1 = await request.Post(Url.getFilterdProducts_url, {filter1: filter1, filter2: filter2});
+      let filtered_products = []
+      for(let i=0;i<filtered_products1.length;i++){
+        if(filtered_products1[i].status !== Product.status_dontdisplay){
+          filtered_products1[i].image = require('../images/productsImage/' + filtered_products1[i].image);
+          filtered_products.push(filtered_products1[i]);
+        }
       }
       setProducts(filtered_products);
 

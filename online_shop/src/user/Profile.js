@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../css/Profile.css';
 import { useEffect } from 'react';
 import Cookies from 'js-cookie';
+import { money_standard } from '../utilities/functions';
 
 const request = require('../utilities/HTTP_REQUEST');
 const Url = require('../utilities/urls');
@@ -23,9 +24,15 @@ const Profile = ({ userName, userPicture}) => {
     }
    }
    getUerData();
-   setTimeout(() => {
+   setTimeout(async() => {
+    token = Cookies.get('Login');
+    current_user = await request.Post(Url.tokenValidator, { token: token });
     setNewUserName(current_user.userName);
-    setRole(current_user.role);
+    if(current_user.role === 'seller')setRole('فروشنده');
+    else {
+      document.getElementById('money-user').style.display = 'none';
+      setRole('خریدار');
+    }
    }, 100);
   })
 
@@ -84,7 +91,8 @@ const Profile = ({ userName, userPicture}) => {
       </div>
       <div className="profile-info">
         <h2 id='usename-profile'>{newUserName}</h2>
-        <p id='role-profile'>{role}</p>
+        <h2 id='role-profile'>{role}</h2>
+        <h2 id='money-user'>موجودی : {money_standard(current_user.money)} تومان</h2>
         <select value={editOption} onChange={handleEditOptionChange}>
           <option value="none">انتخاب کنید</option>
           <option value="تغییر رمز عبور">تغییر رمز عبور</option>
@@ -103,6 +111,7 @@ const Profile = ({ userName, userPicture}) => {
         <button onClick={handleSubmit}>ذخیره تغییرات</button>
       </div>
     </div>
+    
   );
 };
 

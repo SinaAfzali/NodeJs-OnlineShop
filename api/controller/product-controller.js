@@ -9,7 +9,7 @@ const { ObjectId } = require('mongodb');
 async function addProduct(req,res){
     let obj = req.body;
     var product = new Product(obj.name,Number(obj.price),obj.description,Number(obj.productNumber), 
-      obj.image,obj.filter,Number(obj.discount),obj.features, Product.status_available, obj.seller_id, 0, 0);
+      obj.image,obj.filter,Number(obj.discount),obj.features, Product.status_dontdisplay, obj.seller_id, 0, 0);
     let result = await ProductsModel.insertProduct(product);
     if(result !== -1){
       return res.send(JSON.stringify("ok"));
@@ -20,6 +20,7 @@ async function addProduct(req,res){
 
 async function getFilteredProducts(req,res){
   let products = await ProductsModel.getProducts();
+
   if(req.body.filter1 !== 'همه محصولات'){
     products = filterByCategory_products(products, req.body.filter1);
   }
@@ -39,6 +40,8 @@ async function getFilteredProducts(req,res){
       return value;   
     }   
   };  
+
+  if (products.length === 0) products = [];
   
   const jsonProducts = JSON.stringify(products, replacer, 2);  
   res.send(jsonProducts);
@@ -123,11 +126,30 @@ async function getSellerProducts(req,res){
   res.send(JSON.stringify(filtered_products));
 }
 
+async function change_status(req, res){
+   let update = await ProductsModel.updateProduct(req.body.product_id, {status: req.body.status}, 'set');
+   if(update)res.send(JSON.stringify(true));
+   else res.send(JSON.stringify(false));
+}
+
+async function update_product(req,res){
+  let id = req.body._id;
+  let obj = req.body;
+  var product = new Product(obj.name,Number(obj.price),obj.description,Number(obj.productNumber), 
+      obj.image,obj.filter,Number(obj.discount),obj.features, Product.status_dontdisplay, obj.seller_id, obj.total_scores, obj.number_scores);
+    console.log(id);
+  let update = await ProductsModel.updateProduct(id, product,'set');
+  if(update)return res.send(JSON.stringify(true));
+  res.send(JSON.stringify(false));
+}
+
 module.exports = {
   addProduct,
   getFilteredProducts,
   getOneProduct,
   getCartProducts,
   check_rating,submit_rating,
-  getSellerProducts
+  getSellerProducts,
+  change_status,
+  update_product,
 };

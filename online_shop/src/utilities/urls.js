@@ -19,6 +19,10 @@ class Url{
 
     static addProduct_url = this.root + "api/product/add";
 
+    static update_product = this.root + "api/product/update";
+
+    static change_status_product = this.root + "api/product/change/status";
+
     static getOneProduct_url = this.root + "api/product/get/one";
 
     static check_rating = this.root + "api/product/rating/check";
@@ -40,6 +44,8 @@ class Url{
     static update_transaction = this.root + "api/transaction/update";
 
     static get_Transaction_seller = this.root + "api/transaction/get/filter/seller";
+
+    static get_Transaction_customer = this.root + "api/transaction/get/filter/customer";
 
 }
 

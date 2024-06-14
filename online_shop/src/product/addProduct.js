@@ -90,11 +90,11 @@ function AddProduct() {
     token = Cookies.get('Login');
     let currSeller = await request.Post(Url.tokenValidator, { token: token });
     let userName1 = currSeller.userName;
-    const product = new Product(null, name, price, description, productNumber, image, filter, discount, features, Product.status_available,
+    const product = new Product(null, name, price, description, productNumber, image, filter, discount, features, Product.status_dontdisplay,
       userName1,0,0);
   
 
-    let result = await request.Post(Url.addProduct_url, product);
+     result = await request.Post(Url.addProduct_url, product);
     if(result === "ok"){
       navigate(Router_path.sellerAcount);
       alert("محصول با موفقیت اضافه شد");

@@ -11,13 +11,17 @@ const Url = require('../utilities/urls');
 let token = Cookies.get('Login');
 let current_user = await request.Post(Url.tokenValidator, { token: token });
 
-const SalesHistory = () => {
+const SalesHistory = ({filter}) => {
   const [salesData, setSalesData] = useState([]);
 
 
   useEffect(()=>{
     setTimeout(async() => {
-      let transactions = await request.Post(Url.get_Transaction_seller, {userName: current_user.userName});
+      token = Cookies.get('Login');
+      current_user = await request.Post(Url.tokenValidator, { token: token });
+      let transactions;
+      if(filter)transactions = await request.Post(Url.get_Transaction_seller, {userName: current_user.userName, position: 'Member'});
+      else transactions = await request.Post(Url.get_Transaction_seller, {userName: current_user.userName, position: 'SuperAdmin'});;
       let current_transactions = []
       setSalesData([]);
       for(let i=0;i<transactions.length;i++){

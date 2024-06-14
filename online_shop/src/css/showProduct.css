@@ -1,5 +1,9 @@
 .product-detail-page {
     display: flex;
+    max-width: 64vw;
+    width: 60vw;
+    min-width: 60vw;
+    margin-right: 20vw;
     justify-content: center;
     align-items: center;
     background-color: #fff;
@@ -62,21 +66,20 @@
 }
 
 .show-product-description {
+    width: 80%;
+    margin: 50px 10% 50px 0 ;
     font-size: 30px;
-    margin-bottom: 20px;
     color: black;
-    margin-bottom: 50px;
 }
 
 .product-odd-information {
     display: grid;
-    grid-template-columns: repeat(3,1fr);
+    grid-template-columns: repeat(2,1fr);
     margin-bottom: 10px;
     font-size: 30px;
     font-weight: bolder;
     border-radius: 15px;
     background-color: #eaeaea;
-    padding: 5px 0 10px 0;
 }
 
 .product-odd-information p{
@@ -225,4 +228,10 @@
     text-align: right;
     margin: 0 50px 10px 40px;
     max-width: 40vw;
+}
+
+
+#unavailable-showproduct{
+    display: none;
+    color: red;
 }
