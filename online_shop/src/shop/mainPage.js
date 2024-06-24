@@ -14,8 +14,8 @@ const request = require('../utilities/HTTP_REQUEST');
 const Url = require('../utilities/urls');
 const Router_path = require('../utilities/routes');
 
-let token;
-let result;
+let token = Cookies.get('Login');
+let current_user = await request.Post(Url.tokenValidator, { token: token });
 
 let filter1 = 'همه محصولات', filter2 = '';
 
@@ -28,8 +28,8 @@ const MainPage = () => {
   useEffect(() => {
     const validateToken = async () => {
       token = Cookies.get('Login');
-      result = await request.Post(Url.tokenValidator, { token: token });
-      if (result) {
+      current_user = await request.Post(Url.tokenValidator, { token: token });
+      if (current_user) {
         setIsLoggedIn(true);
       } else setIsLoggedIn(false);
     };
@@ -75,15 +75,15 @@ const MainPage = () => {
       }
     }
    }
-   for(let x=0;x<searchPartStr.length;x++) {
-    if(searchPartStr[x] === ' ' || searchPartStr[x] === '' || searchPartStr[x].length < 2)continue;    
-   for(let i=0;i<filtered_products.length;i++){
-    if(checkCharacterOrder(searchPartStr[x], filtered_products[i].description)){
-      searchProducts.push(filtered_products[i]);
-      filtered_products.splice(i,1)
-    }
-  }
-}
+//    for(let x=0;x<searchPartStr.length;x++) {
+//     if(searchPartStr[x] === ' ' || searchPartStr[x] === '' || searchPartStr[x].length < 2)continue;    
+//    for(let i=0;i<filtered_products.length;i++){
+//     if(checkCharacterOrder(searchPartStr[x], filtered_products[i].description)){
+//       searchProducts.push(filtered_products[i]);
+//       filtered_products.splice(i,1)
+//     }
+//   }
+// }
     for(let i=0;i<searchProducts.length;i++){
       searchProducts[i].image = require('../images/productsImage/' + searchProducts[i].image);
     }
@@ -113,7 +113,7 @@ const MainPage = () => {
   };
 
   const handleBottomButtonClick = () => {
-    navigate(Router_path.CustomerAccount);
+    navigate(Router_path.creator);
   };
 
   const toggleRightTaskbar = () => {
@@ -209,8 +209,8 @@ const MainPage = () => {
         <div className="login-options">
           {isLoggedIn ? (
             <button id='loginuser' onClick={handleLogin}>
-              <pre>{result.userName}</pre>
-              <p id='roleuser'>{result.role}</p>
+              <pre>{current_user.userName}</pre>
+              <p id='roleuser'>{current_user.role}</p>
             </button>
           ) : (
             <button onClick={handleLogin}>ورود به حساب / عضویت</button>

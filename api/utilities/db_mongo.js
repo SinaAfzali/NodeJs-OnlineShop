@@ -75,6 +75,7 @@ class Database{
 
 
 static async deleteDocument(collection_name, document, one_or_many){
+    let result;
         try {
             await client.connect();
             var database = client.db(my_db);
@@ -82,13 +83,13 @@ static async deleteDocument(collection_name, document, one_or_many){
             if(findCollection === 1){
             let collection = database.collection(collection_name);
             if (one_or_many === "one"){
-                var result = await collection.deleteOne(document);
+                 result = await collection.deleteOne(document);
             }else if(one_or_many === "many"){
-            var result = await collection.deleteMany(document);
+             result = await collection.deleteMany(document);
             }else return "one_or_many is invalid";
             return result;
             }
-            else return "collection does not exist!";
+            else return null;
      
         } catch (e) {
             console.error(e);

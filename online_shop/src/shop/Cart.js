@@ -132,7 +132,7 @@ const Cart = () => {
                   <div className="item-info">
                     <img src={item.image} alt={item.name} className="product-image-cart" />
                     <div className="item-details">
-                      <span className="item-name">{item.name}</span>
+                      <p className="item-name">{item.name}</p>
                       <span className="item-price">قیمت: {money_standard(item.price)} تومان  </span>
                       <span className="item-quantity">تعداد: {item.quantity}</span>
                     </div>

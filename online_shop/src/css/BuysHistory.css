@@ -56,3 +56,7 @@ button {
 button:hover {
   background-color: #0056b3;
 }
+
+.more-datails-div{
+  display:  none;
+}

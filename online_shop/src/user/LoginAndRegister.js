@@ -79,7 +79,6 @@ const LoginAndRegister = () => {
     let result = await request.Post(Url.login_url, userData);
     if (result !== null) {
      // Successful login logic, e.g., redirect to the dashboard
-      
       const cookieValue = Cookies.get('Login');
       if(!cookieValue){
         const token = await request.Post(Url.tokenLogin_url, {userName: userData.userName, role: userData.role});

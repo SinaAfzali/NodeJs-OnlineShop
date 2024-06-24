@@ -51,7 +51,7 @@ const ProductDisplay = ({ searchQuery , filter}) => {
 
         let this_tag = document.getElementById('product-status' + filtered_products[i]._id);
         this_tag.innerHTML = filtered_products[i].status;
-        if(this_tag.innerHTML === Product.status_dontdisplay){
+        if(this_tag.innerHTML === Product.status_dontdisplay || this_tag.innerHTML === Product.status_unavailable){
           this_tag.style.backgroundColor = 'red';
           this_tag.style.marginRight = '40px';
         }else{

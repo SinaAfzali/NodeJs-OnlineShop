@@ -61,6 +61,7 @@ const ShowProduct = () => {
     }
     document.getElementById('product-features').innerHTML = html;
     document.getElementById('title-moreinfo').style.marginBottom = '20px';
+    setComments();
    }
    sendRequest();
    setTimeout(() => {
@@ -75,21 +76,21 @@ const ShowProduct = () => {
        }
      }
     }
+   setTimeout(() => {
     if(currentProduct.status === Product.status_unavailable){
       document.getElementById('increase-cart-show-product').style.display = 'none';
       document.getElementById('add-cart-show-product').style.display = 'none';
       document.getElementById('unavailable-showproduct').style.display = 'block';
     }
+   }, 10);
    }, 100);
 
-   setComments();
 
   });
 
 
 
   setComments = async()=>{
-    setTimeout(async() => {
       let comments = await request.Post(Url.get_comments, {product_id: id});
       let html = '';
       let colors = ['red', 'blue', 'green', 'blueviolet', 'chocolate' , 'darkgrey', 'gold', 'pink', 'orange', 'mediumturquoise'];
@@ -118,10 +119,6 @@ const ShowProduct = () => {
          document.getElementById('comment-text'+i).className = 'comment-text';
        }
    }
- 
-    }, 150);
- 
- 
   }
 
 

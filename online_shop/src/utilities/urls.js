@@ -19,6 +19,8 @@ class Url{
 
     static addProduct_url = this.root + "api/product/add";
 
+    static delete_product_url = this.root + "api/product/delete";
+
     static update_product = this.root + "api/product/update";
 
     static change_status_product = this.root + "api/product/change/status";

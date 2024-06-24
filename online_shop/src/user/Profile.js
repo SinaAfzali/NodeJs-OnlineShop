@@ -14,16 +14,19 @@ let token = Cookies.get('Login');
 let current_user = await request.Post(Url.tokenValidator, { token: token });
 
 const Profile = ({ userName, userPicture}) => {
+  const [money, setMoney] = useState(0);
 
   useEffect(()=>{
    async function getUerData(){
+    token = Cookies.get('Login');
+    current_user = await request.Post(Url.tokenValidator, { token: token });
       let data = await request.Post(Url.get_user_info, {userName:current_user.userName, role: current_user.role});
         if(data){
            let image = await require(('../images/usersImage/' + data.image));
            setNewImage(image);
     }
    }
-   getUerData();
+  getUerData();
    setTimeout(async() => {
     token = Cookies.get('Login');
     current_user = await request.Post(Url.tokenValidator, { token: token });
@@ -33,7 +36,8 @@ const Profile = ({ userName, userPicture}) => {
       document.getElementById('money-user').style.display = 'none';
       setRole('خریدار');
     }
-   }, 100);
+    setMoney(current_user.money);
+   }, 200);
   })
 
   const [editOption, setEditOption] = useState('none');
@@ -92,7 +96,7 @@ const Profile = ({ userName, userPicture}) => {
       <div className="profile-info">
         <h2 id='usename-profile'>{newUserName}</h2>
         <h2 id='role-profile'>{role}</h2>
-        <h2 id='money-user'>موجودی : {money_standard(current_user.money)} تومان</h2>
+        <h2 id='money-user'>موجودی : {money_standard(money)} تومان</h2>
         <select value={editOption} onChange={handleEditOptionChange}>
           <option value="none">انتخاب کنید</option>
           <option value="تغییر رمز عبور">تغییر رمز عبور</option>

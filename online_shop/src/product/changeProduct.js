@@ -153,9 +153,22 @@ const ChangeProduct = () => {
     }));
   }
 
+
+  const remove_product = async()=>{
+    let deleted = await request.Post(Url.delete_product_url, {_id: id});
+    if (deleted){
+      alert('محصول با موفقیت حذف شد ');
+      navigate(Router_path.sellerAcount);
+    }else alert('خطایی در حذف محصول رخ داده است ');
+  }
+
+
+
+
   return (
     <div className="add-product-container">
       <h2>تغییر محصول</h2>
+      <button type="button" className="remove-btn-cart" onClick={remove_product}>حذف محصول</button>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>نام:</label>

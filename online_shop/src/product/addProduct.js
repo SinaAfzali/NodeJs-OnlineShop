@@ -95,9 +95,9 @@ function AddProduct() {
   
 
      result = await request.Post(Url.addProduct_url, product);
-    if(result === "ok"){
-      navigate(Router_path.sellerAcount);
+    if(result){
       alert("محصول با موفقیت اضافه شد");
+      navigate(Router_path.sellerAcount);
     }else{
       alert("خطا در افزودن محصول")
     }

@@ -6,19 +6,21 @@ const { ObjectId } = require('mongodb');
 
 
 
-async function addProduct(req,res){
+class ProductsController{
+
+  static async addProduct(req,res){
     let obj = req.body;
     var product = new Product(obj.name,Number(obj.price),obj.description,Number(obj.productNumber), 
       obj.image,obj.filter,Number(obj.discount),obj.features, Product.status_dontdisplay, obj.seller_id, 0, 0);
     let result = await ProductsModel.insertProduct(product);
     if(result !== -1){
-      return res.send(JSON.stringify("ok"));
+      return res.send(JSON.stringify(true));
     }
     res.send(JSON.stringify(null));
     
 }
 
-async function getFilteredProducts(req,res){
+ static async getFilteredProducts(req,res){
   let products = await ProductsModel.getProducts();
 
   if(req.body.filter1 !== 'همه محصولات'){
@@ -47,7 +49,7 @@ async function getFilteredProducts(req,res){
   res.send(jsonProducts);
 }
 
-async function getOneProduct(req,res){
+static async  getOneProduct(req,res){
   let product = await ProductsModel.getProduct(String(req.body.product_id));
   const replacer = function(key, value) {   
     if (value instanceof ObjectId) {   
@@ -61,7 +63,7 @@ async function getOneProduct(req,res){
 }
 
 
-async function getCartProducts(){
+static async getCartProducts(){
   let cart_products = req.body;
   let total_price = 0;
   let products = await ProductsModel.getProducts();
@@ -82,12 +84,12 @@ async function getCartProducts(){
 }
 
 
-async function check_rating(req,res){
+static async check_rating(req,res){
   let transactions = await TransactionModel.getTransactions();
   for(let i=0;i<transactions.length;i++){
-    if(transactions[i].customer === req.body.userName){
+    if(transactions[i].customer_id === req.body.userName){
         for(let j=0;j<transactions[i].products_list.length;j++){
-            if(req.body.product_id === transactions[i].products_list[j]._id){
+            if(String(req.body.product_id) === transactions[i].products_list[j].product_id){
                 return res.send(JSON.stringify(true));
             }
         }
@@ -96,7 +98,7 @@ async function check_rating(req,res){
 res.send(JSON.stringify(false));
 }
 
-async function submit_rating(req,res){
+static async submit_rating(req,res){
     let product = await ProductsModel.getProduct(req.body.product_id);
     if(product.Scorers){
       for(let i=0;i<product.Scorers.length;i++){
@@ -115,7 +117,7 @@ async function submit_rating(req,res){
     return res.send(JSON.stringify(true));
 }
 
-async function getSellerProducts(req,res){
+static async getSellerProducts(req,res){
   let products = await ProductsModel.getProducts();
   let filtered_products = [];
   for(let i=0;i<products.length;i++){
@@ -126,13 +128,13 @@ async function getSellerProducts(req,res){
   res.send(JSON.stringify(filtered_products));
 }
 
-async function change_status(req, res){
+static async change_status(req, res){
    let update = await ProductsModel.updateProduct(req.body.product_id, {status: req.body.status}, 'set');
    if(update)res.send(JSON.stringify(true));
    else res.send(JSON.stringify(false));
 }
 
-async function update_product(req,res){
+static async update_product(req,res){
   let id = req.body._id;
   let obj = req.body;
   var product = new Product(obj.name,Number(obj.price),obj.description,Number(obj.productNumber), 
@@ -143,13 +145,14 @@ async function update_product(req,res){
   res.send(JSON.stringify(false));
 }
 
-module.exports = {
-  addProduct,
-  getFilteredProducts,
-  getOneProduct,
-  getCartProducts,
-  check_rating,submit_rating,
-  getSellerProducts,
-  change_status,
-  update_product,
-};
+
+static async remove_product(req,res){
+  let deleted = await ProductsModel.deleteProduct(req.body._id);
+  if(deleted)return res.send(JSON.stringify(true));
+  res.send(JSON.stringify(false));
+}
+
+
+}
+
+module.exports = ProductsController;

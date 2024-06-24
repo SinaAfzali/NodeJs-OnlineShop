@@ -27,8 +27,10 @@ class ProductsModel{
         return result;
     }
 
-    static deleteProduct(id){
-
+    static async deleteProduct(id){
+        let  deleted  =  await Database.deleteDocument(colletion_name, {_id: new ObjectId(id)}, 'one');
+        if(deleted)return true;
+        return false;
     }
 }
 
