@@ -60,3 +60,11 @@ button:hover-sales {
 .more-datails-div{
   display:  none;
 }
+
+.a-sales-history{
+  text-decoration: none;
+  color: blue;
+}
+.p-sales-history{
+  color: red;
+}

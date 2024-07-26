@@ -7,15 +7,15 @@ import Cookies from 'js-cookie';
 import foodfilter from '../images/food.png';
 import clothesfilter from '../images/clothes.png';
 import toolsfilter from '../images/tools.png';
-import {money_standard, checkCharacterOrder} from '../utilities/functions';
+import {money_standard, checkCharacterOrder, check_login} from '../utilities/functions';
 
 const {Product} = require('../utilities/classes');
 const request = require('../utilities/HTTP_REQUEST');
 const Url = require('../utilities/urls');
 const Router_path = require('../utilities/routes');
 
-let token = Cookies.get('Login');
-let current_user = await request.Post(Url.tokenValidator, { token: token });
+
+let current_user = await check_login();
 
 let filter1 = 'همه محصولات', filter2 = '';
 
@@ -24,11 +24,16 @@ const MainPage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
   const [isRightTaskbarVisible, setIsRightTaskbarVisible] = useState(false);
+  const [userName, setUserName] = useState('');
+  const [role, setRole] = useState('');
 
   useEffect(() => {
     const validateToken = async () => {
-      token = Cookies.get('Login');
-      current_user = await request.Post(Url.tokenValidator, { token: token });
+      current_user = await check_login();
+      if(current_user){
+        setUserName(current_user.userName);
+        setRole(current_user.role);
+      }
       if (current_user) {
         setIsLoggedIn(true);
       } else setIsLoggedIn(false);
@@ -209,8 +214,8 @@ const MainPage = () => {
         <div className="login-options">
           {isLoggedIn ? (
             <button id='loginuser' onClick={handleLogin}>
-              <pre>{current_user.userName}</pre>
-              <p id='roleuser'>{current_user.role}</p>
+              <pre>{userName}</pre>
+              <p id='roleuser'>{role}</p>
             </button>
           ) : (
             <button onClick={handleLogin}>ورود به حساب / عضویت</button>

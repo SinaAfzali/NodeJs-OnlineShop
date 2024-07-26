@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../css/SalesHistory.css'; // Import CSS file for styling
-import { money_standard } from '../utilities/functions';
+import { check_login, money_standard } from '../utilities/functions';
 import Cookies from 'js-cookie';
 
 
@@ -8,9 +8,7 @@ const request = require('../utilities/HTTP_REQUEST');
 const Url = require('../utilities/urls'); 
 
 
-let token = Cookies.get('Login');
-let current_user = await request.Post(Url.tokenValidator, { token: token });
-let current_transactions = []
+let current_user = await check_login();
 
 const SalesHistory = () => {
   const [salesData, setSalesData] = useState([]);
@@ -19,40 +17,18 @@ const SalesHistory = () => {
 
   useEffect(()=>{
     setTimeout(async() => {
-      token = Cookies.get('Login');
-      current_user = await request.Post(Url.tokenValidator, { token: token });
+      current_user = await check_login();
       let transactions = await request.Post(Url.get_Transaction_customer, {userName: current_user.userName});
-      current_transactions = []
-      setSalesData([]);
-      for(let i=0;i<transactions.length;i++){
-        current_transactions.push({
-          id: transactions[i]._id,
-          price: transactions[i].total_price,
-          date: transactions[i].date_paid.substring(10,16) + ' ' + transactions[i].date_paid.substring(0,10),
-          receiptNumber: transactions[i]._id,
-          count:transactions[i].products_list.length,
-          products_list: transactions[i].products_list,
-          customer:transactions[i].customer_id
-        })
-      }
-      setSalesData(current_transactions);
+      setSalesData(transactions);
     }, 100);
   })
 
   
 
   const handleViewMore = (sale) => {
-    let moreDiv = document.getElementById('more-details'+sale.id);
-    let moreBtn = document.getElementById('more-btn'+sale.id);
+    let moreDiv = document.getElementById('more-details'+sale._id);
+    let moreBtn = document.getElementById('more-btn'+sale._id);
     if(moreBtn.innerHTML === 'جزئیات بیشتر'){
-      moreDiv.innerHTML = `<p>محصولات خریداری شده : </p><p></p>`;
-      for(let j=0;j<sale.products_list.length;j++){
-        moreDiv.innerHTML += `<p style='color:red;'>محصول شماره ${j+1} : </p>`;
-        moreDiv.innerHTML += `<a style='text-decoration:none;color:blue;' href='/showProduct/${sale.products_list[j].product_id}'> آیدی : ${sale.products_list[j].product_id} </a>`;
-        moreDiv.innerHTML += `<p>نام محصول : ${sale.products_list[j].name}</p>`;
-        moreDiv.innerHTML += `<p>تعداد خریداری شده : ${sale.products_list[j].number}</p>`;
-        moreDiv.innerHTML += `<p>قیمت هر واحد : ${money_standard(sale.products_list[j].price)} تومان</p>`
-      }
       moreBtn.innerHTML = 'جزئیات کمتر';
       moreDiv.style.display = 'block';
     }else{
@@ -66,15 +42,25 @@ const SalesHistory = () => {
       <h2>تاریخچه خرید</h2>
       <div className="sales-list">
         {salesData.map((sale) => (
-          <div key={sale.id} className="sale-item">
+          <div key={sale._id} className="sale-item">
             <div className="sale-info">
-              <p className="price">مبلغ فاکتور : {money_standard(sale.price)} تومان</p>
-              <p className="date">تاریخ: {sale.date}</p>
-              <p id='receipt-number' className="receipt-number">کدپیگیری : {sale.receiptNumber}</p>
-              <p className="count">تعداد محصولات: {sale.count}</p>
+              <p className="price">مبلغ فاکتور : {money_standard(sale.total_price)} تومان</p>
+              <p className="date">تاریخ: {sale.date_paid.substring(10,16) + ' ' + sale.date_paid.substring(0,10)}</p>
+              <p id='receipt-number' className="receipt-number">کدپیگیری : {sale._id}</p>
+              <p className="count">تعداد محصولات: {sale.products_list.length}</p>
             </div>
-            <div className='more-datails-div' id={`more-details${sale.id}`}><p>محصولات خریداری شده : </p><p></p></div>
-            <button className='button-sales' id={`more-btn${sale.id}`} onClick={() => handleViewMore(sale)}>
+            <div className='more-datails-div' id={`more-details${sale._id}`}><p>محصولات خریداری شده : </p><p></p>
+            {sale.products_list.map((product, index)=>(
+              <div>
+              <p className='p-sales-history'>محصول شماره {index+1} : </p>
+              <a className='a-sales-history' href={`/showProduct/${product.product_id}`}> آیدی : {product.product_id} </a>
+              <p>نام محصول : {product.name}</p>
+              <p>تعداد خریداری شده : {product.number}</p>
+              <p>قیمت هر واحد : {money_standard(product.price)} تومان</p>
+              </div>
+            ))}
+            </div>
+            <button className='button-sales' id={`more-btn${sale._id}`} onClick={() => handleViewMore(sale)}>
             جزئیات بیشتر
             </button>
           </div>

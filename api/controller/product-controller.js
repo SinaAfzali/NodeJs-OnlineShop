@@ -81,8 +81,7 @@ static async getCartProducts(){
   }
   result[k] = {total_price: total_price};
   res.send(JSON.stringify(result));
-}
-
+} 
 
 static async check_rating(req,res){
   let transactions = await TransactionModel.getTransactions();

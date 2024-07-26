@@ -1,5 +1,6 @@
 import Cookies from 'js-cookie';
 const request = require('./HTTP_REQUEST');
+const Url = require('../utilities/urls'); 
 
 
 export async function userNameValidator(userInput ,  usernameValidator, role){
@@ -138,4 +139,12 @@ export function update_cart_cookie(product_id, plus_or_minus, limit){
  
   update_cookie('cart', cookieValue, 0); 
   return current_number;
+}
+
+export async function check_login(){
+  let token = Cookies.get('Login');
+  if(token){
+    let current_user = await request.Post(Url.tokenValidator, { token: token });
+    return current_user;
+  }else return null;
 }
